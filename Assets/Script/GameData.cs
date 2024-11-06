@@ -32,8 +32,9 @@ public class GameData : MonoBehaviour
 
         // Serializza l'oggetto in formato JSON
         string json = JsonUtility.ToJson(data);
-        
+
         // Salva il file JSON
+        filePath = Path.Combine(Application.persistentDataPath, "gameData.json");
         File.WriteAllText(filePath, json);
     }
 

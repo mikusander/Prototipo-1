@@ -25,7 +25,7 @@ public class TextBackground : MonoBehaviour
         RectTransform backgroundRect = background.GetComponent<RectTransform>();
 
         // Imposta le dimensioni dello sfondo con padding
-        backgroundRect.sizeDelta = new Vector2(textRect.sizeDelta.x + padding * 2, textRect.sizeDelta.y + padding * 2);
+        backgroundRect.sizeDelta = new Vector2(textRect.sizeDelta.x + padding * 4, textRect.sizeDelta.y + padding * 2);
 
         // Allinea lo sfondo con il testo
         backgroundRect.position = textRect.position; // Allinea la posizione del background

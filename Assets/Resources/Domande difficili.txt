@@ -1,0 +1,2 @@
+Fellini era il miglior regista di sempre;true
+Fellini non era il miglior regista di sempre;false
