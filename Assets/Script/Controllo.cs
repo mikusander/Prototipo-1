@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Controllo : MonoBehaviour
 {
@@ -72,6 +73,16 @@ public class Controllo : MonoBehaviour
         if (questions.Count == 0 && !isUltima) 
         {
             gameover = true;
+            if (puntiAttuali > 5)
+            {
+                TempData.vittoria = true;
+                SceneManager.LoadScene("Mappa");
+            }
+            else
+            {
+                TempData.vittoria = false;
+                SceneManager.LoadScene("Mappa");
+            }
         }
 
         // Controlla se il prefab attuale � null o distrutto
@@ -116,7 +127,7 @@ public class Controllo : MonoBehaviour
     void LoadQuestionsFromFile()
     {
         // Carica il file di testo dalla cartella Resources
-        TextAsset questionData = Resources.Load<TextAsset>("Domande");
+        TextAsset questionData = Resources.Load<TextAsset>(TempData.difficolta);
 
         // Controlla se il file � stato trovato
         if (questionData == null)

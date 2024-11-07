@@ -956,9 +956,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgrounds:
   - {fileID: 21300000, guid: 6553c3d4ac7141445b8deda6d8f9d30e, type: 3}
-  - {fileID: 21300000, guid: b4f9823dfb83dca409155a6f632b8e16, type: 3}
+  - {fileID: 21300000, guid: e748120dc62596346aad4a3aef31adcc, type: 3}
+  - {fileID: 21300000, guid: df65c9d884cd9274599f35d0d3a69a9b, type: 3}
   - {fileID: 21300000, guid: 5612b156b87f2fc4097b94f9ba11f79c, type: 3}
-  - {fileID: 21300000, guid: 6683f30b8b4ed024386914c3d8c95cd1, type: 3}
 --- !u!1 &1686514508
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,6 +22,7 @@ public class ControlloMappa : MonoBehaviour
         GameObject personaggio = GameObject.Find("avatar (Clone)");
         if (personaggio == null)
         {
+            Debug.Log("ciao");
             Transform casellaTransform = baseScacchiera.transform.Find("Casella 0,0");
             if ( casellaTransform != null )
             {
@@ -46,7 +47,7 @@ public class ControlloMappa : MonoBehaviour
                     SpriteRenderer rendererSopra = casellaSopra.GetComponent<SpriteRenderer>();
                     if (rendererSopra != null)
                     {
-                        rendererSopra.color = new Color (255f, 255f, 0F, 255f);
+                        rendererSopra.color = new Color (255f, 255f, 0f, 255f);
                     }
                 }
                 Transform casellaDiagonaleTransform = baseScacchiera.transform.Find("Casella 1,1");
@@ -76,6 +77,12 @@ public class ControlloMappa : MonoBehaviour
         else
         {
             player = personaggio;
+            if (TempData.vittoria)
+            {
+                GameObject nuovaPosizione = GameObject.Find("Casella " + gameData.stringValues[gameData.stringValues.Count - 1]);
+                Debug.Log(nuovaPosizione.name + nuovaPosizione.transform.position);
+                player.transform.position = nuovaPosizione.transform.position;
+            }
         }
     }
 

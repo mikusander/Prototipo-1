@@ -25,7 +25,7 @@ public class ToccoFrecciaNo : MonoBehaviour
         {
             // Verifica se abbiamo cliccato sul GameObject tramite un Raycast
             RaycastHit2D hit = Physics2D.Raycast(mainCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            if(hit.collider != null && hit.collider.gameObject == gameObject)
+            if(hit.collider != null && hit.collider.gameObject == gameObject && !controllo.inCreazione)
             {
                 if (controllo.currentQuestion.correctAnswer)
                 {
