@@ -1,20 +1,20 @@
 using UnityEngine;
 
-public static class UtilityFunctions
+public static class Utils
 {
     // Esempio di funzione statica
     public static string AumentaX(string pos)
     {
         int[] numeri = PrendiNumeri(pos);
         numeri[0] += 1;
-        return "Casella" + numeri[0].ToString() + "," + numeri[1].ToString();
+        return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
     public static string AumentaY(string pos)
     {
         int[] numeri = PrendiNumeri(pos);
         numeri[1] += 1;
-        return "Casella" + numeri[0].ToString() + "," + numeri[1].ToString();
+        return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
     public static string AumentaXY(string pos)
@@ -22,7 +22,7 @@ public static class UtilityFunctions
         int[] numeri = PrendiNumeri(pos);
         numeri[0] += 1;
         numeri[1] += 1;
-        return "Casella" + numeri[0].ToString() + "," + numeri[1].ToString();
+        return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
     public static int[] PrendiNumeri(string casella)

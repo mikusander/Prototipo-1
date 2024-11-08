@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 
 public class SceltaLivello : MonoBehaviour
 {
@@ -32,7 +31,8 @@ public class SceltaLivello : MonoBehaviour
                 // Controlla se il GameObject colpito è lo stesso su cui è attaccato questo script
                 if (hit.collider.gameObject == gameObject)
                 {
-                    if (colore.r == 0f && colore.g == 1f && colore.b == 0f && colore.a == 1f)
+                    Debug.Log(gameObject.name + Utils.AumentaXY(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]));
+                    if (gameObject.name == Utils.AumentaX(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella verde
                         TempData.difficolta = "Domande difficili";
@@ -41,7 +41,7 @@ public class SceltaLivello : MonoBehaviour
                         controlloMappa.gameData.SaveData();
                         SceneManager.LoadScene("RispostaDomande");
                     }
-                    else if (colore.r == 0f && colore.g == 0f && colore.b == 0f && colore.a == 1f)
+                    else if (gameObject.name == Utils.AumentaXY(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella rosso
                         TempData.difficolta = "Domande";
@@ -50,7 +50,7 @@ public class SceltaLivello : MonoBehaviour
                         controlloMappa.gameData.SaveData();
                         SceneManager.LoadScene("RispostaDomande");
                     }
-                    else if (colore.r == 255f && colore.g == 255f && colore.b == 0f && colore.a == 255f)
+                    else if (gameObject.name == Utils.AumentaY(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella gialla
                         TempData.difficolta = "Domande medie";
