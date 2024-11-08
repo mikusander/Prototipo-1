@@ -19,16 +19,12 @@ public class ControlloMappa : MonoBehaviour
         {
             gameData.LoadData();
         }
-        GameObject personaggio = GameObject.Find("avatar (Clone)");
-        if (personaggio == null)
+        if (gameData.stringValues.Count == 0)
         {
-            Debug.Log("ciao");
             Transform casellaTransform = baseScacchiera.transform.Find("Casella 0,0");
             if ( casellaTransform != null )
             {
-                gameData.stringValues.Add("0,0");
-                gameData.intValues[0] = 0;
-                gameData.intValues[1] = 0;
+                gameData.stringValues.Add("Casella 0,0");
                 gameData.SaveData();
                 GameObject casella = casellaTransform.gameObject;
                 // Cambia colore usando il componente Renderer
@@ -76,12 +72,29 @@ public class ControlloMappa : MonoBehaviour
         }
         else
         {
-            player = personaggio;
-            if (TempData.vittoria)
+            if(TempData.vittoria || !TempData.gioco)
             {
-                GameObject nuovaPosizione = GameObject.Find("Casella " + gameData.stringValues[gameData.stringValues.Count - 1]);
-                Debug.Log(nuovaPosizione.name + nuovaPosizione.transform.position);
-                player.transform.position = nuovaPosizione.transform.position;
+                string ultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 1];
+                string penultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 2];
+                Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
+                Transform penultimaCasellaTransform = baseScacchiera.transform.Find(penultimaCasellaString);
+                for (int i = 0; i < gameData.stringValues.Count; i++)
+                {
+                    SpriteRenderer colore = GameObject.Find(gameData.stringValues[i]).GetComponent<SpriteRenderer>();
+                    colore.color = Color.white;
+                }
+                if (ultimaCasellaTransform != null && penultimaCasellaTransform != null)
+                {
+                    GameObject ultimaCasella = ultimaCasellaTransform.gameObject;
+                    GameObject penultimaCasella = penultimaCasellaTransform.gameObject;
+                    Vector3 spawnPosition = penultimaCasella.transform.position;
+                    player = Instantiate(player, spawnPosition, Quaternion.identity);
+                      
+                }
+            }
+            else
+            {
+
             }
         }
     }

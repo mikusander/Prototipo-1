@@ -43,6 +43,8 @@ public class Controllo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        TempData.gioco = true;
+        TempData.vittoria = false;
         // Carica le domande dal file di testo
         LoadQuestionsFromFile();
         numeroDomande = questions.Count;
@@ -73,16 +75,11 @@ public class Controllo : MonoBehaviour
         if (questions.Count == 0 && !isUltima) 
         {
             gameover = true;
-            if (puntiAttuali > 5)
+            if (puntiAttuali > 1)
             {
                 TempData.vittoria = true;
-                SceneManager.LoadScene("Mappa");
             }
-            else
-            {
-                TempData.vittoria = false;
-                SceneManager.LoadScene("Mappa");
-            }
+            SceneManager.LoadScene("Mappa");
         }
 
         // Controlla se il prefab attuale � null o distrutto

@@ -1,10 +1,3 @@
 Guido Anselmi è il protagonista di 8 1/2?;true
 Gonnella è il protagonista di "La voce della luna"?;true
 "La città delle donne" è del 1980?;true
-Marcello Rubini è il protagonista della "Dolce vita"?;true
-La "Dolce vita" è uscito nel 1960?;true 
-Guido Anselmi non è il protagonista di 8 1/2?;false
-Gonnella non è il protagonista di "La voce della luna"?;false
-"La città delle donne" è del 1960?;false
-Marcello Rubini non è il protagonista della "Dolce vita"?;false
-La "Dolce vita" è uscito nel 1965?;false

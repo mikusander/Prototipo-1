@@ -7,13 +7,15 @@ public class GameData : MonoBehaviour
     // Lista di stringhe di dimensione variabile
     public List<string> stringValues = new List<string>();
 
+    public List<string> caselleSbagliate = new List<string>();
+
     // Array di interi con due valori
     public int[] intValues = new int[2];
 
     // Percorso del file JSON
     private string filePath;
 
-    void Start()
+    void Awake() // Cambia da Start a Awake per essere sicuri che venga impostato prima di altri metodi
     {
         // Definire il percorso del file di salvataggio
         filePath = Path.Combine(Application.persistentDataPath, "gameData.json");
@@ -26,15 +28,17 @@ public class GameData : MonoBehaviour
     public void SaveData()
     {
         // Crea una struttura che contiene sia la lista di stringhe che l'array di interi
-        DataToSave data = new DataToSave();
-        data.stringValues = stringValues;
-        data.intValues = intValues;
+        DataToSave data = new DataToSave
+        {
+            stringValues = stringValues,
+            caselleSbagliate = caselleSbagliate,
+            intValues = intValues
+        };
 
         // Serializza l'oggetto in formato JSON
-        string json = JsonUtility.ToJson(data);
+        string json = JsonUtility.ToJson(data, true); // Usa true per formattazione leggibile
 
         // Salva il file JSON
-        filePath = Path.Combine(Application.persistentDataPath, "gameData.json");
         File.WriteAllText(filePath, json);
     }
 
@@ -49,16 +53,19 @@ public class GameData : MonoBehaviour
             // Deserializza i dati
             DataToSave data = JsonUtility.FromJson<DataToSave>(json);
 
-            // Assegna i dati alla variabile
-            stringValues = data.stringValues;
-            intValues = data.intValues;
+            // Verifica che i dati non siano null prima di assegnarli
+            if (data != null)
+            {
+                stringValues = data.stringValues ?? new List<string>();
+                caselleSbagliate = data.caselleSbagliate ?? new List<string>();
+                intValues = data.intValues ?? new int[2];
+            }
         }
         else
         {
             // Impostazioni di default se non esistono i dati salvati
-            stringValues.Add("Default String");
-            intValues[0] = 10;
-            intValues[1] = 20;
+            intValues[0] = 0;
+            intValues[1] = 0;
         }
     }
 }
@@ -67,6 +74,7 @@ public class GameData : MonoBehaviour
 [System.Serializable]
 public class DataToSave
 {
-    public List<string> stringValues;  // Lista di stringhe
-    public int[] intValues;            // Array di interi (2 valori)
+    [SerializeField] public List<string> stringValues;  // Lista del percorso del personaggio percorso
+    [SerializeField] public List<string> caselleSbagliate; // Lista delle caselle che si sono sbagliate
+    [SerializeField] public int[] intValues; // Posizione attuale del personaggio
 }
