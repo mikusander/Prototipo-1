@@ -7,6 +7,7 @@ using UnityEngine;
 public class ControlloMappa : MonoBehaviour
 {
     public GameObject player;
+    public GameObject errore;
     public GameObject baseScacchiera;
     public GameData gameData;
     public float moveDuration = 2f;
@@ -71,19 +72,74 @@ public class ControlloMappa : MonoBehaviour
                 player = Instantiate(player, spawnPosition, Quaternion.identity);
             }
         }
+        else if (gameData.stringValues.Count == 1)
+        {
+            Transform casellaTransform = baseScacchiera.transform.Find("Casella 0,0");
+            if ( casellaTransform != null )
+            {
+                GameObject casella = casellaTransform.gameObject;
+                // Cambia colore usando il componente Renderer
+                SpriteRenderer renderer = casella.GetComponent<SpriteRenderer>();
+
+                // Verifica che il GameObject abbia un Renderer
+                if (renderer != null)
+                {
+                    // Modifica il colore del materiale
+                    renderer.color = Color.white;
+                }
+                Transform casellaSopraTransform = baseScacchiera.transform.Find("Casella 1,0");
+                if (casellaSopraTransform != null )
+                {
+                    GameObject casellaSopra = casellaSopraTransform.gameObject;
+                    SpriteRenderer rendererSopra = casellaSopra.GetComponent<SpriteRenderer>();
+                    if (rendererSopra != null)
+                    {
+                        rendererSopra.color = new Color (255f, 255f, 0f, 255f);
+                    }
+                }
+                Transform casellaDiagonaleTransform = baseScacchiera.transform.Find("Casella 1,1");
+                if (casellaDiagonaleTransform != null )
+                {
+                    GameObject casellaDiagonale = casellaDiagonaleTransform.gameObject;
+                    SpriteRenderer rendererDiagonale = casellaDiagonale.GetComponent<SpriteRenderer>();
+                    if (rendererDiagonale != null)
+                    {
+                        rendererDiagonale.color = Color.red;
+                    }
+                }
+                Transform casellaSinistraTransform = baseScacchiera.transform.Find("Casella 0,1");
+                if ( casellaSinistraTransform != null )
+                {
+                    GameObject casellaSinistra = casellaSinistraTransform.gameObject;
+                    SpriteRenderer rendererSinistra = casellaSinistra.GetComponent<SpriteRenderer>();
+                    if (rendererSinistra != null)
+                    {
+                        rendererSinistra.color = Color.green;
+                    }
+                }
+                Vector3 spawnPosition = casella.transform.position;
+                player = Instantiate(player, spawnPosition, Quaternion.identity);
+            }
+        }
         else
         {
-            if(TempData.vittoria || !TempData.gioco)
+            foreach (string i in gameData.caselleSbagliate)
+            {
+                Vector3 casellaSbagliataPosition = GameObject.Find(i).gameObject.transform.position;
+                GameObject casella = Instantiate(errore, casellaSbagliataPosition, Quaternion.identity);
+                casella.name = "Errore " + i;
+            }
+            for (int i = 0; i < gameData.stringValues.Count; i++)
+            {
+                SpriteRenderer colore = GameObject.Find(gameData.stringValues[i]).GetComponent<SpriteRenderer>();
+                colore.color = Color.white;
+            }
+            if(TempData.gioco && TempData.vittoria)
             {
                 string ultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 1];
                 string penultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 2];
                 Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
                 Transform penultimaCasellaTransform = baseScacchiera.transform.Find(penultimaCasellaString);
-                for (int i = 0; i < gameData.stringValues.Count; i++)
-                {
-                    SpriteRenderer colore = GameObject.Find(gameData.stringValues[i]).GetComponent<SpriteRenderer>();
-                    colore.color = Color.white;
-                }
                 if (ultimaCasellaTransform != null && penultimaCasellaTransform != null)
                 {
                     GameObject ultimaCasella = ultimaCasellaTransform.gameObject;
@@ -92,10 +148,97 @@ public class ControlloMappa : MonoBehaviour
                     player = Instantiate(player, spawnPosition, Quaternion.identity);
                     StartCoroutine(MoveToTarget(spawnPosition, ultimaCasella.transform.position, moveDuration));
                 }
+                GameObject casellaSopraGameObject = GameObject.Find(Utils.Sopra(ultimaCasellaString));
+                GameObject casellaSbagliataSopra = GameObject.Find("Errore " + Utils.Sopra(ultimaCasellaString));
+                if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
+                {
+                    SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
+                    if(casellaSopra.color != Color.white)
+                        casellaSopra.color = new Color(255f, 255f, 0f, 255f);
+                }
+                GameObject casellaDiagonaleGameObject = GameObject.Find(Utils.DiagonaleSinistra(ultimaCasellaString));
+                GameObject casellaSbagliataDiagonale = GameObject.Find("Errore " + Utils.DiagonaleSinistra(ultimaCasellaString));
+                if (casellaDiagonaleGameObject != null && casellaSbagliataDiagonale == null)
+                {
+                    SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
+                    if(casellaDiagonale.color != Color.white)
+                        casellaDiagonale.color = Color.red;
+                }
+                GameObject casellaSinistraGameObject = GameObject.Find(Utils.Sinistra(ultimaCasellaString));
+                GameObject casellaSbagliataSinistra = GameObject.Find("Errore " + Utils.Sinistra(ultimaCasellaString));
+                if (casellaSinistraGameObject != null && casellaSbagliataSinistra == null)
+                {
+                    SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
+                    if(casellaSinistra.color != Color.white)
+                        casellaSinistra.color = Color.green;
+                }
+                GameObject casellaDiagonaleDestraGameObject = GameObject.Find(Utils.DiagonaleDestra(ultimaCasellaString));
+                GameObject casellaSbagliataDiagonaleDestra = GameObject.Find("Errore " + Utils.DiagonaleDestra(ultimaCasellaString));
+                if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDiagonaleDestra == null)
+                {
+                    SpriteRenderer casellaDiagonaleDestra = casellaDiagonaleDestraGameObject.GetComponent<SpriteRenderer>();
+                    if(casellaDiagonaleDestra.color != Color.white)
+                        casellaDiagonaleDestra.color = Color.green;
+                }
+                GameObject casellaDestraGameObject = GameObject.Find(Utils.Destra(ultimaCasellaString));
+                GameObject casellaSbagliataDestra = GameObject.Find("Errore " + Utils.Destra(ultimaCasellaString));
+                if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDestra == null)
+                {
+                    SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
+                    if(casellaDestra.color != Color.white)
+                        casellaDestra.color = Color.green;
+                }
             }
             else
             {
-
+                string ultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 1];
+                Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
+                if (ultimaCasellaTransform != null)
+                {
+                    GameObject ultimaCasella = ultimaCasellaTransform.gameObject;
+                    Vector3 spawnPosition = ultimaCasella.transform.position;
+                    player = Instantiate(player, spawnPosition, Quaternion.identity);
+                }
+                GameObject casellaSopraGameObject = GameObject.Find(Utils.Sopra(ultimaCasellaString));
+                GameObject casellaSbagliataSopra = GameObject.Find("Errore " + Utils.Sopra(ultimaCasellaString));
+                if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
+                {
+                    SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
+                    if(casellaSopra.color != Color.white)
+                        casellaSopra.color = new Color(255f, 255f, 0f, 255f);
+                }
+                GameObject casellaDiagonaleGameObject = GameObject.Find(Utils.DiagonaleSinistra(ultimaCasellaString));
+                GameObject casellaSbagliataDiagonale = GameObject.Find("Errore " + Utils.DiagonaleSinistra(ultimaCasellaString));
+                if (casellaDiagonaleGameObject != null && casellaSbagliataDiagonale == null)
+                {
+                    SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
+                    if(casellaDiagonale.color != Color.white)
+                        casellaDiagonale.color = Color.red;
+                }
+                GameObject casellaSinistraGameObject = GameObject.Find(Utils.Sinistra(ultimaCasellaString));
+                GameObject casellaSbagliataSinistra = GameObject.Find("Errore " + Utils.Sinistra(ultimaCasellaString));
+                if (casellaSinistraGameObject != null && casellaSbagliataSinistra == null)
+                {
+                    SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
+                    if(casellaSinistra.color != Color.white)
+                        casellaSinistra.color = Color.green;
+                }
+                GameObject casellaDiagonaleDestraGameObject = GameObject.Find(Utils.DiagonaleDestra(ultimaCasellaString));
+                GameObject casellaSbagliataDiagonaleDestra = GameObject.Find("Errore " + Utils.DiagonaleDestra(ultimaCasellaString));
+                if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDiagonaleDestra == null)
+                {
+                    SpriteRenderer casellaDiagonaleDestra = casellaDiagonaleDestraGameObject.GetComponent<SpriteRenderer>();
+                    if(casellaDiagonaleDestra.color != Color.white)
+                        casellaDiagonaleDestra.color = Color.green;
+                }
+                GameObject casellaDestraGameObject = GameObject.Find(Utils.Destra(ultimaCasellaString));
+                GameObject casellaSbagliataDestra = GameObject.Find("Errore " + Utils.Destra(ultimaCasellaString));
+                if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDestra == null)
+                {
+                    SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
+                    if(casellaDestra.color != Color.white)
+                        casellaDestra.color = Color.green;
+                }
             }
         }
     }
@@ -103,8 +246,6 @@ public class ControlloMappa : MonoBehaviour
     // Coroutine che muove l'oggetto
     IEnumerator MoveToTarget(Vector3 playerPosition, Vector3 targetPosition, float duration)
     {
-        Debug.Log(playerPosition);
-        Debug.Log(targetPosition);
         Vector3 startPosition = playerPosition;
         float timeElapsed = 0;
 

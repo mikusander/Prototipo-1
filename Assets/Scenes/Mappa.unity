@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 35832860}
   - component: {fileID: 35832861}
   - component: {fileID: 35832862}
+  - component: {fileID: 35832863}
   m_Layer: 0
   m_Name: Casella 2,1
   m_TagString: Untagged
@@ -252,6 +253,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &35832863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35832859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &137937914
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,6 +370,7 @@ GameObject:
   - component: {fileID: 157789912}
   - component: {fileID: 157789913}
   - component: {fileID: 157789914}
+  - component: {fileID: 157789915}
   m_Layer: 0
   m_Name: Casella 4,3
   m_TagString: Untagged
@@ -474,6 +490,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &157789915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157789911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &197921519
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +515,7 @@ GameObject:
   - component: {fileID: 197921520}
   - component: {fileID: 197921521}
   - component: {fileID: 197921522}
+  - component: {fileID: 197921523}
   m_Layer: 0
   m_Name: Casella 2,3
   m_TagString: Untagged
@@ -604,6 +635,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &197921523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 197921519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &342636549
 GameObject:
   m_ObjectHideFlags: 0
@@ -615,6 +660,7 @@ GameObject:
   - component: {fileID: 342636550}
   - component: {fileID: 342636551}
   - component: {fileID: 342636552}
+  - component: {fileID: 342636553}
   m_Layer: 0
   m_Name: Casella 2,2
   m_TagString: Untagged
@@ -734,6 +780,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &342636553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342636549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &432066536
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,6 +805,7 @@ GameObject:
   - component: {fileID: 432066537}
   - component: {fileID: 432066538}
   - component: {fileID: 432066539}
+  - component: {fileID: 432066540}
   m_Layer: 0
   m_Name: Casella 1,3
   m_TagString: Untagged
@@ -864,6 +925,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &432066540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432066536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &524895477
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,6 +950,7 @@ GameObject:
   - component: {fileID: 524895478}
   - component: {fileID: 524895479}
   - component: {fileID: 524895480}
+  - component: {fileID: 524895481}
   m_Layer: 0
   m_Name: Casella 0,3
   m_TagString: Untagged
@@ -994,6 +1070,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &524895481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524895477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &711199052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1005,6 +1095,7 @@ GameObject:
   - component: {fileID: 711199053}
   - component: {fileID: 711199054}
   - component: {fileID: 711199055}
+  - component: {fileID: 711199056}
   m_Layer: 0
   m_Name: Casella 3,2
   m_TagString: Untagged
@@ -1124,6 +1215,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &711199056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711199052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &734883151
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,6 +1240,7 @@ GameObject:
   - component: {fileID: 734883152}
   - component: {fileID: 734883153}
   - component: {fileID: 734883154}
+  - component: {fileID: 734883155}
   m_Layer: 0
   m_Name: Casella 2,0
   m_TagString: Untagged
@@ -1254,6 +1360,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &734883155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734883151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &802214599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1513,9 +1633,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60755ad71491c7a49975439eac4543b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 268233260311770732, guid: 3f8a9d0c19a8fc840b9acfa025e54f61, type: 3}
+  player: {fileID: 4303749262893101892, guid: a8167cf620ff84b4ea86c464ca802cff, type: 3}
+  errore: {fileID: 2075936451989792750, guid: 71312f535f4cc774e9efbdf8111e21ad, type: 3}
   baseScacchiera: {fileID: 1700244045}
-  gameData: {fileID: 0}
+  gameData: {fileID: 1066360593}
+  moveDuration: 2
 --- !u!4 &1066360592
 Transform:
   m_ObjectHideFlags: 0
@@ -1544,7 +1666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stringValues: []
-  intValues: 0000000000000000
+  caselleSbagliate: []
 --- !u!1 &1100281245
 GameObject:
   m_ObjectHideFlags: 0
@@ -1556,6 +1678,7 @@ GameObject:
   - component: {fileID: 1100281246}
   - component: {fileID: 1100281247}
   - component: {fileID: 1100281248}
+  - component: {fileID: 1100281249}
   m_Layer: 0
   m_Name: Casella 3,3
   m_TagString: Untagged
@@ -1675,6 +1798,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1100281249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100281245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1200921480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1686,6 +1823,7 @@ GameObject:
   - component: {fileID: 1200921481}
   - component: {fileID: 1200921482}
   - component: {fileID: 1200921483}
+  - component: {fileID: 1200921484}
   m_Layer: 0
   m_Name: Casella 0,2
   m_TagString: Untagged
@@ -1805,6 +1943,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1200921484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200921480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1219810898
 GameObject:
   m_ObjectHideFlags: 0
@@ -1816,6 +1968,7 @@ GameObject:
   - component: {fileID: 1219810899}
   - component: {fileID: 1219810900}
   - component: {fileID: 1219810901}
+  - component: {fileID: 1219810902}
   m_Layer: 0
   m_Name: Casella 5,2
   m_TagString: Untagged
@@ -1935,6 +2088,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1219810902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219810898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1261156812
 GameObject:
   m_ObjectHideFlags: 0
@@ -1946,6 +2113,7 @@ GameObject:
   - component: {fileID: 1261156813}
   - component: {fileID: 1261156814}
   - component: {fileID: 1261156815}
+  - component: {fileID: 1261156816}
   m_Layer: 0
   m_Name: Casella 3,0
   m_TagString: Untagged
@@ -2065,6 +2233,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1261156816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261156812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1269125988
 GameObject:
   m_ObjectHideFlags: 0
@@ -2076,6 +2258,7 @@ GameObject:
   - component: {fileID: 1269125989}
   - component: {fileID: 1269125990}
   - component: {fileID: 1269125991}
+  - component: {fileID: 1269125992}
   m_Layer: 0
   m_Name: Casella 0,1
   m_TagString: Untagged
@@ -2195,6 +2378,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1269125992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269125988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1291535470
 GameObject:
   m_ObjectHideFlags: 0
@@ -2206,6 +2403,7 @@ GameObject:
   - component: {fileID: 1291535471}
   - component: {fileID: 1291535472}
   - component: {fileID: 1291535473}
+  - component: {fileID: 1291535474}
   m_Layer: 0
   m_Name: Casella 1,2
   m_TagString: Untagged
@@ -2325,6 +2523,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1291535474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291535470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1318032897
 GameObject:
   m_ObjectHideFlags: 0
@@ -2336,6 +2548,7 @@ GameObject:
   - component: {fileID: 1318032898}
   - component: {fileID: 1318032899}
   - component: {fileID: 1318032900}
+  - component: {fileID: 1318032901}
   m_Layer: 0
   m_Name: Casella 1,0
   m_TagString: Untagged
@@ -2455,6 +2668,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1318032901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318032897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1348245701
 GameObject:
   m_ObjectHideFlags: 0
@@ -2550,6 +2777,7 @@ GameObject:
   - component: {fileID: 1466421691}
   - component: {fileID: 1466421692}
   - component: {fileID: 1466421693}
+  - component: {fileID: 1466421694}
   m_Layer: 0
   m_Name: Casella 4,0
   m_TagString: Untagged
@@ -2669,6 +2897,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1466421694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466421690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1606266542
 GameObject:
   m_ObjectHideFlags: 0
@@ -2680,6 +2922,7 @@ GameObject:
   - component: {fileID: 1606266543}
   - component: {fileID: 1606266544}
   - component: {fileID: 1606266545}
+  - component: {fileID: 1606266546}
   m_Layer: 0
   m_Name: Casella 3,1
   m_TagString: Untagged
@@ -2799,6 +3042,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1606266546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606266542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1617183808
 GameObject:
   m_ObjectHideFlags: 0
@@ -2810,6 +3067,7 @@ GameObject:
   - component: {fileID: 1617183809}
   - component: {fileID: 1617183810}
   - component: {fileID: 1617183811}
+  - component: {fileID: 1617183812}
   m_Layer: 0
   m_Name: Casella 5,0
   m_TagString: Untagged
@@ -2929,6 +3187,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1617183812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617183808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1700244045
 GameObject:
   m_ObjectHideFlags: 0
@@ -3048,6 +3320,7 @@ GameObject:
   - component: {fileID: 1704844583}
   - component: {fileID: 1704844584}
   - component: {fileID: 1704844585}
+  - component: {fileID: 1704844586}
   m_Layer: 0
   m_Name: Casella 4,1
   m_TagString: Untagged
@@ -3167,6 +3440,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1704844586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704844582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1796981127
 GameObject:
   m_ObjectHideFlags: 0
@@ -3178,6 +3465,7 @@ GameObject:
   - component: {fileID: 1796981128}
   - component: {fileID: 1796981129}
   - component: {fileID: 1796981130}
+  - component: {fileID: 1796981131}
   m_Layer: 0
   m_Name: Casella 5,1
   m_TagString: Untagged
@@ -3297,6 +3585,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1796981131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796981127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &1866041008
 GameObject:
   m_ObjectHideFlags: 0
@@ -3308,6 +3610,7 @@ GameObject:
   - component: {fileID: 1866041009}
   - component: {fileID: 1866041010}
   - component: {fileID: 1866041011}
+  - component: {fileID: 1866041012}
   m_Layer: 0
   m_Name: Casella 4,2
   m_TagString: Untagged
@@ -3427,6 +3730,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1866041012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866041008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &2089932933
 GameObject:
   m_ObjectHideFlags: 0
@@ -3438,6 +3755,7 @@ GameObject:
   - component: {fileID: 2089932934}
   - component: {fileID: 2089932935}
   - component: {fileID: 2089932936}
+  - component: {fileID: 2089932937}
   m_Layer: 0
   m_Name: Casella 5,3
   m_TagString: Untagged
@@ -3557,6 +3875,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2089932937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089932933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b32d27b77efde4eaed46c1246bbe4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colore: {r: 0, g: 0, b: 0, a: 0}
+  controlloMappa: {fileID: 0}
 --- !u!1 &2103811675
 GameObject:
   m_ObjectHideFlags: 0

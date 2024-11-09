@@ -3,25 +3,40 @@ using UnityEngine;
 public static class Utils
 {
     // Esempio di funzione statica
-    public static string AumentaX(string pos)
+    public static string Sopra(string pos)
     {
         int[] numeri = PrendiNumeri(pos);
         numeri[0] += 1;
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
-    public static string AumentaY(string pos)
+    public static string Sinistra(string pos)
     {
         int[] numeri = PrendiNumeri(pos);
         numeri[1] += 1;
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
-    public static string AumentaXY(string pos)
+    public static string Destra(string pos)
+    {
+        int[] numeri = PrendiNumeri(pos);
+        numeri[1] -= 1;
+        return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
+    }
+
+    public static string DiagonaleSinistra(string pos)
     {
         int[] numeri = PrendiNumeri(pos);
         numeri[0] += 1;
         numeri[1] += 1;
+        return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
+    }
+
+    public static string DiagonaleDestra(string pos)
+    {
+        int[] numeri = PrendiNumeri(pos);
+        numeri[0] += 1;
+        numeri[1] -= 1;
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 

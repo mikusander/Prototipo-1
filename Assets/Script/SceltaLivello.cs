@@ -9,6 +9,7 @@ public class SceltaLivello : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        controlloMappa = GameObject.Find("GameController").GetComponent<ControlloMappa>();
         SpriteRenderer spriterenderer = GetComponent<SpriteRenderer> ();
         colore = spriterenderer.color;
     }
@@ -16,7 +17,7 @@ public class SceltaLivello : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Verifica se � stato cliccato il pulsante sinistro del mouse
+        // Verifica se è stato cliccato il pulsante sinistro del mouse
         if (Input.GetMouseButtonDown(0))  // 0 rappresenta il pulsante sinistro del mouse
         {
             // Ottieni la posizione del mouse in coordinate di mondo
@@ -31,32 +32,27 @@ public class SceltaLivello : MonoBehaviour
                 // Controlla se il GameObject colpito è lo stesso su cui è attaccato questo script
                 if (hit.collider.gameObject == gameObject)
                 {
-                    Debug.Log(gameObject.name + Utils.AumentaXY(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]));
-                    if (gameObject.name == Utils.AumentaX(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    GameObject casellaSbagliata = GameObject.Find("Errore " + gameObject.name);
+                    if (casellaSbagliata == null && gameObject.name == Utils.Sopra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
-                        // casella verde
+                        // casella gialla
                         TempData.difficolta = "Domande difficili";
-                        string[] stringa = gameObject.name.Split(' ');
-                        controlloMappa.gameData.stringValues.Add("Casella " + stringa[1]);
-                        controlloMappa.gameData.SaveData();
+                        TempData.ultimaCasella = gameObject.name;
+                        Debug.Log(TempData.ultimaCasella);
                         SceneManager.LoadScene("RispostaDomande");
                     }
-                    else if (gameObject.name == Utils.AumentaXY(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    else if (casellaSbagliata == null && gameObject.name == Utils.DiagonaleSinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella rosso
                         TempData.difficolta = "Domande";
-                        string[] stringa = gameObject.name.Split(' ');
-                        controlloMappa.gameData.stringValues.Add("Casella " + stringa[1]);
-                        controlloMappa.gameData.SaveData();
+                        TempData.ultimaCasella = gameObject.name;
                         SceneManager.LoadScene("RispostaDomande");
                     }
-                    else if (gameObject.name == Utils.AumentaY(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    else if (casellaSbagliata == null && gameObject.name == Utils.Sinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
-                        // casella gialla
+                        // casella verde
                         TempData.difficolta = "Domande medie";
-                        string[] stringa = gameObject.name.Split(' ');
-                        controlloMappa.gameData.stringValues.Add("Casella " + stringa[1]);
-                        controlloMappa.gameData.SaveData();
+                        TempData.ultimaCasella = gameObject.name;
                         SceneManager.LoadScene("RispostaDomande");
                     }
                 }

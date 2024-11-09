@@ -39,10 +39,17 @@ public class Controllo : MonoBehaviour
     public Question currentQuestion;
     public int puntiAttuali = 0;
     public bool isUltima = false;
+    public GameData gameData;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Carica i dati salvati (se esistono)
+        gameData = GetComponent<GameData>();
+        if (gameData != null)
+        {
+            gameData.LoadData();
+        }
         TempData.gioco = true;
         TempData.vittoria = false;
         // Carica le domande dal file di testo
@@ -77,7 +84,16 @@ public class Controllo : MonoBehaviour
             gameover = true;
             if (puntiAttuali > 1)
             {
+                gameData.stringValues.Add(TempData.ultimaCasella);
+                gameData.SaveData();
                 TempData.vittoria = true;
+            }
+            else
+            {
+                gameData.caselleSbagliate.Add(TempData.ultimaCasella);
+                Debug.Log(TempData.ultimaCasella);
+                gameData.SaveData();
+                TempData.vittoria = false;
             }
             SceneManager.LoadScene("Mappa");
         }

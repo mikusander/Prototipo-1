@@ -9,9 +9,6 @@ public class GameData : MonoBehaviour
 
     public List<string> caselleSbagliate = new List<string>();
 
-    // Array di interi con due valori
-    public int[] intValues = new int[2];
-
     // Percorso del file JSON
     private string filePath;
 
@@ -31,8 +28,7 @@ public class GameData : MonoBehaviour
         DataToSave data = new DataToSave
         {
             stringValues = stringValues,
-            caselleSbagliate = caselleSbagliate,
-            intValues = intValues
+            caselleSbagliate = caselleSbagliate
         };
 
         // Serializza l'oggetto in formato JSON
@@ -58,14 +54,7 @@ public class GameData : MonoBehaviour
             {
                 stringValues = data.stringValues ?? new List<string>();
                 caselleSbagliate = data.caselleSbagliate ?? new List<string>();
-                intValues = data.intValues ?? new int[2];
             }
-        }
-        else
-        {
-            // Impostazioni di default se non esistono i dati salvati
-            intValues[0] = 0;
-            intValues[1] = 0;
         }
     }
 }
@@ -76,5 +65,4 @@ public class DataToSave
 {
     [SerializeField] public List<string> stringValues;  // Lista del percorso del personaggio percorso
     [SerializeField] public List<string> caselleSbagliate; // Lista delle caselle che si sono sbagliate
-    [SerializeField] public int[] intValues; // Posizione attuale del personaggio
 }
