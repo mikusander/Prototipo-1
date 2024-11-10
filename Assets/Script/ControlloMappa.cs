@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class ControlloMappa : MonoBehaviour
 {
+
+    public GameObject theEnd;
+    public GameObject gameoverLogo;
+    public GameObject restart;
     public GameObject player;
     public GameObject errore;
     public GameObject baseScacchiera;
@@ -20,6 +24,17 @@ public class ControlloMappa : MonoBehaviour
         if (gameData != null)
         {
             gameData.LoadData();
+        }
+        foreach (string i in gameData.caselleSbagliate)
+        {
+            Vector3 casellaSbagliataPosition = GameObject.Find(i).gameObject.transform.position;
+            GameObject casella = Instantiate(errore, casellaSbagliataPosition, Quaternion.identity);
+            casella.name = "Errore " + i;
+        }
+        for (int i = 0; i < gameData.stringValues.Count; i++)
+        {
+            SpriteRenderer colore = GameObject.Find(gameData.stringValues[i]).GetComponent<SpriteRenderer>();
+            colore.color = Color.white;
         }
         if (gameData.stringValues.Count == 0)
         {
@@ -120,20 +135,22 @@ public class ControlloMappa : MonoBehaviour
                 Vector3 spawnPosition = casella.transform.position;
                 player = Instantiate(player, spawnPosition, Quaternion.identity);
             }
+            GameObject casellaSbagliataSinistra = GameObject.Find("Errore Casella 1,0");
+            GameObject casellaSbagliataDiagonale = GameObject.Find("Errore Casella 1,1");
+            GameObject casellaSbagliataSopra = GameObject.Find("Errore Casella 0,1");
+            if (casellaSbagliataSopra != null && casellaSbagliataDiagonale != null && casellaSbagliataSinistra != null)
+            {
+                gameoverLogo.SetActive(true);
+                restart.SetActive(true);
+            }
+        }
+        else if (gameData.stringValues[gameData.stringValues.Count - 1] == "Casella 5,3")
+        {
+            theEnd.SetActive(true);
+            restart.SetActive(true);
         }
         else
         {
-            foreach (string i in gameData.caselleSbagliate)
-            {
-                Vector3 casellaSbagliataPosition = GameObject.Find(i).gameObject.transform.position;
-                GameObject casella = Instantiate(errore, casellaSbagliataPosition, Quaternion.identity);
-                casella.name = "Errore " + i;
-            }
-            for (int i = 0; i < gameData.stringValues.Count; i++)
-            {
-                SpriteRenderer colore = GameObject.Find(gameData.stringValues[i]).GetComponent<SpriteRenderer>();
-                colore.color = Color.white;
-            }
             if(TempData.gioco && TempData.vittoria)
             {
                 string ultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 1];
@@ -238,6 +255,23 @@ public class ControlloMappa : MonoBehaviour
                     SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
                     if(casellaDestra.color != Color.white)
                         casellaDestra.color = Color.green;
+                }
+                // verifica che non ci sono più strade da percorrere
+                // (-casellaSopra V casellaSbagliataSopra)^(-casellaDiagonale V casellaSbagliataDiagonale)^(-casellaSinistra V casellaSbagliataSinistra)^(-casellaDiagonaleDestra V casellaSbagliataDiagonaleDestra)^(-casellaDestra V casellaSbagliataDestra)
+                if(
+                    (!(casellaSopraGameObject != null) || (casellaSbagliataSopra != null))
+                    && 
+                    (!(casellaDiagonaleGameObject != null) || (casellaSbagliataDiagonale != null)) 
+                    && 
+                    (!(casellaSinistraGameObject != null) || (casellaSbagliataSinistra != null)) 
+                    &&
+                    (!(casellaDiagonaleDestraGameObject != null) || (casellaSbagliataDiagonaleDestra != null))
+                    &&
+                    (!(casellaDestraGameObject != null) || (casellaSbagliataDiagonaleDestra != null)) 
+                )
+                {
+                    gameoverLogo.SetActive(true);
+                    restart.SetActive(true);
                 }
             }
         }

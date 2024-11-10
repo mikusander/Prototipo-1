@@ -35,7 +35,7 @@ public class SceltaLivello : MonoBehaviour
                     GameObject casellaSbagliata = GameObject.Find("Errore " + gameObject.name);
                     if (casellaSbagliata == null && gameObject.name == Utils.Sopra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
-                        // casella gialla
+                        // casella sopra di colore giallo
                         TempData.difficolta = "Domande difficili";
                         TempData.ultimaCasella = gameObject.name;
                         Debug.Log(TempData.ultimaCasella);
@@ -43,17 +43,21 @@ public class SceltaLivello : MonoBehaviour
                     }
                     else if (casellaSbagliata == null && gameObject.name == Utils.DiagonaleSinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
-                        // casella rosso
+                        // casella diagonale sinistra di colore rosso
                         TempData.difficolta = "Domande";
                         TempData.ultimaCasella = gameObject.name;
                         SceneManager.LoadScene("RispostaDomande");
                     }
                     else if (casellaSbagliata == null && gameObject.name == Utils.Sinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
-                        // casella verde
+                        // casella a sinistra di colore verde
                         TempData.difficolta = "Domande medie";
                         TempData.ultimaCasella = gameObject.name;
                         SceneManager.LoadScene("RispostaDomande");
+                    }
+                    else if (casellaSbagliata == null && gameObject.name == Utils.DiagonaleDestra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    {
+                        // casella diagonale destra di colore verde
                     }
                 }
             }
