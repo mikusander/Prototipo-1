@@ -15,6 +15,7 @@ public class ControlloMappa : MonoBehaviour
     public GameObject baseScacchiera;
     public GameData gameData;
     public float moveDuration = 2f;
+    public Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -162,7 +163,8 @@ public class ControlloMappa : MonoBehaviour
                     GameObject ultimaCasella = ultimaCasellaTransform.gameObject;
                     GameObject penultimaCasella = penultimaCasellaTransform.gameObject;
                     Vector3 spawnPosition = penultimaCasella.transform.position;
-                    player = Instantiate(player, spawnPosition, Quaternion.identity);
+                    GameObject playerPreFab = Instantiate(player, spawnPosition, Quaternion.identity);
+                    animator = playerPreFab.GetComponent<Animator>();
                     StartCoroutine(MoveToTarget(spawnPosition, ultimaCasella.transform.position, moveDuration));
                 }
                 GameObject casellaSopraGameObject = GameObject.Find(Utils.Sopra(ultimaCasellaString));
@@ -282,6 +284,12 @@ public class ControlloMappa : MonoBehaviour
     {
         Vector3 startPosition = playerPosition;
         float timeElapsed = 0;
+        // Attiva l'animazione di movimento
+        if (animator != null)
+        {
+            Debug.Log("ciao");
+            animator.SetTrigger("Attivazione");
+        }
 
         // Movimento lineare (dal punto A al punto B)
         while (timeElapsed < duration)
@@ -293,6 +301,11 @@ public class ControlloMappa : MonoBehaviour
 
         // Assicurati che il gameObject arrivi esattamente alla destinazione
         player.transform.position = targetPosition;
+        // Attiva l'animazione di movimento
+        if (animator != null)
+        {
+            animator.SetTrigger("Disattivazione");
+        }
     }
 
     // Update is called once per frame
