@@ -1877,7 +1877,6 @@ MonoBehaviour:
   baseScacchiera: {fileID: 1700244045}
   gameData: {fileID: 1066360593}
   moveDuration: 2
-  animator: {fileID: 0}
 --- !u!4 &1066360592
 Transform:
   m_ObjectHideFlags: 0
