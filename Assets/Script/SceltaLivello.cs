@@ -57,7 +57,17 @@ public class SceltaLivello : MonoBehaviour
                     }
                     else if (casellaSbagliata == null && gameObject.name == Utils.DiagonaleDestra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
-                        // casella diagonale destra di colore verde
+                        // casella in diagonale a destra
+                        TempData.difficolta = "Domande medie";
+                        TempData.ultimaCasella = gameObject.name;
+                        SceneManager.LoadScene("RispostaDomande");
+                    }
+                    else if (casellaSbagliata == null && gameObject.name == Utils.Destra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    {
+                        // casella a destra
+                        TempData.difficolta = "Domande medie";
+                        TempData.ultimaCasella = gameObject.name;
+                        SceneManager.LoadScene("RispostaDomande");
                     }
                 }
             }
