@@ -26,12 +26,24 @@ public class ControlloMappa : MonoBehaviour
         {
             gameData.LoadData();
         }
+        bool nuovoErrore = false;
+        if(TempData.ultimoErrore != gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1])
+        {
+            nuovoErrore = true;
+        }
         foreach (string i in gameData.caselleSbagliate)
         {
             Vector3 casellaSbagliataPosition = GameObject.Find(i).gameObject.transform.position;
             GameObject casella = Instantiate(errore, casellaSbagliataPosition, Quaternion.identity);
+            if (TempData.gioco && !TempData.vittoria && nuovoErrore && gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1] == i)
+            {
+                Animator animatorErr = casella.GetComponent<Animator>();
+                ErrorAnimation(animatorErr);
+                nuovoErrore = false;
+            }
             casella.name = "Errore " + i;
         }
+        TempData.ultimoErrore = "Errore " + gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1];
         for (int i = 0; i < gameData.stringValues.Count; i++)
         {
             SpriteRenderer colore = GameObject.Find(gameData.stringValues[i]).GetComponent<SpriteRenderer>();
@@ -104,7 +116,8 @@ public class ControlloMappa : MonoBehaviour
                     renderer.color = Color.white;
                 }
                 Transform casellaSopraTransform = baseScacchiera.transform.Find("Casella 1,0");
-                if (casellaSopraTransform != null )
+                GameObject casellaSopraErrataGameObject = GameObject.Find("Errore Casella 1,0");
+                if (casellaSopraTransform != null && casellaSopraErrataGameObject == null)
                 {
                     GameObject casellaSopra = casellaSopraTransform.gameObject;
                     SpriteRenderer rendererSopra = casellaSopra.GetComponent<SpriteRenderer>();
@@ -114,7 +127,8 @@ public class ControlloMappa : MonoBehaviour
                     }
                 }
                 Transform casellaDiagonaleTransform = baseScacchiera.transform.Find("Casella 1,1");
-                if (casellaDiagonaleTransform != null )
+                GameObject casellaDiagonaleErrataGameObject = GameObject.Find("Errore Casella 1,1");
+                if (casellaDiagonaleTransform != null && casellaDiagonaleErrataGameObject == null)
                 {
                     GameObject casellaDiagonale = casellaDiagonaleTransform.gameObject;
                     SpriteRenderer rendererDiagonale = casellaDiagonale.GetComponent<SpriteRenderer>();
@@ -124,7 +138,8 @@ public class ControlloMappa : MonoBehaviour
                     }
                 }
                 Transform casellaSinistraTransform = baseScacchiera.transform.Find("Casella 0,1");
-                if ( casellaSinistraTransform != null )
+                GameObject casellaSinistraErrataGameObject = GameObject.Find("Errore Casella 0,1");
+                if ( casellaSinistraTransform != null && casellaSinistraErrataGameObject == null )
                 {
                     GameObject casellaSinistra = casellaSinistraTransform.gameObject;
                     SpriteRenderer rendererSinistra = casellaSinistra.GetComponent<SpriteRenderer>();
@@ -135,14 +150,11 @@ public class ControlloMappa : MonoBehaviour
                 }
                 Vector3 spawnPosition = casella.transform.position;
                 player = Instantiate(player, spawnPosition, Quaternion.identity);
-            }
-            GameObject casellaSbagliataSinistra = GameObject.Find("Errore Casella 1,0");
-            GameObject casellaSbagliataDiagonale = GameObject.Find("Errore Casella 1,1");
-            GameObject casellaSbagliataSopra = GameObject.Find("Errore Casella 0,1");
-            if (casellaSbagliataSopra != null && casellaSbagliataDiagonale != null && casellaSbagliataSinistra != null)
-            {
-                gameoverLogo.SetActive(true);
-                restart.SetActive(true);
+                if (casellaSopraErrataGameObject != null && casellaDiagonaleErrataGameObject != null && casellaSinistraErrataGameObject != null)
+                {
+                    gameoverLogo.SetActive(true);
+                    restart.SetActive(true);
+                }
             }
         }
         else if (gameData.stringValues[gameData.stringValues.Count - 1] == "Casella 5,3")
@@ -266,7 +278,6 @@ public class ControlloMappa : MonoBehaviour
                     }
                     // verifica che non ci sono più strade da percorrere
                     // (-casellaSopra V casellaSbagliataSopra)^(-casellaDiagonale V casellaSbagliataDiagonale)^(-casellaSinistra V casellaSbagliataSinistra)^(-casellaDiagonaleDestra V casellaSbagliataDiagonaleDestra)^(-casellaDestra V casellaSbagliataDestra)
-                    bool casellaDestrazero = casellaDestraGameObject.name.EndsWith("0");
                     if(
                         (
                             (!(casellaSopraGameObject != null) || (casellaSbagliataSopra != null))
@@ -277,7 +288,35 @@ public class ControlloMappa : MonoBehaviour
                             &&
                             (!(casellaDiagonaleDestraGameObject != null) || (casellaSbagliataDiagonaleDestra != null))
                             &&
-                            (!(casellaDestraGameObject != null) || (casellaSbagliataDiagonaleDestra != null))
+                            (!(casellaDestraGameObject != null) || (casellaSbagliataDestra != null))
+                        )
+                        ||
+                        (
+                            ((casellaSopraGameObject != null) && (casellaSbagliataSopra != null))
+                            && 
+                            ((casellaDiagonaleGameObject != null) && (casellaSbagliataDiagonale != null)) 
+                            && 
+                            ((casellaSinistraGameObject != null) && (casellaSbagliataSinistra != null)) 
+                            &&
+                            ((casellaDiagonaleDestraGameObject != null) && (casellaSbagliataDiagonaleDestra != null))
+                            &&
+                            ((casellaDestraGameObject != null) && (casellaSbagliataDestra == null))
+                            &&
+                            (casellaDestraGameObject.name.EndsWith("0"))
+                        )
+                        ||
+                        (
+                            ((casellaSopraGameObject != null) && (casellaSbagliataSopra != null))
+                            && 
+                            ((casellaDiagonaleGameObject != null) && (casellaSbagliataDiagonale != null)) 
+                            && 
+                            ((casellaSinistraGameObject != null) && (casellaSbagliataSinistra == null)) 
+                            &&
+                            ((casellaDiagonaleDestraGameObject != null) && (casellaSbagliataDiagonaleDestra != null))
+                            &&
+                            ((casellaDestraGameObject != null) && (casellaSbagliataDestra != null))
+                            &&
+                            (casellaSinistraGameObject.name.EndsWith("3"))
                         )
                     )
                     {
@@ -287,6 +326,20 @@ public class ControlloMappa : MonoBehaviour
                 }
             }
         }
+    }
+
+    private IEnumerator ErrorAnimation(Animator animator)
+    {
+        Debug.Log("ciao");
+        // Avvia l'animazione
+        animator.SetTrigger("Attivazione");
+
+        // Ottieni la durata dello stato attivo
+        AnimatorStateInfo animationInfo = animator.GetCurrentAnimatorStateInfo(0);
+        float animationDuration = animationInfo.length;
+
+        // Aspetta la durata dell'animazione
+        yield return new WaitForSeconds(animationDuration);
     }
 
     // Coroutine che muove l'oggetto

@@ -4,14 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class SceltaLivello : MonoBehaviour
 {
-    public Color colore;
+    private Color colore;
     public ControlloMappa controlloMappa;
     // Start is called before the first frame update
     void Start()
     {
         controlloMappa = GameObject.Find("GameController").GetComponent<ControlloMappa>();
-        SpriteRenderer spriterenderer = GetComponent<SpriteRenderer> ();
-        colore = spriterenderer.color;
     }
 
     // Update is called once per frame
@@ -32,36 +30,50 @@ public class SceltaLivello : MonoBehaviour
                 // Controlla se il GameObject colpito è lo stesso su cui è attaccato questo script
                 if (hit.collider.gameObject == gameObject)
                 {
+                    SpriteRenderer spriterenderer = GetComponent<SpriteRenderer> ();
+                    colore = spriterenderer.color;
+                    if(gameObject.name == "Casella 1,1")
+                    {
+                        Debug.Log(colore);
+                    }
+                    else if(gameObject.name == "Casella 0,3")
+                    {
+                        Debug.Log(colore);
+                    }
+                    else if(gameObject.name == "Casella 1,3")
+                    {
+                        Debug.Log(colore);
+                    }
                     GameObject casellaSbagliata = GameObject.Find("Errore " + gameObject.name);
-                    if (casellaSbagliata == null && gameObject.name == Utils.Sopra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.Sopra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella sopra di colore giallo
                         TempData.difficolta = "Domande difficili";
                         TempData.ultimaCasella = gameObject.name;
                         SceneManager.LoadScene("RispostaDomande");
                     }
-                    else if (casellaSbagliata == null && gameObject.name == Utils.DiagonaleSinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    else if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.DiagonaleSinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella diagonale sinistra di colore rosso
                         TempData.difficolta = "Domande";
                         TempData.ultimaCasella = gameObject.name;
                         SceneManager.LoadScene("RispostaDomande");
                     }
-                    else if (casellaSbagliata == null && gameObject.name == Utils.Sinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    else if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.Sinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella a sinistra di colore verde
                         TempData.difficolta = "Domande medie";
                         TempData.ultimaCasella = gameObject.name;
                         SceneManager.LoadScene("RispostaDomande");
                     }
-                    else if (casellaSbagliata == null && gameObject.name == Utils.DiagonaleDestra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    else if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.DiagonaleDestra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella in diagonale a destra
                         TempData.difficolta = "Domande medie";
                         TempData.ultimaCasella = gameObject.name;
                         SceneManager.LoadScene("RispostaDomande");
                     }
-                    else if (casellaSbagliata == null && gameObject.name == Utils.Destra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    else if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.Destra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella a destra
                         TempData.difficolta = "Domande medie";
