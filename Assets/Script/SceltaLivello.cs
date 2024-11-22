@@ -38,7 +38,6 @@ public class SceltaLivello : MonoBehaviour
                         // casella sopra di colore giallo
                         TempData.difficolta = "Domande difficili";
                         TempData.ultimaCasella = gameObject.name;
-                        Debug.Log(TempData.ultimaCasella);
                         SceneManager.LoadScene("RispostaDomande");
                     }
                     else if (casellaSbagliata == null && gameObject.name == Utils.DiagonaleSinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))

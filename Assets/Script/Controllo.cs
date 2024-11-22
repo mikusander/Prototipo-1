@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,10 +41,13 @@ public class Controllo : MonoBehaviour
     public int puntiAttuali = 0;
     public bool isUltima = false;
     public GameData gameData;
+    private int totaleDomande;
+    private int vitt;
 
     // Start is called before the first frame update
     void Start()
     {
+        vitt = (int)(totaleDomande / 2);
         // Carica i dati salvati (se esistono)
         gameData = GetComponent<GameData>();
         if (gameData != null)
@@ -55,6 +59,7 @@ public class Controllo : MonoBehaviour
         // Carica le domande dal file di testo
         LoadQuestionsFromFile();
         numeroDomande = questions.Count;
+        totaleDomande = questions.Count;
 
         // Recupera la Main Camera
         mainCamera = Camera.main;
@@ -79,10 +84,9 @@ public class Controllo : MonoBehaviour
 
     private void Update()
     {
-        if (questions.Count == 0 && !isUltima) 
+        if (gameover)
         {
-            gameover = true;
-            if (puntiAttuali > 1)
+            if (puntiAttuali > vitt + 1)
             {
                 gameData.stringValues.Add(TempData.ultimaCasella);
                 gameData.SaveData();
@@ -91,14 +95,38 @@ public class Controllo : MonoBehaviour
             else
             {
                 gameData.caselleSbagliate.Add(TempData.ultimaCasella);
-                Debug.Log(TempData.ultimaCasella);
+                gameData.SaveData();
+                TempData.vittoria = false;
+            }
+            SceneManager.LoadScene("Mappa");
+        }
+        else if ((numeroDomande + puntiAttuali) < vitt)
+        {
+            gameover = true;
+            gameData.caselleSbagliate.Add(TempData.ultimaCasella);
+            gameData.SaveData();
+            TempData.vittoria = false;
+            SceneManager.LoadScene("mappa");
+        }
+        else if (questions.Count == 0 && !isUltima) 
+        {
+            gameover = true;
+            if (puntiAttuali > vitt)
+            {
+                gameData.stringValues.Add(TempData.ultimaCasella);
+                gameData.SaveData();
+                TempData.vittoria = true;
+            }
+            else
+            {
+                gameData.caselleSbagliate.Add(TempData.ultimaCasella);
                 gameData.SaveData();
                 TempData.vittoria = false;
             }
             SceneManager.LoadScene("Mappa");
         }
 
-        // Controlla se il prefab attuale � null o distrutto
+        // Controlla se il prefab attuale è null o distrutto
         if (canvasInstance == null && !inCreazione && !gameover && !isUltima)
         {
             inCreazione = true;
@@ -142,7 +170,7 @@ public class Controllo : MonoBehaviour
         // Carica il file di testo dalla cartella Resources
         TextAsset questionData = Resources.Load<TextAsset>(TempData.difficolta);
 
-        // Controlla se il file � stato trovato
+        // Controlla se il file è stato trovato
         if (questionData == null)
         {
             Debug.LogError("File Domande.txt non trovato in Resources!");

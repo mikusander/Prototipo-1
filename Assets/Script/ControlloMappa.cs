@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -199,7 +200,7 @@ public class ControlloMappa : MonoBehaviour
                 }
                 GameObject casellaDestraGameObject = GameObject.Find(Utils.Destra(ultimaCasellaString));
                 GameObject casellaSbagliataDestra = GameObject.Find("Errore " + Utils.Destra(ultimaCasellaString));
-                if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDestra == null)
+                if(casellaDestraGameObject != null && casellaSbagliataDestra == null)
                 {
                     SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
                     if(casellaDestra.color != Color.white)
@@ -210,68 +211,79 @@ public class ControlloMappa : MonoBehaviour
             {
                 string ultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 1];
                 Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
-                if (ultimaCasellaTransform != null)
-                {
-                    GameObject ultimaCasella = ultimaCasellaTransform.gameObject;
-                    Vector3 spawnPosition = ultimaCasella.transform.position;
-                    player = Instantiate(player, spawnPosition, Quaternion.identity);
-                }
-                GameObject casellaSopraGameObject = GameObject.Find(Utils.Sopra(ultimaCasellaString));
-                GameObject casellaSbagliataSopra = GameObject.Find("Errore " + Utils.Sopra(ultimaCasellaString));
-                if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
-                {
-                    SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaSopra.color != Color.white)
-                        casellaSopra.color = new Color(255f, 255f, 0f, 255f);
-                }
-                GameObject casellaDiagonaleGameObject = GameObject.Find(Utils.DiagonaleSinistra(ultimaCasellaString));
-                GameObject casellaSbagliataDiagonale = GameObject.Find("Errore " + Utils.DiagonaleSinistra(ultimaCasellaString));
-                if (casellaDiagonaleGameObject != null && casellaSbagliataDiagonale == null)
-                {
-                    SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaDiagonale.color != Color.white)
-                        casellaDiagonale.color = Color.red;
-                }
-                GameObject casellaSinistraGameObject = GameObject.Find(Utils.Sinistra(ultimaCasellaString));
-                GameObject casellaSbagliataSinistra = GameObject.Find("Errore " + Utils.Sinistra(ultimaCasellaString));
-                if (casellaSinistraGameObject != null && casellaSbagliataSinistra == null)
-                {
-                    SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaSinistra.color != Color.white)
-                        casellaSinistra.color = Color.green;
-                }
-                GameObject casellaDiagonaleDestraGameObject = GameObject.Find(Utils.DiagonaleDestra(ultimaCasellaString));
-                GameObject casellaSbagliataDiagonaleDestra = GameObject.Find("Errore " + Utils.DiagonaleDestra(ultimaCasellaString));
-                if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDiagonaleDestra == null)
-                {
-                    SpriteRenderer casellaDiagonaleDestra = casellaDiagonaleDestraGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaDiagonaleDestra.color != Color.white)
-                        casellaDiagonaleDestra.color = Color.green;
-                }
-                GameObject casellaDestraGameObject = GameObject.Find(Utils.Destra(ultimaCasellaString));
-                GameObject casellaSbagliataDestra = GameObject.Find("Errore " + Utils.Destra(ultimaCasellaString));
-                if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDestra == null)
-                {
-                    SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaDestra.color != Color.white)
-                        casellaDestra.color = Color.green;
-                }
-                // verifica che non ci sono più strade da percorrere
-                // (-casellaSopra V casellaSbagliataSopra)^(-casellaDiagonale V casellaSbagliataDiagonale)^(-casellaSinistra V casellaSbagliataSinistra)^(-casellaDiagonaleDestra V casellaSbagliataDiagonaleDestra)^(-casellaDestra V casellaSbagliataDestra)
-                if(
-                    (!(casellaSopraGameObject != null) || (casellaSbagliataSopra != null))
-                    && 
-                    (!(casellaDiagonaleGameObject != null) || (casellaSbagliataDiagonale != null)) 
-                    && 
-                    (!(casellaSinistraGameObject != null) || (casellaSbagliataSinistra != null)) 
-                    &&
-                    (!(casellaDiagonaleDestraGameObject != null) || (casellaSbagliataDiagonaleDestra != null))
-                    &&
-                    (!(casellaDestraGameObject != null) || (casellaSbagliataDiagonaleDestra != null)) 
-                )
+                if(Utils.RigaSuperiore(ultimaCasellaString, gameData.caselleSbagliate))
                 {
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
+                }
+                else
+                {
+                    if (ultimaCasellaTransform != null)
+                    {
+                        GameObject ultimaCasella = ultimaCasellaTransform.gameObject;
+                        Vector3 spawnPosition = ultimaCasella.transform.position;
+                        player = Instantiate(player, spawnPosition, Quaternion.identity);
+                    }
+                    GameObject casellaSopraGameObject = GameObject.Find(Utils.Sopra(ultimaCasellaString));
+                    GameObject casellaSbagliataSopra = GameObject.Find("Errore " + Utils.Sopra(ultimaCasellaString));
+                    if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
+                    {
+                        SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
+                        if(casellaSopra.color != Color.white)
+                            casellaSopra.color = new Color(255f, 255f, 0f, 255f);
+                    }
+                    GameObject casellaDiagonaleGameObject = GameObject.Find(Utils.DiagonaleSinistra(ultimaCasellaString));
+                    GameObject casellaSbagliataDiagonale = GameObject.Find("Errore " + Utils.DiagonaleSinistra(ultimaCasellaString));
+                    if (casellaDiagonaleGameObject != null && casellaSbagliataDiagonale == null)
+                    {
+                        SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
+                        if(casellaDiagonale.color != Color.white)
+                            casellaDiagonale.color = Color.red;
+                    }
+                    GameObject casellaSinistraGameObject = GameObject.Find(Utils.Sinistra(ultimaCasellaString));
+                    GameObject casellaSbagliataSinistra = GameObject.Find("Errore " + Utils.Sinistra(ultimaCasellaString));
+                    if (casellaSinistraGameObject != null && casellaSbagliataSinistra == null)
+                    {
+                        SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
+                        if(casellaSinistra.color != Color.white)
+                            casellaSinistra.color = Color.green;
+                    }
+                    GameObject casellaDiagonaleDestraGameObject = GameObject.Find(Utils.DiagonaleDestra(ultimaCasellaString));
+                    GameObject casellaSbagliataDiagonaleDestra = GameObject.Find("Errore " + Utils.DiagonaleDestra(ultimaCasellaString));
+                    if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDiagonaleDestra == null)
+                    {
+                        SpriteRenderer casellaDiagonaleDestra = casellaDiagonaleDestraGameObject.GetComponent<SpriteRenderer>();
+                        if(casellaDiagonaleDestra.color != Color.white)
+                            casellaDiagonaleDestra.color = Color.green;
+                    }
+                    GameObject casellaDestraGameObject = GameObject.Find(Utils.Destra(ultimaCasellaString));
+                    GameObject casellaSbagliataDestra = GameObject.Find("Errore " + Utils.Destra(ultimaCasellaString));
+                    if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDestra == null)
+                    {
+                        SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
+                        if(casellaDestra.color != Color.white)
+                            casellaDestra.color = Color.green;
+                    }
+                    // verifica che non ci sono più strade da percorrere
+                    // (-casellaSopra V casellaSbagliataSopra)^(-casellaDiagonale V casellaSbagliataDiagonale)^(-casellaSinistra V casellaSbagliataSinistra)^(-casellaDiagonaleDestra V casellaSbagliataDiagonaleDestra)^(-casellaDestra V casellaSbagliataDestra)
+                    bool casellaDestrazero = casellaDestraGameObject.name.EndsWith("0");
+                    if(
+                        (
+                            (!(casellaSopraGameObject != null) || (casellaSbagliataSopra != null))
+                            && 
+                            (!(casellaDiagonaleGameObject != null) || (casellaSbagliataDiagonale != null)) 
+                            && 
+                            (!(casellaSinistraGameObject != null) || (casellaSbagliataSinistra != null)) 
+                            &&
+                            (!(casellaDiagonaleDestraGameObject != null) || (casellaSbagliataDiagonaleDestra != null))
+                            &&
+                            (!(casellaDestraGameObject != null) || (casellaSbagliataDiagonaleDestra != null))
+                        )
+                    )
+                    {
+                        gameoverLogo.SetActive(true);
+                        restart.SetActive(true);
+                    }
                 }
             }
         }
