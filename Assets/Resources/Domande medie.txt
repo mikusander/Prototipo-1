@@ -1,2 +1,10 @@
-Fellini aveva un figlio;true
-Fellini non aveva un figlio;true
+L’oceano Atlantico è il più grande oceano del mondo;false
+I vulcani si trovano solo sulle terre emerse;false
+L’alfabeto cirillico è usato in Russia;true
+La Gioconda è un dipinto di Michelangelo;false
+Il Giappone è composto da oltre 6.000 isole;true
+Gli esseri umani hanno 206 ossa nel corpo;true
+L’Argentina è nel continente africano;false
+Il Monte Bianco è la montagna più alta d’Europa;true
+La Grande Muraglia Cinese è visibile dallo spazio a occhio nudo;false
+La vitamina C si trova principalmente nelle arance;true

@@ -955,10 +955,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgrounds:
-  - {fileID: 21300000, guid: 6553c3d4ac7141445b8deda6d8f9d30e, type: 3}
-  - {fileID: 21300000, guid: e748120dc62596346aad4a3aef31adcc, type: 3}
-  - {fileID: 21300000, guid: df65c9d884cd9274599f35d0d3a69a9b, type: 3}
-  - {fileID: 21300000, guid: 5612b156b87f2fc4097b94f9ba11f79c, type: 3}
+  - {fileID: 977035809339563736, guid: dd082902e5ee43a4d9f0e62945e294bb, type: 3}
+  - {fileID: 3902583465373361810, guid: 6b376a35b9919e748b0da8a3bc3ccc99, type: 3}
+  - {fileID: 2943856301444161006, guid: daa9b5e67f6a0e1499b0bd0f9f196f8f, type: 3}
+  - {fileID: 7984127285010080464, guid: a15b9b31c0945aa428bb06bbee666fbf, type: 3}
 --- !u!1 &1686514508
 GameObject:
   m_ObjectHideFlags: 0

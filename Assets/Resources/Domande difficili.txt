@@ -1,2 +1,10 @@
-Fellini era il miglior regista di sempre;true
-Fellini non era il miglior regista di sempre;true
+La velocità della luce è di circa 300.000 chilometri al secondo;true
+L'Antartide ha più deserti sabbiosi dell'Africa; false
+Il Nobel per la letteratura è stato assegnato a Gabriel García Márquez nel 1982;true
+La lingua ufficiale del Brasile è lo spagnolo; false
+L'elemento chimico con il numero atomico 118 si chiama Oganesson;true
+L’isola di Cipro appartiene geograficamente all’Africa;false
+L’uomo è sbarcato sulla Luna per la prima volta nel 1969;true
+Il mar Morto è il punto più basso della superficie terrestre;true
+La densità dell’oro è maggiore di quella dell’argento;true
+Il Canada è il paese più grande del mondo per superficie totale;false

@@ -26,8 +26,12 @@ public class ControlloMappa : MonoBehaviour
         {
             gameData.LoadData();
         }
+        else
+        {
+            Debug.Log("ciao");
+        }
         bool nuovoErrore = false;
-        if(TempData.ultimoErrore != gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1])
+        if(gameData.caselleSbagliate.Count > 0 && TempData.ultimoErrore != gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1])
         {
             nuovoErrore = true;
         }
@@ -38,12 +42,16 @@ public class ControlloMappa : MonoBehaviour
             if (TempData.gioco && !TempData.vittoria && nuovoErrore && gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1] == i)
             {
                 Animator animatorErr = casella.GetComponent<Animator>();
-                ErrorAnimation(animatorErr);
+                StartCoroutine(ErrorAnimation(animatorErr));
+
                 nuovoErrore = false;
             }
             casella.name = "Errore " + i;
         }
-        TempData.ultimoErrore = "Errore " + gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1];
+        if(gameData.caselleSbagliate.Count > 1)
+        {
+            TempData.ultimoErrore = "Errore " + gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1];
+        }
         for (int i = 0; i < gameData.stringValues.Count; i++)
         {
             SpriteRenderer colore = GameObject.Find(gameData.stringValues[i]).GetComponent<SpriteRenderer>();
@@ -328,9 +336,8 @@ public class ControlloMappa : MonoBehaviour
         }
     }
 
-    private IEnumerator ErrorAnimation(Animator animator)
+    IEnumerator ErrorAnimation(Animator animator)
     {
-        Debug.Log("ciao");
         // Avvia l'animazione
         animator.SetTrigger("Attivazione");
 

@@ -6,7 +6,6 @@ public class GameData : MonoBehaviour
 {
     // Lista di stringhe di dimensione variabile
     public List<string> stringValues = new List<string>();
-
     public List<string> caselleSbagliate = new List<string>();
 
     // Percorso del file JSON
@@ -56,6 +55,32 @@ public class GameData : MonoBehaviour
                 caselleSbagliate = data.caselleSbagliate ?? new List<string>();
             }
         }
+        else
+        {
+            // Il file non esiste, quindi crealo con dati iniziali
+            CreateDefaultFile();
+        }
+    }
+
+    // Metodo per creare un file JSON con dati iniziali
+    private void CreateDefaultFile()
+    {
+        // Dati iniziali (modifica secondo necessità)
+        DataToSave defaultData = new DataToSave
+        {
+            stringValues = new List<string>(),      // Lista vuota di stringhe
+            caselleSbagliate = new List<string>()   // Lista vuota di caselle sbagliate
+        };
+
+        // Serializza i dati iniziali in formato JSON
+        string json = JsonUtility.ToJson(defaultData, true);
+
+        // Scrivi i dati nel file
+        File.WriteAllText(filePath, json);
+
+        // Assegna i dati iniziali alle liste per usarli subito
+        stringValues = defaultData.stringValues;
+        caselleSbagliate = defaultData.caselleSbagliate;
     }
 }
 
