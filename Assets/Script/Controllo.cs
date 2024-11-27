@@ -168,7 +168,7 @@ public class Controllo : MonoBehaviour
     void LoadQuestionsFromFile()
     {
         // Carica il file di testo dalla cartella Resources
-        TextAsset questionData = Resources.Load<TextAsset>(TempData.difficolta);
+        TextAsset questionData = Resources.Load<TextAsset>("Domande");
 
         // Controlla se il file è stato trovato
         if (questionData == null)

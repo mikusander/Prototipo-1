@@ -13,13 +13,13 @@ public class Punti : MonoBehaviour
     void Start()
     {
         punti.GetComponent<Text>();
-        punti.text = "0";
+        punti.text = "0/10";
     }
 
     // Update is called once per frame
     void Update()
     {
         
-        punti.text = controllo.puntiAttuali.ToString();
+        punti.text = controllo.puntiAttuali.ToString() + "/10";
     }
 }
