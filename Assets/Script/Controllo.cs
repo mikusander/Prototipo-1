@@ -127,7 +127,8 @@ public class Controllo : MonoBehaviour
         }
 
         // Controlla se il prefab attuale è null o distrutto
-        if (canvasInstance == null && !inCreazione && !gameover && !isUltima)
+        Debug.Log(TempData.animazione);
+        if (!TempData.animazione && canvasInstance == null && !inCreazione && !gameover && !isUltima)
         {
             inCreazione = true;
             // Avvia la coroutine per spawnare un nuovo prefab
@@ -167,8 +168,9 @@ public class Controllo : MonoBehaviour
 
     void LoadQuestionsFromFile()
     {
+
         // Carica il file di testo dalla cartella Resources
-        TextAsset questionData = Resources.Load<TextAsset>("Domande");
+        TextAsset questionData = Resources.Load<TextAsset>(TempData.difficolta);
 
         // Controlla se il file è stato trovato
         if (questionData == null)
@@ -198,5 +200,23 @@ public class Controllo : MonoBehaviour
                 Debug.LogWarning("Formato domanda non valido: " + line);
             }
         }
+    }
+
+    IEnumerator AnimationMano(Animator animator)
+    {
+        // Avvia l'animazione
+        TempData.animazione = true;
+        animator.SetTrigger("Attivazione");
+
+        // Ottieni la durata dello stato attivo
+        AnimatorStateInfo animationInfo = animator.GetCurrentAnimatorStateInfo(0);
+        float animationDuration = animationInfo.length;
+
+        // Aspetta la durata dell'animazione
+        yield return new WaitForSeconds(animationDuration / 5 * 2);
+        TempData.animazione = false;
+        yield return new WaitForSeconds(animationDuration / 5 * 3);
+
+        animator.SetTrigger("Disattivazione");
     }
 }

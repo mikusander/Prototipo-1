@@ -9,7 +9,7 @@ public class ToccoFrecciaNo : MonoBehaviour
     public GameObject ditoInSu;
     public GameObject ditoInGiu;
     private Vector3 spawnPosition = new Vector3(0, 1, 0);
-    public float destroyDelay = 1f;
+    public float destroyDelay = 2f;
     private Camera mainCamera;
     
     // Start is called before the first frame update
@@ -46,6 +46,8 @@ public class ToccoFrecciaNo : MonoBehaviour
                             controllo.isUltima = false;
                             Destroy(canvasDomanda);
                             GameObject instance = Instantiate(ditoInGiu, spawnPosition, Quaternion.identity);
+                            Animator animator = instance.GetComponent<Animator>();
+                            StartCoroutine(AnimationMano(animator));
                             Destroy(instance, destroyDelay);
                         }
                         else
@@ -78,6 +80,8 @@ public class ToccoFrecciaNo : MonoBehaviour
                             controllo.isUltima = false;
                             Destroy(canvasDomanda);
                             GameObject instance = Instantiate(ditoInSu, spawnPosition, Quaternion.identity);
+                            Animator animator = instance.GetComponent<Animator>();
+                            StartCoroutine(AnimationMano(animator));
                             Destroy(instance, destroyDelay);
                         }
                         else
@@ -92,5 +96,22 @@ public class ToccoFrecciaNo : MonoBehaviour
                 }
             }
         }
+    }
+    IEnumerator AnimationMano(Animator animator)
+    {
+        // Avvia l'animazione
+        TempData.animazione = true;
+        animator.SetTrigger("Attivazione");
+
+        // Ottieni la durata dello stato attivo
+        AnimatorStateInfo animationInfo = animator.GetCurrentAnimatorStateInfo(0);
+        float animationDuration = animationInfo.length;
+
+        // Aspetta la durata dell'animazione
+        yield return new WaitForSeconds(animationDuration / 5 * 2);
+        TempData.animazione = false;
+        yield return new WaitForSeconds(animationDuration / 5 * 3);
+
+        animator.SetTrigger("Disattivazione");
     }
 }

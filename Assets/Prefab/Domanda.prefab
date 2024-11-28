@@ -296,13 +296,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   yesRect: {fileID: 5143603862075014459}
   noRect: {fileID: 1410276461875665736}
-  destroyDelay: 1.5
-  ditoInSu: {fileID: 3786570205713708722, guid: 54663264749163e4381cc1b718941226, type: 3}
-  ditoInGiu: {fileID: 5587871293805965947, guid: ad407b3b7bb516441a871f29742295f4, type: 3}
+  destroyDelay: 2
+  ditoInSu: {fileID: 4356198338349089457, guid: 54663264749163e4381cc1b718941226, type: 3}
+  ditoInGiu: {fileID: 1784887526891418732, guid: ad407b3b7bb516441a871f29742295f4, type: 3}
   canva: {fileID: 3802123752589058540}
   testo: {fileID: 8221609502947966932}
   controllo: {fileID: 0}
-  punti: {fileID: 0}
 --- !u!70 &526277338457189850
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

@@ -13,14 +13,13 @@ public class DragGameObject2D : MonoBehaviour
     private Vector3 inizialPosition;
     private Vector3 yesPosition = new Vector3(4.5f, 0f, 0f);
     private Vector3 noPosition = new Vector3(-1f, 0f, 0f);
-    public float destroyDelay = 1f;
+    public float destroyDelay = 2f;
     public GameObject ditoInSu;
     public GameObject ditoInGiu;
     private Vector3 spawnPosition = new Vector3(0, 1, 0);
     public GameObject canva;
     public Text testo;
     public Controllo controllo;
-    public Punti punti;
 
     void Start()
     {
@@ -36,7 +35,6 @@ public class DragGameObject2D : MonoBehaviour
         if (controllo.gameover)
         {
             Destroy(canva);
-            Destroy(gameObject);
         }
         // Gestisce l'input del mouse
         if (Input.GetMouseButtonDown(0))
@@ -61,16 +59,18 @@ public class DragGameObject2D : MonoBehaviour
                     controllo.isUltima = false;
                     Destroy(canva);
                     GameObject instance = Instantiate(ditoInSu, spawnPosition, Quaternion.identity);
+                    Animator animator = instance.GetComponent<Animator>();
+                    controllo.StartCoroutine(AnimationMano(animator));
                     Destroy(instance, destroyDelay);
-                    Destroy(gameObject);
                 }
                 else
                 {
                     controllo.isUltima = false;
                     Destroy(canva);
                     GameObject instance = Instantiate(ditoInGiu, spawnPosition, Quaternion.identity);
+                    Animator animator = instance.GetComponent<Animator>();
+                    controllo.StartCoroutine(AnimationMano(animator));
                     Destroy(instance, destroyDelay);
-                    Destroy(gameObject);
                 }
             }
             else if (transform.position.x > yesPosition.x)
@@ -80,8 +80,9 @@ public class DragGameObject2D : MonoBehaviour
                     controllo.isUltima = false;
                     Destroy(canva);
                     GameObject instance = Instantiate(ditoInGiu, spawnPosition, Quaternion.identity);
+                    Animator animator = instance.GetComponent<Animator>();
+                    controllo.StartCoroutine(AnimationMano(animator));
                     Destroy(instance, destroyDelay);
-                    Destroy(gameObject);
                 }
                 else
                 {
@@ -89,8 +90,9 @@ public class DragGameObject2D : MonoBehaviour
                     controllo.puntiAttuali += 1;
                     Destroy(canva);
                     GameObject instance = Instantiate(ditoInSu, spawnPosition, Quaternion.identity);
+                    Animator animator = instance.GetComponent<Animator>();
+                    controllo.StartCoroutine(AnimationMano(animator));
                     Destroy(instance, destroyDelay);
-                    Destroy(gameObject);
                 }
             }
             else 
@@ -119,7 +121,22 @@ public class DragGameObject2D : MonoBehaviour
             newPosition.y = transform.position.y;
             transform.position = newPosition;
         }
+    }
+    IEnumerator AnimationMano(Animator animator)
+    {
+        // Avvia l'animazione
+        TempData.animazione = true;
+        animator.SetTrigger("Attivazione");
 
+        // Ottieni la durata dello stato attivo
+        AnimatorStateInfo animationInfo = animator.GetCurrentAnimatorStateInfo(0);
+        float animationDuration = animationInfo.length;
 
+        // Aspetta la durata dell'animazione
+        yield return new WaitForSeconds(animationDuration / 5 * 2);
+        TempData.animazione = false;
+        yield return new WaitForSeconds(animationDuration / 5 * 3);
+
+        animator.SetTrigger("Disattivazione");
     }
 }

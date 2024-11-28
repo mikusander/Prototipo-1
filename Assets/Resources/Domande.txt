@@ -1,10 +1,3 @@
 L'acqua bolle a 100 gradi Celsius al livello del mare;true
 I gatti sono erbivori;false
 La Terra è il terzo pianeta del sistema solare;true
-Il Colosseo si trova a Milano;false
-L'Italia ha 20 regioni;true
-Il sole è una stella;true
-Le balene sono mammiferi;true
-La Francia confina con il Portogallo;false
-La capitale dell’Italia è Roma;true
-Gli orsi polari vivono in Antartide;false
