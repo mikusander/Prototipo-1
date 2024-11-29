@@ -32,18 +32,6 @@ public class SceltaLivello : MonoBehaviour
                 {
                     SpriteRenderer spriterenderer = GetComponent<SpriteRenderer> ();
                     colore = spriterenderer.color;
-                    if(gameObject.name == "Casella 1,1")
-                    {
-                        Debug.Log(colore);
-                    }
-                    else if(gameObject.name == "Casella 0,3")
-                    {
-                        Debug.Log(colore);
-                    }
-                    else if(gameObject.name == "Casella 1,3")
-                    {
-                        Debug.Log(colore);
-                    }
                     GameObject casellaSbagliata = GameObject.Find("Errore " + gameObject.name);
                     if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.Sopra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {

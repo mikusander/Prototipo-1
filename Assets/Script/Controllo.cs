@@ -127,7 +127,6 @@ public class Controllo : MonoBehaviour
         }
 
         // Controlla se il prefab attuale è null o distrutto
-        Debug.Log(TempData.animazione);
         if (!TempData.animazione && canvasInstance == null && !inCreazione && !gameover && !isUltima)
         {
             inCreazione = true;

@@ -26,10 +26,6 @@ public class ControlloMappa : MonoBehaviour
         {
             gameData.LoadData();
         }
-        else
-        {
-            Debug.Log("ciao");
-        }
         bool nuovoErrore = false;
         if(gameData.caselleSbagliate.Count > 0 && TempData.ultimoErrore != gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1])
         {
