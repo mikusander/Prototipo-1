@@ -42,6 +42,29 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
+    public static string DiagonaleSottoDestra(string pos)
+    {
+        int[] numeri = PrendiNumeri(pos);
+        numeri[0] -= 1;
+        numeri[1] -= 1;
+        return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
+    }
+
+    public static string DiagonaleSottoSinistra(string pos)
+    {
+        int[] numeri = PrendiNumeri(pos);
+        numeri[0] -= 1;
+        numeri[1] += 1;
+        return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
+    }
+
+    public static string Sotto(string pos)
+    {
+        int[] numeri = PrendiNumeri(pos);
+        numeri[0] -= 1;
+        return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
+    }
+
     public static int[] PrendiNumeri(string casella)
     {
         int[] ris = new int[2];

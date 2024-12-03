@@ -9,4 +9,5 @@ public static class TempData
     public static string ultimaCasella;
     public static string ultimoErrore = "";
     public static bool animazione = false;
+    public static string casellaCliccata = "";
 }
