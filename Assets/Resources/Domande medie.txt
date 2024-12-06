@@ -1,3 +1,5 @@
 L’oceano Atlantico è il più grande oceano del mondo;false
 I vulcani si trovano solo sulle terre emerse;false
 L’alfabeto cirillico è usato in Russia;true
+Il signore degli anelli è stato scritto da Tolkien?;true
+Il regista di jurassic park è spilberg?;true

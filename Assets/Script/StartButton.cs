@@ -7,6 +7,7 @@ public class StartButton : MonoBehaviour
     public ControlloMappa controlloMappa;
     public void AvviaGioco()
     {
+        controlloMappa.scrittaPrincipale.SetActive(true);
         Transform casellaTransform = controlloMappa.baseScacchiera.transform.Find("Casella 0,0");
         if ( casellaTransform != null )
         {
@@ -30,6 +31,8 @@ public class StartButton : MonoBehaviour
                 if (rendererSopra != null)
                 {
                     rendererSopra.color = new Color (255f, 255f, 0f, 255f);
+                    Vector3 spawnPos = casellaSopraTransform.position;
+                    Instantiate(controlloMappa.difficoltaDue, spawnPos, Quaternion.identity);
                 }
             }
             Transform casellaDiagonaleTransform = controlloMappa.baseScacchiera.transform.Find("Casella 1,1");
@@ -40,6 +43,8 @@ public class StartButton : MonoBehaviour
                 if (rendererDiagonale != null)
                 {
                     rendererDiagonale.color = Color.red;
+                    Vector3 spawnPos = casellaDiagonaleTransform.position;
+                    Instantiate(controlloMappa.difficoltaTre, spawnPos, Quaternion.identity);
                 }
             }
             Transform casellaSinistraTransform = controlloMappa.baseScacchiera.transform.Find("Casella 0,1");
@@ -50,6 +55,8 @@ public class StartButton : MonoBehaviour
                 if (rendererSinistra != null)
                 {
                     rendererSinistra.color = Color.green;
+                    Vector3 spawnPos = casellaSinistraTransform.position;
+                    Instantiate(controlloMappa.difficoltaUno, spawnPos, Quaternion.identity);
                 }
             }
             Vector3 spawnPosition = casella.transform.position;

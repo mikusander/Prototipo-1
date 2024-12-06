@@ -133,10 +133,8 @@ public class DragGameObject2D : MonoBehaviour
         float animationDuration = animationInfo.length;
 
         // Aspetta la durata dell'animazione
-        yield return new WaitForSeconds(animationDuration / 5 * 2);
+        float dura = 0.6f;
+        yield return new WaitForSeconds(dura);
         TempData.animazione = false;
-        yield return new WaitForSeconds(animationDuration / 5 * 3);
-
-        animator.SetTrigger("Disattivazione");
     }
 }

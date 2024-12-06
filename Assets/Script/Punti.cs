@@ -20,6 +20,6 @@ public class Punti : MonoBehaviour
     void Update()
     {
         
-        punti.text = controllo.puntiAttuali.ToString() + "/10";
+        punti.text = controllo.puntiAttuali.ToString() + "/5";
     }
 }

@@ -47,7 +47,6 @@ public class Controllo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        vitt = (int)(totaleDomande / 2);
         // Carica i dati salvati (se esistono)
         gameData = GetComponent<GameData>();
         if (gameData != null)
@@ -60,6 +59,7 @@ public class Controllo : MonoBehaviour
         LoadQuestionsFromFile();
         numeroDomande = questions.Count;
         totaleDomande = questions.Count;
+        vitt = (int)(totaleDomande / 2);
 
         // Recupera la Main Camera
         mainCamera = Camera.main;
@@ -100,7 +100,7 @@ public class Controllo : MonoBehaviour
             }
             SceneManager.LoadScene("Mappa");
         }
-        else if ((numeroDomande + puntiAttuali) < vitt)
+        else if ((numeroDomande + puntiAttuali) < vitt + 1)
         {
             gameover = true;
             gameData.caselleSbagliate.Add(TempData.ultimaCasella);
@@ -111,11 +111,12 @@ public class Controllo : MonoBehaviour
         else if (questions.Count == 0 && !isUltima) 
         {
             gameover = true;
-            if (puntiAttuali > vitt)
+            if (puntiAttuali > vitt + 1)
             {
                 gameData.stringValues.Add(TempData.ultimaCasella);
                 gameData.SaveData();
                 TempData.vittoria = true;
+                Debug.Log("punti attuali: " + puntiAttuali + "vitt:" + vitt);
             }
             else
             {
@@ -212,10 +213,8 @@ public class Controllo : MonoBehaviour
         float animationDuration = animationInfo.length;
 
         // Aspetta la durata dell'animazione
-        yield return new WaitForSeconds(animationDuration / 5 * 2);
+        float dura = 0.6f;
+        yield return new WaitForSeconds(dura);
         TempData.animazione = false;
-        yield return new WaitForSeconds(animationDuration / 5 * 3);
-
-        animator.SetTrigger("Disattivazione");
     }
 }

@@ -1,3 +1,5 @@
 L'acqua bolle a 100 gradi Celsius al livello del mare;true
 I gatti sono erbivori;false
 La Terra è il terzo pianeta del sistema solare;true
+Le farfelle vivono 10 anni?;false
+Pasolini era un pittore?;false

@@ -36,45 +36,27 @@ public class SceltaLivello : MonoBehaviour
                     if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.Sopra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella sopra di colore giallo, difficoltà due
-                        if(TempData.casellaCliccata == gameObject.name)
+                        if(gameObject.name == "Casella 5,3")
                         {
-                            TempData.difficolta = "Domande medie";
-                            TempData.ultimaCasella = gameObject.name;
-                            SceneManager.LoadScene("RispostaDomande");
+                            if(TempData.casellaCliccata == gameObject.name)
+                            {
+                                TempData.difficolta = "Domande finali";
+                                TempData.ultimaCasella = gameObject.name;
+                                SceneManager.LoadScene("RispostaDomande");
+                            }
+                            else
+                            {
+                                controlloMappa.scrittaPrincipale.SetActive(false);
+                                controlloMappa.testoDifficoltaUno.SetActive(false);
+                                controlloMappa.testoDifficoltaDue.SetActive(false);
+                                controlloMappa.testoDifficoltaTre.SetActive(false);
+                                controlloMappa.testoDifficoltaFinale.SetActive(true);
+                                TempData.casellaCliccata = gameObject.name;
+                            }
                         }
                         else
                         {
-                            controlloMappa.scrittaPrincipale.SetActive(false);
-                            controlloMappa.testoDifficoltaUno.SetActive(false);
-                            controlloMappa.testoDifficoltaDue.SetActive(true);
-                            controlloMappa.testoDifficoltaTre.SetActive(false);
-                            TempData.casellaCliccata = gameObject.name;
-                        }
-                    }
-                    else if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.DiagonaleSinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
-                    {
-                        // casella diagonale sinistra di colore rosso
-                        if (TempData.casellaCliccata == gameObject.name)
-                        {
-                            TempData.difficolta = "Domande difficili";
-                            TempData.ultimaCasella = gameObject.name;
-                            SceneManager.LoadScene("RispostaDomande");
-                        }
-                        else
-                        {
-                            controlloMappa.scrittaPrincipale.SetActive(false);
-                            controlloMappa.testoDifficoltaUno.SetActive(false);
-                            controlloMappa.testoDifficoltaDue.SetActive(false);
-                            controlloMappa.testoDifficoltaTre.SetActive(true);
-                            TempData.casellaCliccata = gameObject.name;
-                        }
-                    }
-                    else if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.Sinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
-                    {
-                        // casella a sinistra di colore verde o giallo, difficoltà 1 o 2
-                        if (TempData.casellaCliccata == gameObject.name)
-                        {
-                            if (controlloMappa.valoreCasuale)
+                            if(TempData.casellaCliccata == gameObject.name)
                             {
                                 TempData.difficolta = "Domande medie";
                                 TempData.ultimaCasella = gameObject.name;
@@ -82,29 +64,110 @@ public class SceltaLivello : MonoBehaviour
                             }
                             else
                             {
-                                TempData.difficolta = "Domande";
-                                TempData.ultimaCasella = gameObject.name;
-                                SceneManager.LoadScene("RispostaDomande");
-                            }
-                        }
-                        else
-                        {
-                            if (controlloMappa.valoreCasuale)
-                            {
                                 controlloMappa.scrittaPrincipale.SetActive(false);
                                 controlloMappa.testoDifficoltaUno.SetActive(false);
                                 controlloMappa.testoDifficoltaDue.SetActive(true);
                                 controlloMappa.testoDifficoltaTre.SetActive(false);
                                 TempData.casellaCliccata = gameObject.name;
                             }
+                        }
+                    }
+                    else if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.DiagonaleSinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    {
+                        // casella diagonale sinistra di colore rosso
+                        if(gameObject.name == "Casella 5,3")
+                        {
+                            if(TempData.casellaCliccata == gameObject.name)
+                            {
+                                TempData.difficolta = "Domande finali";
+                                TempData.ultimaCasella = gameObject.name;
+                                SceneManager.LoadScene("RispostaDomande");
+                            }
                             else
                             {
                                 controlloMappa.scrittaPrincipale.SetActive(false);
-                                controlloMappa.testoDifficoltaUno.SetActive(true);
+                                controlloMappa.testoDifficoltaUno.SetActive(false);
                                 controlloMappa.testoDifficoltaDue.SetActive(false);
                                 controlloMappa.testoDifficoltaTre.SetActive(false);
+                                controlloMappa.testoDifficoltaFinale.SetActive(true);
                                 TempData.casellaCliccata = gameObject.name;
                             }
+                        }
+                        else
+                        {
+                            if (TempData.casellaCliccata == gameObject.name)
+                            {
+                                TempData.difficolta = "Domande difficili";
+                                TempData.ultimaCasella = gameObject.name;
+                                SceneManager.LoadScene("RispostaDomande");
+                            }
+                            else
+                            {
+                                controlloMappa.scrittaPrincipale.SetActive(false);
+                                controlloMappa.testoDifficoltaUno.SetActive(false);
+                                controlloMappa.testoDifficoltaDue.SetActive(false);
+                                controlloMappa.testoDifficoltaTre.SetActive(true);
+                                TempData.casellaCliccata = gameObject.name;
+                            }
+                        }
+                    }
+                    else if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.Sinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    {
+                        // casella a sinistra di colore verde o giallo, difficoltà 1 o 2
+                        if(gameObject.name == "Casella 5,3")
+                        {
+                            if(TempData.casellaCliccata == gameObject.name)
+                            {
+                                TempData.difficolta = "Domande finali";
+                                TempData.ultimaCasella = gameObject.name;
+                                SceneManager.LoadScene("RispostaDomande");
+                            }
+                            else
+                            {
+                                controlloMappa.scrittaPrincipale.SetActive(false);
+                                controlloMappa.testoDifficoltaUno.SetActive(false);
+                                controlloMappa.testoDifficoltaDue.SetActive(false);
+                                controlloMappa.testoDifficoltaTre.SetActive(false);
+                                controlloMappa.testoDifficoltaFinale.SetActive(true);
+                                TempData.casellaCliccata = gameObject.name;
+                            }
+                        }
+                        else
+                        {
+                            if (TempData.casellaCliccata == gameObject.name)
+                            {
+                                if (controlloMappa.valoreCasuale)
+                                {
+                                    TempData.difficolta = "Domande";
+                                    TempData.ultimaCasella = gameObject.name;
+                                    SceneManager.LoadScene("RispostaDomande");
+                                }
+                                else
+                                {
+                                    TempData.difficolta = "Domande medie";
+                                    TempData.ultimaCasella = gameObject.name;
+                                    SceneManager.LoadScene("RispostaDomande");
+                                }
+                            }
+                            else
+                            {
+                                if (controlloMappa.valoreCasuale)
+                                {
+                                    controlloMappa.scrittaPrincipale.SetActive(false);
+                                    controlloMappa.testoDifficoltaUno.SetActive(true);
+                                    controlloMappa.testoDifficoltaDue.SetActive(false);
+                                    controlloMappa.testoDifficoltaTre.SetActive(false);
+                                    TempData.casellaCliccata = gameObject.name;
+                                }
+                                else
+                                {
+                                    controlloMappa.scrittaPrincipale.SetActive(false);
+                                    controlloMappa.testoDifficoltaUno.SetActive(false);
+                                    controlloMappa.testoDifficoltaDue.SetActive(true);
+                                    controlloMappa.testoDifficoltaTre.SetActive(false);
+                                    TempData.casellaCliccata = gameObject.name;
+                                }
+                            }       
                         }
                     }
                     else if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.DiagonaleDestra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
@@ -132,13 +195,13 @@ public class SceltaLivello : MonoBehaviour
                         {
                             if (controlloMappa.valoreCasuale)
                             {
-                                TempData.difficolta = "Domande";
+                                TempData.difficolta = "Domande medie";
                                 TempData.ultimaCasella = gameObject.name;
                                 SceneManager.LoadScene("RispostaDomande");
                             }
                             else
                             {
-                                TempData.difficolta = "Domande medie";
+                                TempData.difficolta = "Domande";
                                 TempData.ultimaCasella = gameObject.name;
                                 SceneManager.LoadScene("RispostaDomande");
                             }
@@ -148,16 +211,16 @@ public class SceltaLivello : MonoBehaviour
                             if (controlloMappa.valoreCasuale)
                             {
                                 controlloMappa.scrittaPrincipale.SetActive(false);
-                                controlloMappa.testoDifficoltaUno.SetActive(true);
-                                controlloMappa.testoDifficoltaDue.SetActive(false);
+                                controlloMappa.testoDifficoltaUno.SetActive(false);
+                                controlloMappa.testoDifficoltaDue.SetActive(true);
                                 controlloMappa.testoDifficoltaTre.SetActive(false);
                                 TempData.casellaCliccata = gameObject.name;
                             }
                             else
                             {
                                 controlloMappa.scrittaPrincipale.SetActive(false);
-                                controlloMappa.testoDifficoltaUno.SetActive(false);
-                                controlloMappa.testoDifficoltaDue.SetActive(true);
+                                controlloMappa.testoDifficoltaUno.SetActive(true);
+                                controlloMappa.testoDifficoltaDue.SetActive(false);
                                 controlloMappa.testoDifficoltaTre.SetActive(false);
                                 TempData.casellaCliccata = gameObject.name;
                             }

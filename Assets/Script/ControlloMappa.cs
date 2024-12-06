@@ -26,6 +26,9 @@ public class ControlloMappa : MonoBehaviour
     public GameObject testoDifficoltaUno;
     public GameObject testoDifficoltaDue;
     public GameObject testoDifficoltaTre;
+    public GameObject testoDifficoltaFinale;
+    public GameObject bandieraTraguardo;
+    public GameObject logoTraguardo;
     public bool valoreCasuale;
 
     // Start is called before the first frame update
@@ -153,7 +156,13 @@ public class ControlloMappa : MonoBehaviour
                 if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
                 {
                     SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaSopra.color != Color.white)
+                    if(casellaSopraGameObject.name == "Casella 5,3")
+                    {
+                        bandieraTraguardo.SetActive(false);
+                        logoTraguardo.SetActive(true);
+                        casellaSopra.color = Color.white;
+                    }
+                    else if(casellaSopra.color != Color.white)
                     {
                         casellaSopra.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaSopraGameObject.transform.position;
@@ -165,7 +174,13 @@ public class ControlloMappa : MonoBehaviour
                 if (casellaDiagonaleGameObject != null && casellaSbagliataDiagonale == null)
                 {
                     SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaDiagonale.color != Color.white)
+                    if(casellaDiagonaleGameObject.name == "Casella 5,3")
+                    {
+                        bandieraTraguardo.SetActive(false);
+                        logoTraguardo.SetActive(true);
+                        casellaDiagonale.color = Color.white;
+                    }
+                    else if(casellaDiagonale.color != Color.white)
                     {
                         casellaDiagonale.color = Color.red;
                         Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
@@ -178,7 +193,13 @@ public class ControlloMappa : MonoBehaviour
                 if (casellaSinistraGameObject != null && casellaSbagliataSinistra == null)
                 {
                     SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
-                    if(valoreCasuale)
+                    if(casellaSinistraGameObject.name == "Casella 5,3")
+                    {
+                        bandieraTraguardo.SetActive(false);
+                        logoTraguardo.SetActive(true);
+                        casellaSinistra.color = Color.white;
+                    }
+                    else if(valoreCasuale)
                     {
                         if(casellaSinistra.color != Color.white)
                         {
@@ -214,7 +235,7 @@ public class ControlloMappa : MonoBehaviour
                 if(casellaDestraGameObject != null && casellaSbagliataDestra == null)
                 {
                     SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
-                    if(!valoreCasuale)
+                    if(valoreCasuale)
                     {
                         if(casellaDestra.color != Color.white)
                         {
@@ -421,6 +442,12 @@ public class ControlloMappa : MonoBehaviour
                             (!(casellaDiagonaleDestraGameObject != null) || (casellaSbagliataDiagonaleDestra != null))
                             &&
                             (!(casellaDestraGameObject != null) || (casellaSbagliataDestra != null))
+                            &&
+                            (!(casellaDiagonaleSottoDestraGameObject != null) || (casellaSbagliataDiagonaleSottoDestra != null))
+                            &&
+                            (!(casellaDiagonaleSottoSinistraGameObject != null) || (casellaSbagliataDiagonaleSottoSinistra != null))
+                            &&
+                            (!(casellaSottoGameObject != null) || (casellaSbagliataSotto != null))
                         )
                         ||
                         (
