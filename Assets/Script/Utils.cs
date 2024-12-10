@@ -9,7 +9,7 @@ public static class Utils
     {
         int[] numeri = PrendiNumeri(pos);
         numeri[0] += 1;
-        if(numeri[0] > 3)
+        if(numeri[0] > 5)
         {
             return "";
         }
@@ -43,7 +43,7 @@ public static class Utils
         int[] numeri = PrendiNumeri(pos);
         numeri[0] += 1;
         numeri[1] += 1;
-        if(numeri[0] > 3 || numeri[1] > 3)
+        if(numeri[0] > 5 || numeri[1] > 3)
         {
             return "";
         }
@@ -55,7 +55,7 @@ public static class Utils
         int[] numeri = PrendiNumeri(pos);
         numeri[0] += 1;
         numeri[1] -= 1;
-        if(numeri[0] > 3 || numeri [1] < 0)
+        if(numeri[0] > 5 || numeri [1] < 0)
         {
             return "";
         }
