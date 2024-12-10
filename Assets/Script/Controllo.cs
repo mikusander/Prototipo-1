@@ -86,7 +86,7 @@ public class Controllo : MonoBehaviour
     {
         if (gameover)
         {
-            if (puntiAttuali > vitt + 1)
+            if (puntiAttuali >= vitt + 1)
             {
                 gameData.stringValues.Add(TempData.ultimaCasella);
                 gameData.SaveData();
@@ -111,12 +111,11 @@ public class Controllo : MonoBehaviour
         else if (questions.Count == 0 && !isUltima) 
         {
             gameover = true;
-            if (puntiAttuali > vitt + 1)
+            if (puntiAttuali >= vitt + 1)
             {
                 gameData.stringValues.Add(TempData.ultimaCasella);
                 gameData.SaveData();
                 TempData.vittoria = true;
-                Debug.Log("punti attuali: " + puntiAttuali + "vitt:" + vitt);
             }
             else
             {

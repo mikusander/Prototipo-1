@@ -33,7 +33,7 @@ public class SceltaLivello : MonoBehaviour
                     SpriteRenderer spriterenderer = GetComponent<SpriteRenderer> ();
                     colore = spriterenderer.color;
                     GameObject casellaSbagliata = GameObject.Find("Errore " + gameObject.name);
-                    if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.Sopra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    if ((gameObject.name == "Casella 5,3" || colore != Color.white) && casellaSbagliata == null && gameObject.name == Utils.Sopra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella sopra di colore giallo, difficoltà due
                         if(gameObject.name == "Casella 5,3")
@@ -72,7 +72,7 @@ public class SceltaLivello : MonoBehaviour
                             }
                         }
                     }
-                    else if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.DiagonaleSinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    else if ((gameObject.name == "Casella 5,3" || colore != Color.white) && casellaSbagliata == null && gameObject.name == Utils.DiagonaleSinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella diagonale sinistra di colore rosso
                         if(gameObject.name == "Casella 5,3")
@@ -111,7 +111,7 @@ public class SceltaLivello : MonoBehaviour
                             }
                         }
                     }
-                    else if (colore != Color.white && casellaSbagliata == null && gameObject.name == Utils.Sinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
+                    else if ((gameObject.name == "Casella 5,3" || colore != Color.white) && casellaSbagliata == null && gameObject.name == Utils.Sinistra(controlloMappa.gameData.stringValues[controlloMappa.gameData.stringValues.Count - 1]))
                     {
                         // casella a sinistra di colore verde o giallo, difficoltà 1 o 2
                         if(gameObject.name == "Casella 5,3")

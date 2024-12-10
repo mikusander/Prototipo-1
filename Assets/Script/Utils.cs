@@ -9,6 +9,10 @@ public static class Utils
     {
         int[] numeri = PrendiNumeri(pos);
         numeri[0] += 1;
+        if(numeri[0] > 3)
+        {
+            return "";
+        }
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
@@ -16,6 +20,10 @@ public static class Utils
     {
         int[] numeri = PrendiNumeri(pos);
         numeri[1] += 1;
+        if(numeri[1] > 3)
+        {
+            return "";
+        }
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
@@ -23,6 +31,10 @@ public static class Utils
     {
         int[] numeri = PrendiNumeri(pos);
         numeri[1] -= 1;
+        if(numeri[1] < 0)
+        {
+            return "";
+        }
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
@@ -31,6 +43,10 @@ public static class Utils
         int[] numeri = PrendiNumeri(pos);
         numeri[0] += 1;
         numeri[1] += 1;
+        if(numeri[0] > 3 || numeri[1] > 3)
+        {
+            return "";
+        }
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
@@ -39,6 +55,10 @@ public static class Utils
         int[] numeri = PrendiNumeri(pos);
         numeri[0] += 1;
         numeri[1] -= 1;
+        if(numeri[0] > 3 || numeri [1] < 0)
+        {
+            return "";
+        }
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
@@ -47,6 +67,10 @@ public static class Utils
         int[] numeri = PrendiNumeri(pos);
         numeri[0] -= 1;
         numeri[1] -= 1;
+        if(numeri[0] < 0 || numeri[1] < 0)
+        {
+            return "";
+        }
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
@@ -55,6 +79,10 @@ public static class Utils
         int[] numeri = PrendiNumeri(pos);
         numeri[0] -= 1;
         numeri[1] += 1;
+        if(numeri[0] < 0 || numeri[1] > 3)
+        {
+            return "";
+        }
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
@@ -62,6 +90,10 @@ public static class Utils
     {
         int[] numeri = PrendiNumeri(pos);
         numeri[0] -= 1;
+        if(numeri[0] < 0)
+        {
+            return "";
+        }
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 

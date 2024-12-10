@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
@@ -162,7 +163,7 @@ public class ControlloMappa : MonoBehaviour
                         logoTraguardo.SetActive(true);
                         casellaSopra.color = Color.white;
                     }
-                    else if(casellaSopra.color != Color.white)
+                    else if(casellaSopra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
                     {
                         casellaSopra.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaSopraGameObject.transform.position;
@@ -180,7 +181,7 @@ public class ControlloMappa : MonoBehaviour
                         logoTraguardo.SetActive(true);
                         casellaDiagonale.color = Color.white;
                     }
-                    else if(casellaDiagonale.color != Color.white)
+                    else if(casellaDiagonale.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
                     {
                         casellaDiagonale.color = Color.red;
                         Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
@@ -201,7 +202,7 @@ public class ControlloMappa : MonoBehaviour
                     }
                     else if(valoreCasuale)
                     {
-                        if(casellaSinistra.color != Color.white)
+                        if(casellaSinistra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
                         {
                             casellaSinistra.color = Color.green;
                             Vector3 spawnPos = casellaSinistraGameObject.transform.position;
@@ -210,7 +211,7 @@ public class ControlloMappa : MonoBehaviour
                     }
                     else
                     {
-                        if(casellaSinistra.color != Color.white)
+                        if(casellaSinistra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
                         {
                             casellaSinistra.color = new Color(255f, 255f, 0f, 255f);
                             Vector3 spawnPos = casellaSinistraGameObject.transform.position;
@@ -295,7 +296,10 @@ public class ControlloMappa : MonoBehaviour
             {
                 string ultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 1];
                 Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
-                if(Utils.RigaSuperiore(ultimaCasellaString, gameData.caselleSbagliate))
+                List<string> caselleGiusteSbagliate = new List<string>();
+                caselleGiusteSbagliate.AddRange(gameData.stringValues);
+                caselleGiusteSbagliate.AddRange(gameData.caselleSbagliate);
+                if(Utils.RigaSuperiore(ultimaCasellaString, caselleGiusteSbagliate))
                 {
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
@@ -313,7 +317,14 @@ public class ControlloMappa : MonoBehaviour
                     if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
                     {
                         SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
-                        if(casellaSopra.color != Color.white)
+                        if(casellaSopraGameObject.name == "Casella 5,3")
+                        {
+                            casellaSopra.color = Color.white;
+                            Vector3 spawanPos = casellaSopraGameObject.transform.position;
+                            bandieraTraguardo.SetActive(false);
+                            logoTraguardo.SetActive(true);
+                        }
+                        else if(casellaSopra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
                         {
                             casellaSopra.color = new Color(255f, 255f, 0f, 255f);
                             Vector3 spawnPos = casellaSopraGameObject.transform.position;
@@ -325,7 +336,13 @@ public class ControlloMappa : MonoBehaviour
                     if (casellaDiagonaleGameObject != null && casellaSbagliataDiagonale == null)
                     {
                         SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
-                        if(casellaDiagonale.color != Color.white)
+                        if(casellaDiagonaleGameObject.name == "Casella 5,3")
+                        {
+                            casellaDiagonale.color = Color.white;
+                            bandieraTraguardo.SetActive(false);
+                            logoTraguardo.SetActive(true);
+                        }
+                        else if(casellaDiagonale.color != Color.white)
                         {
                             casellaDiagonale.color = Color.red;
                             Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
@@ -338,22 +355,31 @@ public class ControlloMappa : MonoBehaviour
                     if (casellaSinistraGameObject != null && casellaSbagliataSinistra == null)
                     {
                         SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
-                        if(valoreCasuale)
+                        if(casellaSinistraGameObject.name == "Casella 5,3")
                         {
-                            if(casellaSinistra.color != Color.white)
-                            {
-                                casellaSinistra.color = Color.green;
-                                Vector3 spawnPos = casellaSinistraGameObject.transform.position;
-                                Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
-                            }
+                            casellaSinistra.color = Color.white;
+                            bandieraTraguardo.SetActive(false);
+                            logoTraguardo.SetActive(true);
                         }
                         else
                         {
-                            if(casellaSinistra.color != Color.white)
+                            if(valoreCasuale)
                             {
-                                casellaSinistra.color = new Color(255f, 255f, 0f, 255f);
-                                Vector3 spawnPos = casellaSinistraGameObject.transform.position;
-                                Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                                if(casellaSinistra.color != Color.white)
+                                {
+                                    casellaSinistra.color = Color.green;
+                                    Vector3 spawnPos = casellaSinistraGameObject.transform.position;
+                                    Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                                }
+                            }
+                            else
+                            {
+                                if(casellaSinistra.color != Color.white)
+                                {
+                                    casellaSinistra.color = new Color(255f, 255f, 0f, 255f);
+                                    Vector3 spawnPos = casellaSinistraGameObject.transform.position;
+                                    Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                                }
                             }
                         }
                     }
@@ -429,59 +455,7 @@ public class ControlloMappa : MonoBehaviour
                             Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
                         }
                     }
-                    // verifica che non ci sono più strade da percorrere
-                    // (-casellaSopra V casellaSbagliataSopra)^(-casellaDiagonale V casellaSbagliataDiagonale)^(-casellaSinistra V casellaSbagliataSinistra)^(-casellaDiagonaleDestra V casellaSbagliataDiagonaleDestra)^(-casellaDestra V casellaSbagliataDestra)
-                    if(
-                        (
-                            (!(casellaSopraGameObject != null) || (casellaSbagliataSopra != null))
-                            && 
-                            (!(casellaDiagonaleGameObject != null) || (casellaSbagliataDiagonale != null)) 
-                            && 
-                            (!(casellaSinistraGameObject != null) || (casellaSbagliataSinistra != null)) 
-                            &&
-                            (!(casellaDiagonaleDestraGameObject != null) || (casellaSbagliataDiagonaleDestra != null))
-                            &&
-                            (!(casellaDestraGameObject != null) || (casellaSbagliataDestra != null))
-                            &&
-                            (!(casellaDiagonaleSottoDestraGameObject != null) || (casellaSbagliataDiagonaleSottoDestra != null))
-                            &&
-                            (!(casellaDiagonaleSottoSinistraGameObject != null) || (casellaSbagliataDiagonaleSottoSinistra != null))
-                            &&
-                            (!(casellaSottoGameObject != null) || (casellaSbagliataSotto != null))
-                        )
-                        ||
-                        (
-                            ((casellaSopraGameObject != null) && (casellaSbagliataSopra != null))
-                            && 
-                            ((casellaDiagonaleGameObject != null) && (casellaSbagliataDiagonale != null)) 
-                            && 
-                            ((casellaSinistraGameObject != null) && (casellaSbagliataSinistra != null)) 
-                            &&
-                            ((casellaDiagonaleDestraGameObject != null) && (casellaSbagliataDiagonaleDestra != null))
-                            &&
-                            ((casellaDestraGameObject != null) && (casellaSbagliataDestra == null))
-                            &&
-                            (casellaDestraGameObject.name.EndsWith("0"))
-                        )
-                        ||
-                        (
-                            ((casellaSopraGameObject != null) && (casellaSbagliataSopra != null))
-                            && 
-                            ((casellaDiagonaleGameObject != null) && (casellaSbagliataDiagonale != null)) 
-                            && 
-                            ((casellaSinistraGameObject != null) && (casellaSbagliataSinistra == null)) 
-                            &&
-                            ((casellaDiagonaleDestraGameObject != null) && (casellaSbagliataDiagonaleDestra != null))
-                            &&
-                            ((casellaDestraGameObject != null) && (casellaSbagliataDestra != null))
-                            &&
-                            (casellaSinistraGameObject.name.EndsWith("3"))
-                        )
-                    )
-                    {
-                        gameoverLogo.SetActive(true);
-                        restart.SetActive(true);
-                    }
+                    // aggiungere condizione di gameover
                 }
             }
         }
@@ -527,6 +501,241 @@ public class ControlloMappa : MonoBehaviour
         {
             animator.SetTrigger("Disattivazione");
         }
+    }
+
+    List<int> CondizioneGameOver(List<string> caselleGiusteSbagliate, string ultimaCasella){
+        List<List<string>> percorsi = new List<List<string>>();
+        string sopra = Utils.Sopra(ultimaCasella);
+        if(sopra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sopra))
+        {
+            List<string> appo = new List<string>();
+            appo.Add(sopra);
+            percorsi.Add(appo);
+        }
+        string diagonaleDestra = Utils.DiagonaleDestra(ultimaCasella);
+        if(diagonaleDestra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleDestra))
+        {
+            List<string> appo = new List<string>();
+            appo.Add(diagonaleDestra);
+            percorsi.Add(appo);
+        }
+        string destra = Utils.Destra(ultimaCasella);
+        if(destra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, destra))
+        {
+            List<string> appo = new List<string>();
+            appo.Add(destra);
+            percorsi.Add(appo);
+        }
+        string diagonaleSottoDestra = Utils.DiagonaleSottoDestra(ultimaCasella);
+        if(diagonaleSottoDestra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleSottoDestra))
+        {
+            List<string> appo = new List<string>();
+            appo.Add(diagonaleSottoDestra);
+            percorsi.Add(appo);
+        }
+        string sotto = Utils.Sotto(ultimaCasella);
+        if(sotto != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sotto))
+        {
+            List<string> appo = new List<string>();
+            appo.Add(sotto);
+            percorsi.Add(appo);
+        }
+        string diagonaleSottoSinistra = Utils.DiagonaleSottoSinistra(ultimaCasella);
+        if(diagonaleSottoSinistra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleSottoSinistra))
+        {
+            List<string> appo = new List<string>();
+            appo.Add(diagonaleSottoSinistra);
+            percorsi.Add(appo);
+        }
+        string sinistra = Utils.Sinistra(ultimaCasella);
+        if(sinistra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sinistra))
+        {
+            List<string> appo = new List<string>();
+            appo.Add(sinistra);
+            percorsi.Add(appo);
+        }
+        string diagonaleSinistra = Utils.DiagonaleSinistra(ultimaCasella);
+        if(diagonaleSinistra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleSinistra))
+        {
+            List<string> appo = new List<string>();
+            appo.Add(diagonaleSinistra);
+            percorsi.Add(appo);
+        }
+        bool modifica = false;
+        int x = 0;
+        while(x < percorsi.Count)
+        {
+            modifica = false;
+            List<string> percorsoCorrente = percorsi[x];
+            string ultimoNodo = percorsoCorrente[percorsoCorrente.Count - 1];
+            if(ultimoNodo == "Casella 5,3")
+            {
+                x++;
+                continue;
+            }
+            string sopraAttuale = Utils.Sopra(ultimoNodo);
+            if(sopraAttuale != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sopraAttuale))
+            {
+                if(percorsoCorrente.Count > 1)
+                {
+                    if(sopraAttuale != percorsoCorrente[percorsoCorrente.Count - 2])
+                    {
+                        modifica = true;
+                        List<string> appo = new List<string>();
+                        appo.AddRange(percorsoCorrente);
+                        appo.Add(sopraAttuale);
+                        percorsi.Add(appo);
+                    }
+                }
+                else
+                {
+                    modifica = true;
+                    List<string> appo = new List<string>();
+                    appo.AddRange(percorsoCorrente);
+                    appo.Add(sopraAttuale);
+                    percorsi.Add(appo);
+                }
+            }
+
+            string destraAttuale = Utils.Destra(ultimoNodo);
+            if(destraAttuale != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, destraAttuale))
+            {
+                if(percorsoCorrente.Count > 1)
+                {
+                    if(destraAttuale != percorsoCorrente[percorsoCorrente.Count - 2])
+                    {
+                        modifica = true;
+                        List<string> appo = new List<string>();
+                        appo.AddRange(percorsoCorrente);
+                        appo.Add(destraAttuale);
+                        percorsi.Add(appo);
+                    }
+                }
+                else
+                {
+                    modifica = true;
+                    List<string> appo = new List<string>();
+                    appo.AddRange(percorsoCorrente);
+                    appo.Add(destraAttuale);
+                    percorsi.Add(appo);
+                }
+            }
+
+            string sottoAttuale = Utils.Sotto(ultimoNodo);
+            if(sottoAttuale != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sottoAttuale))
+            {
+                if(percorsoCorrente.Count > 1)
+                {
+                    if(sottoAttuale != percorsoCorrente[percorsoCorrente.Count - 2])
+                    {
+                        modifica = true;
+                        List<string> appo = new List<string>();
+                        appo.AddRange(percorsoCorrente);
+                        appo.Add(sottoAttuale);
+                        percorsi.Add(appo);
+                    }
+                }
+                else
+                {
+                    modifica = true;
+                    List<string> appo = new List<string>();
+                    appo.AddRange(percorsoCorrente);
+                    appo.Add(sottoAttuale);
+                    percorsi.Add(appo);
+                }
+            }
+
+            string sinistraAttuale = Utils.Destra(ultimoNodo);
+            if(sinistraAttuale != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sinistraAttuale))
+            {
+                if(percorsoCorrente.Count > 1)
+                {
+                    if(sinistraAttuale != percorsoCorrente[percorsoCorrente.Count - 2])
+                    {
+                        modifica = true;
+                        List<string> appo = new List<string>();
+                        appo.AddRange(percorsoCorrente);
+                        appo.Add(sinistraAttuale);
+                        percorsi.Add(appo);
+                    }
+                }
+                else
+                {
+                    modifica = true;
+                    List<string> appo = new List<string>();
+                    appo.AddRange(percorsoCorrente);
+                    appo.Add(sinistraAttuale);
+                    percorsi.Add(appo);
+                }
+            }
+
+            if(modifica)
+            {
+                percorsi.RemoveAt(x);
+                modifica = false;
+            }
+            else
+            {
+                x++;
+            }
+        }
+
+        int percorsoSopra = 100; // numero di caselle per arrivare al traguardo della casella superiore alla casuella attuale
+        int percorsoDiagonaleDestra = 100; // numero di caselle per arrivare al traguardo della casella diagonale destra alla casuella attuale
+        int percorsoDestra = 100; // numero di caselle per arrivare al traguardo della casella a destra alla casuella attuale
+        int percorsoDiagonaleSottoDestra = 100; // numero di caselle per arrivare al traguardo della casella in diagonale sotto a destra alla casuella attuale
+        int percorsoSotto = 100; // numero di caselle per arrivare al traguardo della casella inferiore alla casuella attuale
+        int percorsoDiagonaleSOttoSinistra = 100; // numero di caselle per arrivare al traguardo della casella diagonale sotto sinistra alla casuella attuale
+        int percorsoSinistra = 100; // numero di caselle per arrivare al traguardo della casella a sinistra alla casuella attuale
+        int percorsoDiagonaleSinistra = 100; // numero di caselle per arrivare al traguardo della casella in diagonale sopra a sinistra alla casuella attuale
+        for(int y = 0; y < percorsi.Count; y++)
+        {
+            List<string> percorsoAttuale = percorsi[y];
+            if(percorsoAttuale[0] == sopra && percorsoAttuale.Count < percorsoSopra)
+            {
+                percorsoSopra = percorsoAttuale.Count;
+            }
+            else if(percorsoAttuale[0] == diagonaleDestra && percorsoAttuale.Count < percorsoDiagonaleDestra)
+            {
+                percorsoDiagonaleDestra = percorsoAttuale.Count;
+            }
+            else if(percorsoAttuale[0] == destra && percorsoAttuale.Count < percorsoDestra)
+            {
+                percorsoDestra = percorsoAttuale.Count;
+            }
+            else if(percorsoAttuale[0] == diagonaleSottoDestra && percorsoAttuale.Count < percorsoDiagonaleSottoDestra)
+            {
+                percorsoDiagonaleSottoDestra = percorsoAttuale.Count;
+            }
+            else if(percorsoAttuale[0] == sotto && percorsoAttuale.Count < percorsoSotto)
+            {
+                percorsoSotto = percorsoAttuale.Count;
+            }
+            else if(percorsoAttuale[0] == diagonaleSottoSinistra && percorsoAttuale.Count < percorsoDiagonaleSOttoSinistra)
+            {
+                percorsoDiagonaleSOttoSinistra = percorsoAttuale.Count;
+            }
+            else if(percorsoAttuale[0] == sinistra && percorsoAttuale.Count < percorsoSinistra)
+            {
+                percorsoSinistra = percorsoAttuale.Count;
+            }
+            else if(percorsoAttuale[0] == diagonaleSinistra && percorsoAttuale.Count < percorsoDiagonaleSinistra)
+            {
+                percorsoDiagonaleSinistra = percorsoAttuale.Count;
+            }
+        }
+        List<int> numeroPassi = new List<int> 
+        { 
+            percorsoSopra,
+            percorsoDiagonaleDestra,
+            percorsoDestra,
+            percorsoDiagonaleSottoDestra,
+            percorsoSotto,
+            percorsoDiagonaleSOttoSinistra,
+            percorsoSinistra,
+            percorsoDiagonaleSinistra
+        };
+        return numeroPassi;
     }
 
     // Update is called once per frame
