@@ -459,47 +459,47 @@ public class ControlloMappa : MonoBehaviour
                     // (-casellaSopra V casellaSbagliataSopra)^(-casellaDiagonale V casellaSbagliataDiagonale)^(-casellaSinistra V casellaSbagliataSinistra)^(-casellaDiagonaleDestra V casellaSbagliataDiagonaleDestra)^(-casellaDestra V casellaSbagliataDestra)
                     if(
                         (
-                            (!(casellaSopraGameObject != null) || (casellaSbagliataSopra != null))
+                            (!(casellaSopraGameObject != null) || (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaSopraGameObject.name)))
                             && 
-                            (!(casellaDiagonaleGameObject != null) || (casellaSbagliataDiagonale != null)) 
+                            (!(casellaDiagonaleGameObject != null) || (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaDiagonaleGameObject.name))) 
                             && 
-                            (!(casellaSinistraGameObject != null) || (casellaSbagliataSinistra != null)) 
+                            (!(casellaSinistraGameObject != null) || (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaSinistraGameObject.name))) 
                             &&
-                            (!(casellaDiagonaleDestraGameObject != null) || (casellaSbagliataDiagonaleDestra != null))
+                            (!(casellaDiagonaleDestraGameObject != null) || (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaDiagonaleDestraGameObject.name)))
                             &&
-                            (!(casellaDestraGameObject != null) || (casellaSbagliataDestra != null))
+                            (!(casellaDestraGameObject != null) || (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaDestraGameObject.name)))
                             &&
-                            (!(casellaDiagonaleSottoDestraGameObject != null) || (casellaSbagliataDiagonaleSottoDestra != null))
+                            (!(casellaDiagonaleSottoDestraGameObject != null) || (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaDiagonaleSottoDestraGameObject.name)))
                             &&
-                            (!(casellaDiagonaleSottoSinistraGameObject != null) || (casellaSbagliataDiagonaleSottoSinistra != null))
+                            (!(casellaDiagonaleSottoSinistraGameObject != null) || (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaDiagonaleSottoSinistraGameObject.name)))
                             &&
-                            (!(casellaSottoGameObject != null) || (casellaSbagliataSotto != null))
+                            (!(casellaSottoGameObject != null) || (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaSottoGameObject.name)))
                         )
                         ||
                         (
-                            ((casellaSopraGameObject != null) && (casellaSbagliataSopra != null))
+                            ((casellaSopraGameObject != null) && (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaSopraGameObject.name)))
                             && 
-                            ((casellaDiagonaleGameObject != null) && (casellaSbagliataDiagonale != null)) 
+                            ((casellaDiagonaleGameObject != null) && (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaDiagonaleGameObject.name))) 
                             && 
-                            ((casellaSinistraGameObject != null) && (casellaSbagliataSinistra != null)) 
+                            ((casellaSinistraGameObject != null) && (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaSinistraGameObject.name))) 
                             &&
-                            ((casellaDiagonaleDestraGameObject != null) && (casellaSbagliataDiagonaleDestra != null))
+                            ((casellaDiagonaleDestraGameObject != null) && (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaDiagonaleDestraGameObject.name)))
                             &&
-                            ((casellaDestraGameObject != null) && (casellaSbagliataDestra == null))
+                            ((casellaDestraGameObject != null) && (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaDestraGameObject.name)))
                             &&
                             (casellaDestraGameObject.name.EndsWith("0"))
                         )
                         ||
                         (
-                            ((casellaSopraGameObject != null) && (casellaSbagliataSopra != null))
+                            ((casellaSopraGameObject != null) && (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaSopraGameObject.name)))
                             && 
-                            ((casellaDiagonaleGameObject != null) && (casellaSbagliataDiagonale != null)) 
+                            ((casellaDiagonaleGameObject != null) && (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaDiagonaleGameObject.name))) 
                             && 
-                            ((casellaSinistraGameObject != null) && (casellaSbagliataSinistra == null)) 
+                            ((casellaSinistraGameObject != null) && (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaSinistraGameObject.name))) 
                             &&
-                            ((casellaDiagonaleDestraGameObject != null) && (casellaSbagliataDiagonaleDestra != null))
+                            ((casellaDiagonaleDestraGameObject != null) && (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaDiagonaleDestraGameObject.name)))
                             &&
-                            ((casellaDestraGameObject != null) && (casellaSbagliataDestra != null))
+                            ((casellaDestraGameObject != null) && (Utils.ControlloPresenza(caselleGiusteSbagliate, casellaDestraGameObject.name)))
                             &&
                             (casellaSinistraGameObject.name.EndsWith("3"))
                         )
