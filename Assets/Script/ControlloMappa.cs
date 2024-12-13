@@ -138,11 +138,153 @@ public class ControlloMappa : MonoBehaviour
         else
         {
             scrittaPrincipale.SetActive(true);
+            List<string> caselleGiusteSbagliate = new List<string>();
+            caselleGiusteSbagliate.AddRange(gameData.stringValues);
+            caselleGiusteSbagliate.AddRange(gameData.caselleSbagliate);
+            string ultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 1];
+            Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
+            GameObject casellaSopraGameObject = GameObject.Find(Utils.Sopra(ultimaCasellaString));
+            GameObject casellaSbagliataSopra = GameObject.Find("Errore " + Utils.Sopra(ultimaCasellaString));
+            if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
+            {
+                SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
+                if(casellaSopraGameObject.name == "Casella 5,3")
+                {
+                    bandieraTraguardo.SetActive(false);
+                    logoTraguardo.SetActive(true);
+                    casellaSopra.color = Color.white;
+                }
+                else if(casellaSopra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
+                {
+                    casellaSopra.color = new Color(255f, 255f, 0f, 255f);
+                    Vector3 spawnPos = casellaSopraGameObject.transform.position;
+                    Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                }
+            }
+            GameObject casellaDiagonaleGameObject = GameObject.Find(Utils.DiagonaleSinistra(ultimaCasellaString));
+            GameObject casellaSbagliataDiagonale = GameObject.Find("Errore " + Utils.DiagonaleSinistra(ultimaCasellaString));
+            if (casellaDiagonaleGameObject != null && casellaSbagliataDiagonale == null)
+            {
+                SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
+                if(casellaDiagonaleGameObject.name == "Casella 5,3")
+                {
+                    bandieraTraguardo.SetActive(false);
+                    logoTraguardo.SetActive(true);
+                    casellaDiagonale.color = Color.white;
+                }
+                else if(casellaDiagonale.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
+                {
+                    casellaDiagonale.color = Color.red;
+                    Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
+                    Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
+                }
+            }
+            GameObject casellaSinistraGameObject = GameObject.Find(Utils.Sinistra(ultimaCasellaString));
+            GameObject casellaSbagliataSinistra = GameObject.Find("Errore " + Utils.Sinistra(ultimaCasellaString));
+            valoreCasuale = Random.Range(0, 2) == 0; 
+            if (casellaSinistraGameObject != null && casellaSbagliataSinistra == null)
+            {
+                SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
+                if(casellaSinistraGameObject.name == "Casella 5,3")
+                {
+                    bandieraTraguardo.SetActive(false);
+                    logoTraguardo.SetActive(true);
+                    casellaSinistra.color = Color.white;
+                }
+                else if(valoreCasuale)
+                {
+                    if(casellaSinistra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
+                    {
+                        casellaSinistra.color = Color.green;
+                        Vector3 spawnPos = casellaSinistraGameObject.transform.position;
+                        Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                    }
+                }
+                else
+                {
+                    if(casellaSinistra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
+                    {
+                        casellaSinistra.color = new Color(255f, 255f, 0f, 255f);
+                        Vector3 spawnPos = casellaSinistraGameObject.transform.position;
+                        Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    }
+                }
+            }
+            GameObject casellaDiagonaleDestraGameObject = GameObject.Find(Utils.DiagonaleDestra(ultimaCasellaString));
+            GameObject casellaSbagliataDiagonaleDestra = GameObject.Find("Errore " + Utils.DiagonaleDestra(ultimaCasellaString));
+            if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDiagonaleDestra == null)
+            {
+                SpriteRenderer casellaDiagonaleDestra = casellaDiagonaleDestraGameObject.GetComponent<SpriteRenderer>();
+                if(casellaDiagonaleDestra.color != Color.white)
+                {
+                    casellaDiagonaleDestra.color = Color.red;
+                    Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
+                    Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
+                }
+            }
+            GameObject casellaDestraGameObject = GameObject.Find(Utils.Destra(ultimaCasellaString));
+            GameObject casellaSbagliataDestra = GameObject.Find("Errore " + Utils.Destra(ultimaCasellaString));
+            if(casellaDestraGameObject != null && casellaSbagliataDestra == null)
+            {
+                SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
+                if(valoreCasuale)
+                {
+                    if(casellaDestra.color != Color.white)
+                    {
+                        casellaDestra.color = new Color(255f, 255f, 0f, 255f);
+                        Vector3 spawnPos = casellaDestraGameObject.transform.position;
+                        Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    }
+                }
+                else
+                {
+                    if(casellaDestra.color != Color.white)
+                    {
+                        casellaDestra.color = Color.green;
+                        Vector3 spawnPos = casellaDestraGameObject.transform.position;
+                        Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                    }
+                }
+            }
+            GameObject casellaDiagonaleSottoDestraGameObject = GameObject.Find(Utils.DiagonaleSottoDestra(ultimaCasellaString));
+            GameObject casellaSbagliataDiagonaleSottoDestra = GameObject.Find("Errore " + Utils.DiagonaleSottoDestra(ultimaCasellaString));
+            if(casellaDiagonaleSottoDestraGameObject != null && casellaSbagliataDiagonaleSottoDestra == null)
+            {
+                SpriteRenderer casellaDiagonaleSottoDestra = casellaDiagonaleSottoDestraGameObject.GetComponent<SpriteRenderer>();
+                if(casellaDiagonaleSottoDestra.color != Color.white)
+                {
+                    casellaDiagonaleSottoDestra.color = new Color(255f, 255f, 0f, 255f);
+                    Vector3 spawnPos = casellaDiagonaleSottoDestraGameObject.transform.position;
+                    Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                }
+            }
+            GameObject casellaDiagonaleSottoSinistraGameObject = GameObject.Find(Utils.DiagonaleSottoSinistra(ultimaCasellaString));
+            GameObject casellaSbagliataDiagonaleSottoSinistra = GameObject.Find("Errore " + Utils.DiagonaleSottoSinistra(ultimaCasellaString));
+            if(casellaDiagonaleSottoSinistraGameObject != null && casellaSbagliataDiagonaleSottoSinistra == null)
+            {
+                SpriteRenderer casellaDiagonaleSottoSinistra = casellaDiagonaleSottoSinistraGameObject.GetComponent<SpriteRenderer>();
+                if(casellaDiagonaleSottoSinistra.color != Color.white)
+                {
+                    casellaDiagonaleSottoSinistra.color = new Color(255f, 255f, 0f, 255f);
+                    Vector3 spawnPos = casellaDiagonaleSottoSinistraGameObject.transform.position;
+                    Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                }
+            }
+            GameObject casellaSottoGameObject = GameObject.Find(Utils.Sotto(ultimaCasellaString));
+            GameObject casellaSbagliataSotto = GameObject.Find("Errore " + Utils.Sotto(ultimaCasellaString));
+            if(casellaSottoGameObject != null && casellaSbagliataSotto == null)
+            {
+                SpriteRenderer casellaSotto = casellaSottoGameObject.GetComponent<SpriteRenderer>();
+                if(casellaSotto.color != Color.white)
+                {
+                    casellaSotto.color = new Color(255f, 255f, 0f, 255f);
+                    Vector3 spawnPos = casellaSottoGameObject.transform.position;
+                    Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                }
+            }
             if(TempData.gioco && TempData.vittoria)
             {
-                string ultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 1];
                 string penultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 2];
-                Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
                 Transform penultimaCasellaTransform = baseScacchiera.transform.Find(penultimaCasellaString);
                 if (ultimaCasellaTransform != null && penultimaCasellaTransform != null)
                 {
@@ -152,153 +294,16 @@ public class ControlloMappa : MonoBehaviour
                     player = Instantiate(player, spawnPosition, Quaternion.identity);
                     StartCoroutine(MoveToTarget(spawnPosition, ultimaCasella.transform.position, moveDuration));
                 }
-                GameObject casellaSopraGameObject = GameObject.Find(Utils.Sopra(ultimaCasellaString));
-                GameObject casellaSbagliataSopra = GameObject.Find("Errore " + Utils.Sopra(ultimaCasellaString));
-                if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
-                {
-                    SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaSopraGameObject.name == "Casella 5,3")
-                    {
-                        bandieraTraguardo.SetActive(false);
-                        logoTraguardo.SetActive(true);
-                        casellaSopra.color = Color.white;
-                    }
-                    else if(casellaSopra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
-                    {
-                        casellaSopra.color = new Color(255f, 255f, 0f, 255f);
-                        Vector3 spawnPos = casellaSopraGameObject.transform.position;
-                        Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
-                    }
-                }
-                GameObject casellaDiagonaleGameObject = GameObject.Find(Utils.DiagonaleSinistra(ultimaCasellaString));
-                GameObject casellaSbagliataDiagonale = GameObject.Find("Errore " + Utils.DiagonaleSinistra(ultimaCasellaString));
-                if (casellaDiagonaleGameObject != null && casellaSbagliataDiagonale == null)
-                {
-                    SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaDiagonaleGameObject.name == "Casella 5,3")
-                    {
-                        bandieraTraguardo.SetActive(false);
-                        logoTraguardo.SetActive(true);
-                        casellaDiagonale.color = Color.white;
-                    }
-                    else if(casellaDiagonale.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
-                    {
-                        casellaDiagonale.color = Color.red;
-                        Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
-                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
-                    }
-                }
-                GameObject casellaSinistraGameObject = GameObject.Find(Utils.Sinistra(ultimaCasellaString));
-                GameObject casellaSbagliataSinistra = GameObject.Find("Errore " + Utils.Sinistra(ultimaCasellaString));
-                valoreCasuale = Random.Range(0, 2) == 0; 
-                if (casellaSinistraGameObject != null && casellaSbagliataSinistra == null)
-                {
-                    SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaSinistraGameObject.name == "Casella 5,3")
-                    {
-                        bandieraTraguardo.SetActive(false);
-                        logoTraguardo.SetActive(true);
-                        casellaSinistra.color = Color.white;
-                    }
-                    else if(valoreCasuale)
-                    {
-                        if(casellaSinistra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
-                        {
-                            casellaSinistra.color = Color.green;
-                            Vector3 spawnPos = casellaSinistraGameObject.transform.position;
-                            Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
-                        }
-                    }
-                    else
-                    {
-                        if(casellaSinistra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
-                        {
-                            casellaSinistra.color = new Color(255f, 255f, 0f, 255f);
-                            Vector3 spawnPos = casellaSinistraGameObject.transform.position;
-                            Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
-                        }
-                    }
-                }
-                GameObject casellaDiagonaleDestraGameObject = GameObject.Find(Utils.DiagonaleDestra(ultimaCasellaString));
-                GameObject casellaSbagliataDiagonaleDestra = GameObject.Find("Errore " + Utils.DiagonaleDestra(ultimaCasellaString));
-                if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDiagonaleDestra == null)
-                {
-                    SpriteRenderer casellaDiagonaleDestra = casellaDiagonaleDestraGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaDiagonaleDestra.color != Color.white)
-                    {
-                        casellaDiagonaleDestra.color = Color.red;
-                        Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
-                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
-                    }
-                }
-                GameObject casellaDestraGameObject = GameObject.Find(Utils.Destra(ultimaCasellaString));
-                GameObject casellaSbagliataDestra = GameObject.Find("Errore " + Utils.Destra(ultimaCasellaString));
-                if(casellaDestraGameObject != null && casellaSbagliataDestra == null)
-                {
-                    SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
-                    if(valoreCasuale)
-                    {
-                        if(casellaDestra.color != Color.white)
-                        {
-                            casellaDestra.color = new Color(255f, 255f, 0f, 255f);
-                            Vector3 spawnPos = casellaDestraGameObject.transform.position;
-                            Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
-                        }
-                    }
-                    else
-                    {
-                        if(casellaDestra.color != Color.white)
-                        {
-                            casellaDestra.color = Color.green;
-                            Vector3 spawnPos = casellaDestraGameObject.transform.position;
-                            Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
-                        }
-                    }
-                }
-                GameObject casellaDiagonaleSottoDestraGameObject = GameObject.Find(Utils.DiagonaleSottoDestra(ultimaCasellaString));
-                GameObject casellaSbagliataDiagonaleSottoDestra = GameObject.Find("Errore " + Utils.DiagonaleSottoDestra(ultimaCasellaString));
-                if(casellaDiagonaleSottoDestraGameObject != null && casellaSbagliataDiagonaleSottoDestra == null)
-                {
-                    SpriteRenderer casellaDiagonaleSottoDestra = casellaDiagonaleSottoDestraGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaDiagonaleSottoDestra.color != Color.white)
-                    {
-                        casellaDiagonaleSottoDestra.color = new Color(255f, 255f, 0f, 255f);
-                        Vector3 spawnPos = casellaDiagonaleSottoDestraGameObject.transform.position;
-                        Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
-                    }
-                }
-                GameObject casellaDiagonaleSottoSinistraGameObject = GameObject.Find(Utils.DiagonaleSottoSinistra(ultimaCasellaString));
-                GameObject casellaSbagliataDiagonaleSottoSinistra = GameObject.Find("Errore " + Utils.DiagonaleSottoSinistra(ultimaCasellaString));
-                if(casellaDiagonaleSottoSinistraGameObject != null && casellaSbagliataDiagonaleSottoSinistra == null)
-                {
-                    SpriteRenderer casellaDiagonaleSottoSinistra = casellaDiagonaleSottoSinistraGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaDiagonaleSottoSinistra.color != Color.white)
-                    {
-                        casellaDiagonaleSottoSinistra.color = new Color(255f, 255f, 0f, 255f);
-                        Vector3 spawnPos = casellaDiagonaleSottoSinistraGameObject.transform.position;
-                        Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
-                    }
-                }
-                GameObject casellaSottoGameObject = GameObject.Find(Utils.Sotto(ultimaCasellaString));
-                GameObject casellaSbagliataSotto = GameObject.Find("Errore " + Utils.Sotto(ultimaCasellaString));
-                if(casellaSottoGameObject != null && casellaSbagliataSotto == null)
-                {
-                    SpriteRenderer casellaSotto = casellaSottoGameObject.GetComponent<SpriteRenderer>();
-                    if(casellaSotto.color != Color.white)
-                    {
-                        casellaSotto.color = new Color(255f, 255f, 0f, 255f);
-                        Vector3 spawnPos = casellaSottoGameObject.transform.position;
-                        Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
-                    }
-                }
             }
             else
             {
-                string ultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 1];
-                Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
-                List<string> caselleGiusteSbagliate = new List<string>();
-                caselleGiusteSbagliate.AddRange(gameData.stringValues);
-                caselleGiusteSbagliate.AddRange(gameData.caselleSbagliate);
+                if (ultimaCasellaTransform != null)
+                {
+                    GameObject ultimaCasella = ultimaCasellaTransform.gameObject;
+                    Vector3 spawnPosition = ultimaCasella.transform.position;
+                    player = Instantiate(player, spawnPosition, Quaternion.identity);
+                }
+
                 if(Utils.RigaSuperiore(ultimaCasellaString, caselleGiusteSbagliate))
                 {
                     gameoverLogo.SetActive(true);
@@ -306,156 +311,24 @@ public class ControlloMappa : MonoBehaviour
                 }
                 else
                 {
-                    if (ultimaCasellaTransform != null)
-                    {
-                        GameObject ultimaCasella = ultimaCasellaTransform.gameObject;
-                        Vector3 spawnPosition = ultimaCasella.transform.position;
-                        player = Instantiate(player, spawnPosition, Quaternion.identity);
-                    }
-                    GameObject casellaSopraGameObject = GameObject.Find(Utils.Sopra(ultimaCasellaString));
-                    GameObject casellaSbagliataSopra = GameObject.Find("Errore " + Utils.Sopra(ultimaCasellaString));
-                    if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
-                    {
-                        SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
-                        if(casellaSopraGameObject.name == "Casella 5,3")
-                        {
-                            casellaSopra.color = Color.white;
-                            Vector3 spawanPos = casellaSopraGameObject.transform.position;
-                            bandieraTraguardo.SetActive(false);
-                            logoTraguardo.SetActive(true);
-                        }
-                        else if(casellaSopra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
-                        {
-                            casellaSopra.color = new Color(255f, 255f, 0f, 255f);
-                            Vector3 spawnPos = casellaSopraGameObject.transform.position;
-                            Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
-                        }
-                    }
-                    GameObject casellaDiagonaleGameObject = GameObject.Find(Utils.DiagonaleSinistra(ultimaCasellaString));
-                    GameObject casellaSbagliataDiagonale = GameObject.Find("Errore " + Utils.DiagonaleSinistra(ultimaCasellaString));
-                    if (casellaDiagonaleGameObject != null && casellaSbagliataDiagonale == null)
-                    {
-                        SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
-                        if(casellaDiagonaleGameObject.name == "Casella 5,3")
-                        {
-                            casellaDiagonale.color = Color.white;
-                            bandieraTraguardo.SetActive(false);
-                            logoTraguardo.SetActive(true);
-                        }
-                        else if(casellaDiagonale.color != Color.white)
-                        {
-                            casellaDiagonale.color = Color.red;
-                            Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
-                            Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
-                        }
-                    }
-                    GameObject casellaSinistraGameObject = GameObject.Find(Utils.Sinistra(ultimaCasellaString));
-                    GameObject casellaSbagliataSinistra = GameObject.Find("Errore " + Utils.Sinistra(ultimaCasellaString));
-                    bool valoreCasuale = Random.Range(0, 2) == 0; 
-                    if (casellaSinistraGameObject != null && casellaSbagliataSinistra == null)
-                    {
-                        SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
-                        if(casellaSinistraGameObject.name == "Casella 5,3")
-                        {
-                            casellaSinistra.color = Color.white;
-                            bandieraTraguardo.SetActive(false);
-                            logoTraguardo.SetActive(true);
-                        }
-                        else
-                        {
-                            if(valoreCasuale)
-                            {
-                                if(casellaSinistra.color != Color.white)
-                                {
-                                    casellaSinistra.color = Color.green;
-                                    Vector3 spawnPos = casellaSinistraGameObject.transform.position;
-                                    Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
-                                }
-                            }
-                            else
-                            {
-                                if(casellaSinistra.color != Color.white)
-                                {
-                                    casellaSinistra.color = new Color(255f, 255f, 0f, 255f);
-                                    Vector3 spawnPos = casellaSinistraGameObject.transform.position;
-                                    Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
-                                }
-                            }
-                        }
-                    }
-                    GameObject casellaDiagonaleDestraGameObject = GameObject.Find(Utils.DiagonaleDestra(ultimaCasellaString));
-                    GameObject casellaSbagliataDiagonaleDestra = GameObject.Find("Errore " + Utils.DiagonaleDestra(ultimaCasellaString));
-                    if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDiagonaleDestra == null)
-                    {
-                        SpriteRenderer casellaDiagonaleDestra = casellaDiagonaleDestraGameObject.GetComponent<SpriteRenderer>();
-                        if(casellaDiagonaleDestra.color != Color.white)
-                        {
-                            casellaDiagonaleDestra.color = Color.red;
-                            Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
-                            Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
-                        }
-                    }
-                    GameObject casellaDestraGameObject = GameObject.Find(Utils.Destra(ultimaCasellaString));
-                    GameObject casellaSbagliataDestra = GameObject.Find("Errore " + Utils.Destra(ultimaCasellaString));
-                    if(casellaDestraGameObject != null && casellaSbagliataDestra == null)
-                    {
-                        SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
-                        if(valoreCasuale)
-                        {
-                            if(casellaDestra.color != Color.white)
-                            {
-                                casellaDestra.color = new Color(255f, 255f, 0f, 255f);
-                                Vector3 spawnPos = casellaDestraGameObject.transform.position;
-                                Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
-                            }
-                        }
-                        else
-                        {
-                            if(casellaDestra.color != Color.white)
-                            {
-                                casellaDestra.color = Color.green;
-                                Vector3 spawnPos = casellaDestraGameObject.transform.position;
-                                Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
-                            }
-                        }
-                    }
-                    GameObject casellaDiagonaleSottoDestraGameObject = GameObject.Find(Utils.DiagonaleSottoDestra(ultimaCasellaString));
-                    GameObject casellaSbagliataDiagonaleSottoDestra = GameObject.Find("Errore " + Utils.DiagonaleSottoDestra(ultimaCasellaString));
-                    if(casellaDiagonaleSottoDestraGameObject != null && casellaSbagliataDiagonaleSottoDestra == null)
-                    {
-                        SpriteRenderer casellaDiagonaleSottoDestra = casellaDiagonaleSottoDestraGameObject.GetComponent<SpriteRenderer>();
-                        if(casellaDiagonaleSottoDestra.color != Color.white)
-                        {
-                            casellaDiagonaleSottoDestra.color = new Color(255f, 255f, 0f, 255f);
-                            Vector3 spawnPos = casellaDiagonaleSottoDestraGameObject.transform.position;
-                            Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
-                        }
-                    }
-                    GameObject casellaDiagonaleSottoSinistraGameObject = GameObject.Find(Utils.DiagonaleSottoSinistra(ultimaCasellaString));
-                    GameObject casellaSbagliataDiagonaleSottoSinistra = GameObject.Find("Errore " + Utils.DiagonaleSottoSinistra(ultimaCasellaString));
-                    if(casellaDiagonaleSottoSinistraGameObject != null && casellaSbagliataDiagonaleSottoSinistra == null)
-                    {
-                        SpriteRenderer casellaDiagonaleSottoSinistra = casellaDiagonaleSottoSinistraGameObject.GetComponent<SpriteRenderer>();
-                        if(casellaDiagonaleSottoSinistra.color != Color.white)
-                        {
-                            casellaDiagonaleSottoSinistra.color = new Color(255f, 255f, 0f, 255f);
-                            Vector3 spawnPos = casellaDiagonaleSottoSinistraGameObject.transform.position;
-                            Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
-                        }
-                    }
-                    GameObject casellaSottoGameObject = GameObject.Find(Utils.Sotto(ultimaCasellaString));
-                    GameObject casellaSbagliataSotto = GameObject.Find("Errore " + Utils.Sotto(ultimaCasellaString));
-                    if(casellaSottoGameObject != null && casellaSbagliataSotto == null)
-                    {
-                        SpriteRenderer casellaSotto = casellaSottoGameObject.GetComponent<SpriteRenderer>();
-                        if(casellaSotto.color != Color.white)
-                        {
-                            casellaSotto.color = new Color(255f, 255f, 0f, 255f);
-                            Vector3 spawnPos = casellaSottoGameObject.transform.position;
-                            Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
-                        }
-                    }
-                    // aggiungere condizione di gameover
+                    List<int> pesi = CondizioneGameOver(caselleGiusteSbagliate, ultimaCasellaString);
+                    Debug.Log(
+                       "sopra: " + pesi[0]
+                       + "\n" +
+                       "diagonaleDestra: " + pesi[1]
+                       + "\n" +
+                       "destra: " + pesi[2]
+                       + "\n" +
+                       "diagonaleSottoDestra: " + pesi[3]
+                       + "\n" +
+                       "sotto: " + pesi[4]
+                       + "\n" +
+                       "diagonaleSottoSinistra: " + pesi[5]
+                       + "\n" +
+                       "sinistra: " + pesi[6]
+                       + "\n" +
+                       "diagonaleSinistra: " + pesi[7]
+                     );
                 }
             }
         }
@@ -504,238 +377,156 @@ public class ControlloMappa : MonoBehaviour
     }
 
     List<int> CondizioneGameOver(List<string> caselleGiusteSbagliate, string ultimaCasella){
-        List<List<string>> percorsi = new List<List<string>>();
-        string sopra = Utils.Sopra(ultimaCasella);
-        if(sopra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sopra))
+        int[,] matrice = new int[6, 4];
+        int [,] matricePercorsi = CalcoloDistanze(matrice, caselleGiusteSbagliate, 3, 5);
+        int[] ultima = Utils.PrendiNumeri(ultimaCasella);
+        int[] sopra = new int[2];
+        int[] diagonaleDestra = new int[2];
+        int[] destra = new int[2];
+        int[] diagonaleSottoDestra = new int[2];
+        int[] sotto = new int[2];
+        int[] diagonaleSottoSinistra = new int[2];
+        int[] sinistra = new int[2];
+        int[] diagonaleSinistra = new int[2];
+        if(ultima[0] <= 5 && Utils.Sopra(ultimaCasella) != "")
         {
-            List<string> appo = new List<string>();
-            appo.Add(sopra);
-            percorsi.Add(appo);
+            sopra = Utils.PrendiNumeri(Utils.Sopra(ultimaCasella));
         }
-        string diagonaleDestra = Utils.DiagonaleDestra(ultimaCasella);
-        if(diagonaleDestra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleDestra))
+        if(ultima[0] <= 5 && ultima[1] >= 0 && Utils.DiagonaleDestra(ultimaCasella) != "")
         {
-            List<string> appo = new List<string>();
-            appo.Add(diagonaleDestra);
-            percorsi.Add(appo);
+            diagonaleDestra = Utils.PrendiNumeri(Utils.DiagonaleDestra(ultimaCasella));
         }
-        string destra = Utils.Destra(ultimaCasella);
-        if(destra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, destra))
+        if(ultima[1] >= 0 && Utils.Destra(ultimaCasella) != "")
         {
-            List<string> appo = new List<string>();
-            appo.Add(destra);
-            percorsi.Add(appo);
+            destra = Utils.PrendiNumeri(Utils.Destra(ultimaCasella));
         }
-        string diagonaleSottoDestra = Utils.DiagonaleSottoDestra(ultimaCasella);
-        if(diagonaleSottoDestra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleSottoDestra))
+        if(ultima[0] >= 0 && ultima[1] >= 0 && Utils.DiagonaleSottoDestra(ultimaCasella) != "")
         {
-            List<string> appo = new List<string>();
-            appo.Add(diagonaleSottoDestra);
-            percorsi.Add(appo);
+            diagonaleSottoDestra = Utils.PrendiNumeri(Utils.DiagonaleSottoDestra(ultimaCasella));
         }
-        string sotto = Utils.Sotto(ultimaCasella);
-        if(sotto != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sotto))
+        if(ultima[0] >= 0 && Utils.Sotto(ultimaCasella) != "")
         {
-            List<string> appo = new List<string>();
-            appo.Add(sotto);
-            percorsi.Add(appo);
+            sotto = Utils.PrendiNumeri(Utils.Sotto(ultimaCasella));
         }
-        string diagonaleSottoSinistra = Utils.DiagonaleSottoSinistra(ultimaCasella);
-        if(diagonaleSottoSinistra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleSottoSinistra))
+        if(ultima[0] >= 0 && ultima[1] <= 3 && Utils.DiagonaleSottoSinistra(ultimaCasella) != "")
         {
-            List<string> appo = new List<string>();
-            appo.Add(diagonaleSottoSinistra);
-            percorsi.Add(appo);
+            diagonaleSottoSinistra = Utils.PrendiNumeri(Utils.DiagonaleSottoSinistra(ultimaCasella));
         }
-        string sinistra = Utils.Sinistra(ultimaCasella);
-        if(sinistra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sinistra))
+        if(ultima[1] <= 3 && Utils.Sinistra(ultimaCasella)!= "")
         {
-            List<string> appo = new List<string>();
-            appo.Add(sinistra);
-            percorsi.Add(appo);
+            sinistra = Utils.PrendiNumeri(Utils.Sinistra(ultimaCasella));
         }
-        string diagonaleSinistra = Utils.DiagonaleSinistra(ultimaCasella);
-        if(diagonaleSinistra != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleSinistra))
+        if(ultima[0] <= 5 && ultima[1] <= 3 && Utils.DiagonaleSinistra(ultimaCasella) != "")
         {
-            List<string> appo = new List<string>();
-            appo.Add(diagonaleSinistra);
-            percorsi.Add(appo);
+            diagonaleSinistra = Utils.PrendiNumeri(Utils.DiagonaleSinistra(ultimaCasella));
         }
-        bool modifica = false;
-        int x = 0;
-        while(x < percorsi.Count)
+        List<int> pesi = new List<int> 
         {
-            modifica = false;
-            List<string> percorsoCorrente = percorsi[x];
-            string ultimoNodo = percorsoCorrente[percorsoCorrente.Count - 1];
-            if(ultimoNodo == "Casella 5,3")
-            {
-                x++;
-                continue;
-            }
-            string sopraAttuale = Utils.Sopra(ultimoNodo);
-            if(sopraAttuale != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sopraAttuale))
-            {
-                if(percorsoCorrente.Count > 1)
-                {
-                    if(sopraAttuale != percorsoCorrente[percorsoCorrente.Count - 2])
-                    {
-                        modifica = true;
-                        List<string> appo = new List<string>();
-                        appo.AddRange(percorsoCorrente);
-                        appo.Add(sopraAttuale);
-                        percorsi.Add(appo);
-                    }
-                }
-                else
-                {
-                    modifica = true;
-                    List<string> appo = new List<string>();
-                    appo.AddRange(percorsoCorrente);
-                    appo.Add(sopraAttuale);
-                    percorsi.Add(appo);
-                }
-            }
-
-            string destraAttuale = Utils.Destra(ultimoNodo);
-            if(destraAttuale != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, destraAttuale))
-            {
-                if(percorsoCorrente.Count > 1)
-                {
-                    if(destraAttuale != percorsoCorrente[percorsoCorrente.Count - 2])
-                    {
-                        modifica = true;
-                        List<string> appo = new List<string>();
-                        appo.AddRange(percorsoCorrente);
-                        appo.Add(destraAttuale);
-                        percorsi.Add(appo);
-                    }
-                }
-                else
-                {
-                    modifica = true;
-                    List<string> appo = new List<string>();
-                    appo.AddRange(percorsoCorrente);
-                    appo.Add(destraAttuale);
-                    percorsi.Add(appo);
-                }
-            }
-
-            string sottoAttuale = Utils.Sotto(ultimoNodo);
-            if(sottoAttuale != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sottoAttuale))
-            {
-                if(percorsoCorrente.Count > 1)
-                {
-                    if(sottoAttuale != percorsoCorrente[percorsoCorrente.Count - 2])
-                    {
-                        modifica = true;
-                        List<string> appo = new List<string>();
-                        appo.AddRange(percorsoCorrente);
-                        appo.Add(sottoAttuale);
-                        percorsi.Add(appo);
-                    }
-                }
-                else
-                {
-                    modifica = true;
-                    List<string> appo = new List<string>();
-                    appo.AddRange(percorsoCorrente);
-                    appo.Add(sottoAttuale);
-                    percorsi.Add(appo);
-                }
-            }
-
-            string sinistraAttuale = Utils.Destra(ultimoNodo);
-            if(sinistraAttuale != "" && !Utils.ControlloPresenza(caselleGiusteSbagliate, sinistraAttuale))
-            {
-                if(percorsoCorrente.Count > 1)
-                {
-                    if(sinistraAttuale != percorsoCorrente[percorsoCorrente.Count - 2])
-                    {
-                        modifica = true;
-                        List<string> appo = new List<string>();
-                        appo.AddRange(percorsoCorrente);
-                        appo.Add(sinistraAttuale);
-                        percorsi.Add(appo);
-                    }
-                }
-                else
-                {
-                    modifica = true;
-                    List<string> appo = new List<string>();
-                    appo.AddRange(percorsoCorrente);
-                    appo.Add(sinistraAttuale);
-                    percorsi.Add(appo);
-                }
-            }
-
-            if(modifica)
-            {
-                percorsi.RemoveAt(x);
-                modifica = false;
-            }
-            else
-            {
-                x++;
-            }
-        }
-
-        int percorsoSopra = 100; // numero di caselle per arrivare al traguardo della casella superiore alla casuella attuale
-        int percorsoDiagonaleDestra = 100; // numero di caselle per arrivare al traguardo della casella diagonale destra alla casuella attuale
-        int percorsoDestra = 100; // numero di caselle per arrivare al traguardo della casella a destra alla casuella attuale
-        int percorsoDiagonaleSottoDestra = 100; // numero di caselle per arrivare al traguardo della casella in diagonale sotto a destra alla casuella attuale
-        int percorsoSotto = 100; // numero di caselle per arrivare al traguardo della casella inferiore alla casuella attuale
-        int percorsoDiagonaleSOttoSinistra = 100; // numero di caselle per arrivare al traguardo della casella diagonale sotto sinistra alla casuella attuale
-        int percorsoSinistra = 100; // numero di caselle per arrivare al traguardo della casella a sinistra alla casuella attuale
-        int percorsoDiagonaleSinistra = 100; // numero di caselle per arrivare al traguardo della casella in diagonale sopra a sinistra alla casuella attuale
-        for(int y = 0; y < percorsi.Count; y++)
-        {
-            List<string> percorsoAttuale = percorsi[y];
-            if(percorsoAttuale[0] == sopra && percorsoAttuale.Count < percorsoSopra)
-            {
-                percorsoSopra = percorsoAttuale.Count;
-            }
-            else if(percorsoAttuale[0] == diagonaleDestra && percorsoAttuale.Count < percorsoDiagonaleDestra)
-            {
-                percorsoDiagonaleDestra = percorsoAttuale.Count;
-            }
-            else if(percorsoAttuale[0] == destra && percorsoAttuale.Count < percorsoDestra)
-            {
-                percorsoDestra = percorsoAttuale.Count;
-            }
-            else if(percorsoAttuale[0] == diagonaleSottoDestra && percorsoAttuale.Count < percorsoDiagonaleSottoDestra)
-            {
-                percorsoDiagonaleSottoDestra = percorsoAttuale.Count;
-            }
-            else if(percorsoAttuale[0] == sotto && percorsoAttuale.Count < percorsoSotto)
-            {
-                percorsoSotto = percorsoAttuale.Count;
-            }
-            else if(percorsoAttuale[0] == diagonaleSottoSinistra && percorsoAttuale.Count < percorsoDiagonaleSOttoSinistra)
-            {
-                percorsoDiagonaleSOttoSinistra = percorsoAttuale.Count;
-            }
-            else if(percorsoAttuale[0] == sinistra && percorsoAttuale.Count < percorsoSinistra)
-            {
-                percorsoSinistra = percorsoAttuale.Count;
-            }
-            else if(percorsoAttuale[0] == diagonaleSinistra && percorsoAttuale.Count < percorsoDiagonaleSinistra)
-            {
-                percorsoDiagonaleSinistra = percorsoAttuale.Count;
-            }
-        }
-        List<int> numeroPassi = new List<int> 
-        { 
-            percorsoSopra,
-            percorsoDiagonaleDestra,
-            percorsoDestra,
-            percorsoDiagonaleSottoDestra,
-            percorsoSotto,
-            percorsoDiagonaleSOttoSinistra,
-            percorsoSinistra,
-            percorsoDiagonaleSinistra
+            matrice[sopra[0], sopra[1]],
+            matrice[diagonaleDestra[0], diagonaleDestra[1]],
+            matrice[destra[0], destra[1]],
+            matrice[diagonaleSottoDestra[0], diagonaleSottoSinistra[1]],
+            matrice[sotto[0], sotto[1]],
+            matrice[diagonaleSottoSinistra[0], diagonaleSottoSinistra[1]],
+            matrice[sinistra[0], sinistra[1]],
+            matrice[diagonaleSinistra[0], diagonaleSinistra[1]]
         };
-        return numeroPassi;
+        return pesi;
+    }
+
+    int [,] CalcoloDistanze(int[,] matrice, List<string> caselleGiusteSbagliate, int valoreAttualeX, int valoreAttualeY)
+    {
+        if(valoreAttualeX == 3 && valoreAttualeY == 5)
+        {
+            for (int i = 0; i < matrice.GetLength(0); i++) // Scorre le righe
+            {
+                string riga = ""; // Accumula i valori della riga come stringa
+                for (int j = 0; j < matrice.GetLength(1); j++) // Scorre le colonne
+                {
+                    riga += matrice[i, j].ToString("D2") + " "; // Formatta il valore con spaziatura
+                }
+                Debug.Log(riga); // Stampa la riga nella Console di Unity
+            }
+            matrice[5, 3] = 1;
+            int[,] matriceUno = new int[6, 4];
+            int[,] matriceDue = new int[6, 4];
+            int[,] matriceTre = new int[6, 4];
+            string sotto = Utils.CreaCasella(valoreAttualeX, valoreAttualeY - 1);
+            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, sotto))
+            {
+                matriceUno = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX, valoreAttualeY - 1);
+            }
+            string destra = Utils.CreaCasella(valoreAttualeX - 1, valoreAttualeY);
+            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, destra))
+            {
+                matriceTre = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX - 1, valoreAttualeY);
+            }
+            string diagonaleSotto = Utils.CreaCasella(valoreAttualeX - 1, valoreAttualeY - 1);
+            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleSotto))
+            {
+                matriceDue = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX - 1, valoreAttualeY - 1);
+            }
+            matrice[4, 3] = matriceUno[4, 3];
+            matrice[4, 2] = matriceDue[4, 2];
+            matrice[5, 2] = matriceTre[5, 2];
+            return matrice;
+        }
+        else if(valoreAttualeX >= 0 && valoreAttualeY >= 0)
+        {
+            // Crea una stringa che includa tutto il contenuto
+            string output = $"X: {valoreAttualeX}, Y: {valoreAttualeY}\nMatrice:\n";
+
+            for (int i = 0; i < matrice.GetLength(0); i++) // Scorre le righe
+            {
+                for (int j = 0; j < matrice.GetLength(1); j++) // Scorre le colonne
+                {
+                    output += matrice[i, j].ToString("D2") + " "; // Aggiunge il valore formattato con spaziatura
+                }
+                output += "\n"; // Va a capo dopo ogni riga
+            }
+
+            // Stampa tutto in una singola chiamata a Debug.Log
+            Debug.Log(output);
+
+            if(valoreAttualeX < 3)
+            {
+                matrice[valoreAttualeY, valoreAttualeX] += matrice[valoreAttualeY, valoreAttualeX + 1];
+            }
+            if(valoreAttualeY < 5)
+            {
+                matrice[valoreAttualeY, valoreAttualeX] += matrice[valoreAttualeY + 1, valoreAttualeX];
+            }
+            if(valoreAttualeX < 3 && valoreAttualeY < 5)
+            {
+                matrice[valoreAttualeY, valoreAttualeX] += matrice[valoreAttualeY + 1, valoreAttualeX + 1];
+            }
+            int[,] matriceUno = new int[6, 4];
+            int[,] matriceDue = new int[6, 4];
+            int[,] matriceTre = new int[6, 4];
+            string sotto = Utils.CreaCasella(valoreAttualeX, valoreAttualeY - 1);
+            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, sotto) && valoreAttualeY != 0)
+            {
+                matriceUno = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX, valoreAttualeY - 1);
+                matrice[valoreAttualeY - 1, valoreAttualeX] = matriceUno[valoreAttualeY - 1, valoreAttualeX];
+            }
+            string destra = Utils.CreaCasella(valoreAttualeX - 1, valoreAttualeY);
+            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, destra) && valoreAttualeX != 0)
+            {
+                matriceTre = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX - 1, valoreAttualeY);
+                matrice[valoreAttualeY, valoreAttualeX - 1] = matriceTre[valoreAttualeY, valoreAttualeX - 1];
+            }
+            string diagonaleSotto = Utils.CreaCasella(valoreAttualeX - 1, valoreAttualeY - 1);
+            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleSotto) && valoreAttualeX != 0 && valoreAttualeY != 0)
+            {
+                matriceDue = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX - 1, valoreAttualeY - 1);
+                matrice[valoreAttualeY - 1, valoreAttualeX - 1] = matriceDue[valoreAttualeY - 1, valoreAttualeX - 1];
+            }
+            return matrice;
+        }
+        else
+        {
+            return matrice;
+        }
     }
 
     // Update is called once per frame
