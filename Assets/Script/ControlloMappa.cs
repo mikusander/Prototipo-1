@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.SqlTypes;
 using System.Linq;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
@@ -145,6 +146,7 @@ public class ControlloMappa : MonoBehaviour
             Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
             GameObject casellaSopraGameObject = GameObject.Find(Utils.Sopra(ultimaCasellaString));
             GameObject casellaSbagliataSopra = GameObject.Find("Errore " + Utils.Sopra(ultimaCasellaString));
+            int[] pesi = CondizioneGameOver(caselleGiusteSbagliate, ultimaCasellaString);
             if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
             {
                 SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
@@ -154,11 +156,26 @@ public class ControlloMappa : MonoBehaviour
                     logoTraguardo.SetActive(true);
                     casellaSopra.color = Color.white;
                 }
-                else if(casellaSopra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
+                else if(casellaSopra.color != Color.white)
                 {
-                    casellaSopra.color = new Color(255f, 255f, 0f, 255f);
-                    Vector3 spawnPos = casellaSopraGameObject.transform.position;
-                    Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    if(pesi[0] == 1)
+                    {
+                        casellaSopra.color = Color.red;
+                        Vector3 spawnPos = casellaSopraGameObject.transform.position;
+                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[0] == 2)
+                    {
+                        casellaSopra.color = new Color(255f, 255f, 0f, 255f);
+                        Vector3 spawnPos = casellaSopraGameObject.transform.position;
+                        Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[0] == 3)
+                    {
+                        casellaSopra.color = Color.green;
+                        Vector3 spawnPos = casellaSopraGameObject.transform.position;
+                        Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                    }
                 }
             }
             GameObject casellaDiagonaleGameObject = GameObject.Find(Utils.DiagonaleSinistra(ultimaCasellaString));
@@ -172,11 +189,26 @@ public class ControlloMappa : MonoBehaviour
                     logoTraguardo.SetActive(true);
                     casellaDiagonale.color = Color.white;
                 }
-                else if(casellaDiagonale.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
+                else if(casellaDiagonale.color != Color.white)
                 {
-                    casellaDiagonale.color = Color.red;
-                    Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
-                    Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
+                    if(pesi[7] == 1)
+                    {
+                        casellaDiagonale.color = Color.red;
+                        Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
+                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[7] == 2)
+                    {
+                        casellaDiagonale.color = new Color(255f, 255f, 0f, 255f);
+                        Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
+                        Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[7] == 3)
+                    {
+                        casellaDiagonale.color = Color.green;
+                        Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
+                        Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                    }
                 }
             }
             GameObject casellaSinistraGameObject = GameObject.Find(Utils.Sinistra(ultimaCasellaString));
@@ -191,22 +223,25 @@ public class ControlloMappa : MonoBehaviour
                     logoTraguardo.SetActive(true);
                     casellaSinistra.color = Color.white;
                 }
-                else if(valoreCasuale)
+                else if(casellaSinistra.color != Color.white)
                 {
-                    if(casellaSinistra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
+                    if(pesi[6] == 1)
                     {
-                        casellaSinistra.color = Color.green;
+                        casellaSinistra.color = Color.red;
                         Vector3 spawnPos = casellaSinistraGameObject.transform.position;
-                        Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
                     }
-                }
-                else
-                {
-                    if(casellaSinistra.color != Color.white && casellaSopraGameObject.name != "Casella 5,3")
+                    else if(pesi[6] == 2)
                     {
                         casellaSinistra.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaSinistraGameObject.transform.position;
                         Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[6] == 3)
+                    {
+                        casellaSinistra.color = Color.green;
+                        Vector3 spawnPos = casellaSinistraGameObject.transform.position;
+                        Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
                     }
                 }
             }
@@ -217,9 +252,24 @@ public class ControlloMappa : MonoBehaviour
                 SpriteRenderer casellaDiagonaleDestra = casellaDiagonaleDestraGameObject.GetComponent<SpriteRenderer>();
                 if(casellaDiagonaleDestra.color != Color.white)
                 {
-                    casellaDiagonaleDestra.color = Color.red;
-                    Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
-                    Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
+                    if(pesi[1] == 1)
+                    {
+                        casellaDiagonaleDestra.color = Color.red;
+                        Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
+                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[1] == 2)
+                    {
+                        casellaDiagonaleDestra.color = new Color(255f, 255f, 0f, 255f);
+                        Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
+                        Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[1] == 3)
+                    {
+                        casellaDiagonaleDestra.color = Color.green;
+                        Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
+                        Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                    }
                 }
             }
             GameObject casellaDestraGameObject = GameObject.Find(Utils.Destra(ultimaCasellaString));
@@ -227,18 +277,21 @@ public class ControlloMappa : MonoBehaviour
             if(casellaDestraGameObject != null && casellaSbagliataDestra == null)
             {
                 SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
-                if(valoreCasuale)
+                if(casellaDestra.color != Color.white)
                 {
-                    if(casellaDestra.color != Color.white)
+                    if(pesi[2] == 1)
+                    {
+                        casellaDestra.color = Color.red;
+                        Vector3 spawnPos = casellaDestraGameObject.transform.position;
+                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity); 
+                    }
+                    else if(pesi[2] == 2)
                     {
                         casellaDestra.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaDestraGameObject.transform.position;
                         Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
                     }
-                }
-                else
-                {
-                    if(casellaDestra.color != Color.white)
+                    else if(pesi[2] == 3)
                     {
                         casellaDestra.color = Color.green;
                         Vector3 spawnPos = casellaDestraGameObject.transform.position;
@@ -253,9 +306,24 @@ public class ControlloMappa : MonoBehaviour
                 SpriteRenderer casellaDiagonaleSottoDestra = casellaDiagonaleSottoDestraGameObject.GetComponent<SpriteRenderer>();
                 if(casellaDiagonaleSottoDestra.color != Color.white)
                 {
-                    casellaDiagonaleSottoDestra.color = new Color(255f, 255f, 0f, 255f);
-                    Vector3 spawnPos = casellaDiagonaleSottoDestraGameObject.transform.position;
-                    Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    if(pesi[3] == 1)
+                    {
+                        casellaDiagonaleSottoDestra.color = Color.red;
+                        Vector3 spawnPos = casellaDiagonaleSottoDestraGameObject.transform.position;
+                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[3] == 2)
+                    {
+                        casellaDiagonaleSottoDestra.color = new Color(255f, 255f, 0f, 255f);
+                        Vector3 spawnPos = casellaDiagonaleSottoDestraGameObject.transform.position;
+                        Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[3] == 3)
+                    {
+                        casellaDiagonaleSottoDestra.color = Color.green;
+                        Vector3 spawnPos = casellaDiagonaleSottoDestraGameObject.transform.position;
+                        Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                    }
                 }
             }
             GameObject casellaDiagonaleSottoSinistraGameObject = GameObject.Find(Utils.DiagonaleSottoSinistra(ultimaCasellaString));
@@ -265,9 +333,24 @@ public class ControlloMappa : MonoBehaviour
                 SpriteRenderer casellaDiagonaleSottoSinistra = casellaDiagonaleSottoSinistraGameObject.GetComponent<SpriteRenderer>();
                 if(casellaDiagonaleSottoSinistra.color != Color.white)
                 {
-                    casellaDiagonaleSottoSinistra.color = new Color(255f, 255f, 0f, 255f);
-                    Vector3 spawnPos = casellaDiagonaleSottoSinistraGameObject.transform.position;
-                    Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    if(pesi[5] == 1)
+                    {
+                        casellaDiagonaleSottoSinistra.color = Color.red;
+                        Vector3 spawnPos = casellaDiagonaleSottoSinistraGameObject.transform.position;
+                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[5] == 2)
+                    {
+                        casellaDiagonaleSottoSinistra.color = new Color(255f, 255f, 0f, 255f);
+                        Vector3 spawnPos = casellaDiagonaleSottoSinistraGameObject.transform.position;
+                        Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[5] == 3)
+                    {
+                        casellaDiagonaleSottoSinistra.color = Color.green;
+                        Vector3 spawnPos = casellaDiagonaleSottoSinistraGameObject.transform.position;
+                        Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                    }
                 }
             }
             GameObject casellaSottoGameObject = GameObject.Find(Utils.Sotto(ultimaCasellaString));
@@ -277,9 +360,24 @@ public class ControlloMappa : MonoBehaviour
                 SpriteRenderer casellaSotto = casellaSottoGameObject.GetComponent<SpriteRenderer>();
                 if(casellaSotto.color != Color.white)
                 {
-                    casellaSotto.color = new Color(255f, 255f, 0f, 255f);
-                    Vector3 spawnPos = casellaSottoGameObject.transform.position;
-                    Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                    if(pesi[4] == 1)
+                    {
+                        casellaSotto.color = Color.red;
+                        Vector3 spawnPos = casellaSottoGameObject.transform.position;
+                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[4] == 2)
+                    {
+                        casellaSotto.color = new Color(255f, 255f, 0f, 255f);
+                        Vector3 spawnPos = casellaSottoGameObject.transform.position;
+                        Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    }
+                    else if(pesi[4] == 3)
+                    {
+                        casellaSotto.color = Color.green;
+                        Vector3 spawnPos = casellaSottoGameObject.transform.position;
+                        Instantiate(difficoltaUno, spawnPos, Quaternion.identity);
+                    }
                 }
             }
             if(TempData.gioco && TempData.vittoria)
@@ -311,24 +409,7 @@ public class ControlloMappa : MonoBehaviour
                 }
                 else
                 {
-                    List<int> pesi = CondizioneGameOver(caselleGiusteSbagliate, ultimaCasellaString);
-                    Debug.Log(
-                       "sopra: " + pesi[0]
-                       + "\n" +
-                       "diagonaleDestra: " + pesi[1]
-                       + "\n" +
-                       "destra: " + pesi[2]
-                       + "\n" +
-                       "diagonaleSottoDestra: " + pesi[3]
-                       + "\n" +
-                       "sotto: " + pesi[4]
-                       + "\n" +
-                       "diagonaleSottoSinistra: " + pesi[5]
-                       + "\n" +
-                       "sinistra: " + pesi[6]
-                       + "\n" +
-                       "diagonaleSinistra: " + pesi[7]
-                     );
+                    
                 }
             }
         }
@@ -376,157 +457,192 @@ public class ControlloMappa : MonoBehaviour
         }
     }
 
-    List<int> CondizioneGameOver(List<string> caselleGiusteSbagliate, string ultimaCasella){
+    int[] CondizioneGameOver(List<string> caselleGiusteSbagliate, string ultimaCasella){
+        
         int[,] matrice = new int[6, 4];
-        int [,] matricePercorsi = CalcoloDistanze(matrice, caselleGiusteSbagliate, 3, 5);
-        int[] ultima = Utils.PrendiNumeri(ultimaCasella);
-        int[] sopra = new int[2];
-        int[] diagonaleDestra = new int[2];
-        int[] destra = new int[2];
-        int[] diagonaleSottoDestra = new int[2];
-        int[] sotto = new int[2];
-        int[] diagonaleSottoSinistra = new int[2];
-        int[] sinistra = new int[2];
-        int[] diagonaleSinistra = new int[2];
-        if(ultima[0] <= 5 && Utils.Sopra(ultimaCasella) != "")
+
+        for( int x = 0; x < caselleGiusteSbagliate.Count; x++ )
         {
-            sopra = Utils.PrendiNumeri(Utils.Sopra(ultimaCasella));
+            int[] numeri = Utils.PrendiNumeri(caselleGiusteSbagliate[x]);
+            matrice[numeri[1], numeri[0]] = -1;
         }
-        if(ultima[0] <= 5 && ultima[1] >= 0 && Utils.DiagonaleDestra(ultimaCasella) != "")
+
+        // Stampa il risultato
+        PrintMatrix(matrice);
+
+        // Partenza del BFS
+        int startX = 5, startY = 3;
+
+        // Chiama l'algoritmo BFS
+        BFS(matrice, startX, startY);
+
+        matrice[5, 3] = 1;
+        
+        // Stampa il risultato
+        PrintMatrix(matrice);
+
+        int[] appo = Utils.PrendiNumeri(ultimaCasella);
+
+        return minMax(matrice, appo[0], appo[1]);
+    }
+
+    private int[] minMax(int[,] matrice, int varX, int varY)
+    {
+        int[] miMa = new int[2];
+        miMa[0] = 100;
+        miMa[1] = 0;
+        var directions = new List<(int, int)>
         {
-            diagonaleDestra = Utils.PrendiNumeri(Utils.DiagonaleDestra(ultimaCasella));
-        }
-        if(ultima[1] >= 0 && Utils.Destra(ultimaCasella) != "")
-        {
-            destra = Utils.PrendiNumeri(Utils.Destra(ultimaCasella));
-        }
-        if(ultima[0] >= 0 && ultima[1] >= 0 && Utils.DiagonaleSottoDestra(ultimaCasella) != "")
-        {
-            diagonaleSottoDestra = Utils.PrendiNumeri(Utils.DiagonaleSottoDestra(ultimaCasella));
-        }
-        if(ultima[0] >= 0 && Utils.Sotto(ultimaCasella) != "")
-        {
-            sotto = Utils.PrendiNumeri(Utils.Sotto(ultimaCasella));
-        }
-        if(ultima[0] >= 0 && ultima[1] <= 3 && Utils.DiagonaleSottoSinistra(ultimaCasella) != "")
-        {
-            diagonaleSottoSinistra = Utils.PrendiNumeri(Utils.DiagonaleSottoSinistra(ultimaCasella));
-        }
-        if(ultima[1] <= 3 && Utils.Sinistra(ultimaCasella)!= "")
-        {
-            sinistra = Utils.PrendiNumeri(Utils.Sinistra(ultimaCasella));
-        }
-        if(ultima[0] <= 5 && ultima[1] <= 3 && Utils.DiagonaleSinistra(ultimaCasella) != "")
-        {
-            diagonaleSinistra = Utils.PrendiNumeri(Utils.DiagonaleSinistra(ultimaCasella));
-        }
-        List<int> pesi = new List<int> 
-        {
-            matrice[sopra[0], sopra[1]],
-            matrice[diagonaleDestra[0], diagonaleDestra[1]],
-            matrice[destra[0], destra[1]],
-            matrice[diagonaleSottoDestra[0], diagonaleSottoSinistra[1]],
-            matrice[sotto[0], sotto[1]],
-            matrice[diagonaleSottoSinistra[0], diagonaleSottoSinistra[1]],
-            matrice[sinistra[0], sinistra[1]],
-            matrice[diagonaleSinistra[0], diagonaleSinistra[1]]
+            (-1,  0), // Su
+            ( 1,  0), // Giù
+            ( 0, -1), // Sinistra
+            ( 0,  1), // Destra
+            (-1, -1), // Alto-sinistra
+            ( 1,  1), // Basso-destra
+            ( 1, -1), // Basso-sinistra
+            (-1,  1)  // Alto-destra
         };
+
+        foreach (var (dx, dy) in directions)
+        {
+            int newX = varX + dx;
+            int newY = varY + dy;
+
+            // Controlla che la nuova posizione sia valida
+            if (newX >= 0 && newX < 6 && newY >= 0 && newY < 6 && matrice[newX, newY] != -1)
+            {
+                // Aggiorna il minimo
+                if (miMa[0] > matrice[newX, newY])
+                {
+                    miMa[0] = matrice[newX, newY];
+                }
+                // Aggiorna il massimo
+                if (miMa[1] < matrice[newX, newY])
+                {
+                    miMa[1] = matrice[newX, newY];
+                }
+            }
+        }
+
+        // Mappa di direzioni e indici corrispondenti per 'pesi'
+        var directionIndices = new Dictionary<(int, int), int>
+        {
+            { (1,  0), 0 }, // Su
+            { (1,  -1), 1 }, // Alto-destra
+            { ( 0,  -1), 2 }, // Destra
+            { ( -1,  -1), 3 }, // Basso-destra
+            { ( -1,  0), 4 }, // Giù
+            { ( -1, 1), 5 }, // Basso-sinistra
+            { ( 0, 1), 6 }, // Sinistra
+            { (1, 1), 7 }  // Alto-sinistra
+        };
+
+        int[] pesi = new int[8];
+
+        foreach (var (dx, dy) in directions)
+        {
+            int newX = varX + dx;
+            int newY = varY + dy;
+
+            // Controlla che la nuova posizione sia valida
+            if (newX >= 0 && newX < 6 && newY >= 0 && newY < 6 && matrice[newX, newY] != -1)
+            {
+                int indice = directionIndices[(dx, dy)]; // Ottieni l'indice associato alla direzione
+                if (matrice[newX, newY] == miMa[0])
+                {
+                    pesi[indice] = 1;
+                }
+                else if (matrice[newX, newY] == miMa[1])
+                {
+                    pesi[indice] = 3;
+                }
+                else
+                {
+                    pesi[indice] = 2;
+                }
+            }
+        }
+
+        string stampa = "";
+        foreach(int i in pesi)
+        {
+            stampa += i + " ";
+        }
+        Debug.Log(stampa);
+
         return pesi;
     }
 
-    int [,] CalcoloDistanze(int[,] matrice, List<string> caselleGiusteSbagliate, int valoreAttualeX, int valoreAttualeY)
+
+    public static void BFS(int[,] matrice, int startX, int startY)
     {
-        if(valoreAttualeX == 3 && valoreAttualeY == 5)
+        int rows = matrice.GetLength(0);
+        int cols = matrice.GetLength(1);
+
+        // Direzioni per muoversi (su, giù, sinistra, destra + diagonali)
+        int[] dirX = { -1,  1,  0,  0, -1, -1,  1,  1 };
+        int[] dirY = {  0,  0, -1,  1, -1,  1, -1,  1 };
+
+        // Inizializza la coda per il BFS
+        Queue<(int, int)> queue = new Queue<(int, int)>();
+
+        // Aggiungi il punto di partenza alla coda e imposta la distanza iniziale a 0
+        queue.Enqueue((startX, startY));
+        matrice[startX, startY] = 0;
+
+        while (queue.Count > 0)
         {
-            for (int i = 0; i < matrice.GetLength(0); i++) // Scorre le righe
+            // Estrai l'elemento in testa alla coda
+            var (x, y) = queue.Dequeue();
+
+            // Esplora le direzioni adiacenti e diagonali
+            for (int i = 0; i < dirX.Length; i++)
             {
-                string riga = ""; // Accumula i valori della riga come stringa
-                for (int j = 0; j < matrice.GetLength(1); j++) // Scorre le colonne
+                int newX = x + dirX[i];
+                int newY = y + dirY[i];
+
+                // Controlla se la nuova posizione è valida
+                if (newX >= 0 && newX < rows && newY >= 0 && newY < cols)
                 {
-                    riga += matrice[i, j].ToString("D2") + " "; // Formatta il valore con spaziatura
+                    // Continua solo se la casella è raggiungibile e non ancora visitata
+                    if (matrice[newX, newY] == 0)
+                    {
+                        matrice[newX, newY] = matrice[x, y] + 1; // Aggiorna il numero di passi
+                        queue.Enqueue((newX, newY)); // Aggiungi la nuova posizione alla coda
+                    }
                 }
-                Debug.Log(riga); // Stampa la riga nella Console di Unity
             }
-            matrice[5, 3] = 1;
-            int[,] matriceUno = new int[6, 4];
-            int[,] matriceDue = new int[6, 4];
-            int[,] matriceTre = new int[6, 4];
-            string sotto = Utils.CreaCasella(valoreAttualeX, valoreAttualeY - 1);
-            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, sotto))
-            {
-                matriceUno = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX, valoreAttualeY - 1);
-            }
-            string destra = Utils.CreaCasella(valoreAttualeX - 1, valoreAttualeY);
-            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, destra))
-            {
-                matriceTre = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX - 1, valoreAttualeY);
-            }
-            string diagonaleSotto = Utils.CreaCasella(valoreAttualeX - 1, valoreAttualeY - 1);
-            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleSotto))
-            {
-                matriceDue = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX - 1, valoreAttualeY - 1);
-            }
-            matrice[4, 3] = matriceUno[4, 3];
-            matrice[4, 2] = matriceDue[4, 2];
-            matrice[5, 2] = matriceTre[5, 2];
-            return matrice;
         }
-        else if(valoreAttualeX >= 0 && valoreAttualeY >= 0)
-        {
-            // Crea una stringa che includa tutto il contenuto
-            string output = $"X: {valoreAttualeX}, Y: {valoreAttualeY}\nMatrice:\n";
 
-            for (int i = 0; i < matrice.GetLength(0); i++) // Scorre le righe
+        // Imposta a -1 le caselle inaccessibili che non sono state raggiunte
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
             {
-                for (int j = 0; j < matrice.GetLength(1); j++) // Scorre le colonne
+                if (matrice[i, j] == 0 && (i != startX || j != startY))
                 {
-                    output += matrice[i, j].ToString("D2") + " "; // Aggiunge il valore formattato con spaziatura
+                    matrice[i, j] = -1; // Non raggiunto
                 }
-                output += "\n"; // Va a capo dopo ogni riga
             }
-
-            // Stampa tutto in una singola chiamata a Debug.Log
-            Debug.Log(output);
-
-            if(valoreAttualeX < 3)
-            {
-                matrice[valoreAttualeY, valoreAttualeX] += matrice[valoreAttualeY, valoreAttualeX + 1];
-            }
-            if(valoreAttualeY < 5)
-            {
-                matrice[valoreAttualeY, valoreAttualeX] += matrice[valoreAttualeY + 1, valoreAttualeX];
-            }
-            if(valoreAttualeX < 3 && valoreAttualeY < 5)
-            {
-                matrice[valoreAttualeY, valoreAttualeX] += matrice[valoreAttualeY + 1, valoreAttualeX + 1];
-            }
-            int[,] matriceUno = new int[6, 4];
-            int[,] matriceDue = new int[6, 4];
-            int[,] matriceTre = new int[6, 4];
-            string sotto = Utils.CreaCasella(valoreAttualeX, valoreAttualeY - 1);
-            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, sotto) && valoreAttualeY != 0)
-            {
-                matriceUno = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX, valoreAttualeY - 1);
-                matrice[valoreAttualeY - 1, valoreAttualeX] = matriceUno[valoreAttualeY - 1, valoreAttualeX];
-            }
-            string destra = Utils.CreaCasella(valoreAttualeX - 1, valoreAttualeY);
-            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, destra) && valoreAttualeX != 0)
-            {
-                matriceTre = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX - 1, valoreAttualeY);
-                matrice[valoreAttualeY, valoreAttualeX - 1] = matriceTre[valoreAttualeY, valoreAttualeX - 1];
-            }
-            string diagonaleSotto = Utils.CreaCasella(valoreAttualeX - 1, valoreAttualeY - 1);
-            if(!Utils.ControlloPresenza(caselleGiusteSbagliate, diagonaleSotto) && valoreAttualeX != 0 && valoreAttualeY != 0)
-            {
-                matriceDue = CalcoloDistanze(matrice, caselleGiusteSbagliate, valoreAttualeX - 1, valoreAttualeY - 1);
-                matrice[valoreAttualeY - 1, valoreAttualeX - 1] = matriceDue[valoreAttualeY - 1, valoreAttualeX - 1];
-            }
-            return matrice;
         }
-        else
+    }
+
+    public static void PrintMatrix(int[,] matrice)
+    {
+        int rows = matrice.GetLength(0);
+        int cols = matrice.GetLength(1);
+        string matrix = "";
+
+        for (int i = 0; i < rows; i++)
         {
-            return matrice;
+            string row = "";
+            for (int j = 0; j < cols; j++)
+            {
+                row += matrice[i, j].ToString("D2") + " ";
+            }
+            matrix += row + "\n";
         }
+        Debug.Log(matrix);
     }
 
     // Update is called once per frame
