@@ -32,6 +32,7 @@ public class ControlloMappa : MonoBehaviour
     public GameObject bandieraTraguardo;
     public GameObject logoTraguardo;
     public bool valoreCasuale;
+    public int[] pesi;
 
     // Start is called before the first frame update
     void Start()
@@ -146,7 +147,7 @@ public class ControlloMappa : MonoBehaviour
             Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
             GameObject casellaSopraGameObject = GameObject.Find(Utils.Sopra(ultimaCasellaString));
             GameObject casellaSbagliataSopra = GameObject.Find("Errore " + Utils.Sopra(ultimaCasellaString));
-            int[] pesi = CondizioneGameOver(caselleGiusteSbagliate, ultimaCasellaString);
+            pesi = CondizioneGameOver(caselleGiusteSbagliate, ultimaCasellaString);
             if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
             {
                 SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
