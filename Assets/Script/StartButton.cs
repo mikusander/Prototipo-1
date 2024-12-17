@@ -11,6 +11,18 @@ public class StartButton : MonoBehaviour
         Transform casellaTransform = controlloMappa.baseScacchiera.transform.Find("Casella 0,0");
         if ( casellaTransform != null )
         {
+            string[] possibleChars = { "1", "2", "3", "0" };
+            int randomIndex = UnityEngine.Random.Range(0, possibleChars.Length);
+            controlloMappa.gameData.traguardo = "Casella " + "5," + possibleChars[randomIndex];
+            controlloMappa.gameData.SaveData();
+            Transform casellaFinale = controlloMappa.baseScacchiera.transform.Find(controlloMappa.gameData.traguardo);
+            Debug.Log(controlloMappa.gameData.traguardo);
+            if(casellaFinale != null)
+            {
+                Debug.Log("ciao");
+                UnityEngine.Vector3 spawnPos = casellaFinale.transform.position;
+                controlloMappa.bandieraTraguardo = Instantiate(controlloMappa.bandieraTraguardo, spawnPos, UnityEngine.Quaternion.identity);
+            }
             controlloMappa.gameData.stringValues.Add("Casella 0,0");
             controlloMappa.gameData.SaveData();
             GameObject casella = casellaTransform.gameObject;

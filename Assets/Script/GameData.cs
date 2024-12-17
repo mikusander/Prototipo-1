@@ -4,9 +4,12 @@ using System.IO;
 
 public class GameData : MonoBehaviour
 {
-    // Lista di stringhe di dimensione variabile
+    // Liste di stringhe di dimensione variabile
     public List<string> stringValues = new List<string>();
     public List<string> caselleSbagliate = new List<string>();
+
+    // Variabile aggiuntiva per "traguardo"
+    public string traguardo;
 
     // Percorso del file JSON
     private string filePath;
@@ -23,11 +26,12 @@ public class GameData : MonoBehaviour
     // Metodo per salvare i dati su file
     public void SaveData()
     {
-        // Crea una struttura che contiene sia la lista di stringhe che l'array di interi
+        // Crea una struttura che contiene le liste e il valore traguardo
         DataToSave data = new DataToSave
         {
             stringValues = stringValues,
-            caselleSbagliate = caselleSbagliate
+            caselleSbagliate = caselleSbagliate,
+            traguardo = traguardo // Salva anche il valore di traguardo
         };
 
         // Serializza l'oggetto in formato JSON
@@ -53,6 +57,7 @@ public class GameData : MonoBehaviour
             {
                 stringValues = data.stringValues ?? new List<string>();
                 caselleSbagliate = data.caselleSbagliate ?? new List<string>();
+                traguardo = data.traguardo ?? string.Empty; // Carica il valore di traguardo
             }
         }
         else
@@ -69,7 +74,8 @@ public class GameData : MonoBehaviour
         DataToSave defaultData = new DataToSave
         {
             stringValues = new List<string>(),      // Lista vuota di stringhe
-            caselleSbagliate = new List<string>()   // Lista vuota di caselle sbagliate
+            caselleSbagliate = new List<string>(),  // Lista vuota di caselle sbagliate
+            traguardo = ""                         // Valore iniziale di traguardo
         };
 
         // Serializza i dati iniziali in formato JSON
@@ -78,9 +84,10 @@ public class GameData : MonoBehaviour
         // Scrivi i dati nel file
         File.WriteAllText(filePath, json);
 
-        // Assegna i dati iniziali alle liste per usarli subito
+        // Assegna i dati iniziali alle variabili per usarli subito
         stringValues = defaultData.stringValues;
         caselleSbagliate = defaultData.caselleSbagliate;
+        traguardo = defaultData.traguardo;
     }
 }
 
@@ -88,6 +95,7 @@ public class GameData : MonoBehaviour
 [System.Serializable]
 public class DataToSave
 {
-    [SerializeField] public List<string> stringValues;  // Lista del percorso del personaggio percorso
+    [SerializeField] public List<string> stringValues;     // Lista del percorso del personaggio percorso
     [SerializeField] public List<string> caselleSbagliate; // Lista delle caselle che si sono sbagliate
+    [SerializeField] public string traguardo;             // Variabile aggiuntiva "traguardo"
 }

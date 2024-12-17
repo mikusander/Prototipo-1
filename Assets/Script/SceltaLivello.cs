@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -34,7 +35,7 @@ public class SceltaLivello : MonoBehaviour
                     colore = spriterenderer.color;
                     GameObject casellaSbagliata = GameObject.Find("Errore " + gameObject.name);
                     if (
-                        (gameObject.name == "Casella 5,3" || colore != Color.white)
+                        (gameObject.name == controlloMappa.gameData.traguardo || colore != Color.white)
                         && 
                         casellaSbagliata == null 
                         && 
@@ -42,7 +43,7 @@ public class SceltaLivello : MonoBehaviour
                     )
                     {
                         // casella sopra di colore giallo, difficoltà due
-                        if(gameObject.name == "Casella 5,3")
+                        if(gameObject.name == controlloMappa.gameData.traguardo)
                         {
                             if(TempData.casellaCliccata == gameObject.name)
                             {
@@ -107,7 +108,7 @@ public class SceltaLivello : MonoBehaviour
                         }
                     }
                     else if (
-                        (gameObject.name == "Casella 5,3" || colore != Color.white) 
+                        (gameObject.name == controlloMappa.gameData.traguardo || colore != Color.white) 
                         && 
                         casellaSbagliata == null 
                         && 
@@ -115,7 +116,7 @@ public class SceltaLivello : MonoBehaviour
                         )
                     {
                         // casella diagonale sinistra di colore rosso
-                        if(gameObject.name == "Casella 5,3")
+                        if(gameObject.name == controlloMappa.gameData.traguardo)
                         {
                             if(TempData.casellaCliccata == gameObject.name)
                             {
@@ -154,6 +155,7 @@ public class SceltaLivello : MonoBehaviour
                             }
                             else
                             {
+                                Debug.Log(controlloMappa.pesi.Count());
                                 if(controlloMappa.pesi[7] == 3)
                                 {
                                     controlloMappa.scrittaPrincipale.SetActive(false);
@@ -180,7 +182,7 @@ public class SceltaLivello : MonoBehaviour
                         }
                     }
                     else if (
-                        (gameObject.name == "Casella 5,3" || colore != Color.white) 
+                        (gameObject.name == controlloMappa.gameData.traguardo || colore != Color.white) 
                         && 
                         casellaSbagliata == null 
                         && 
@@ -188,7 +190,7 @@ public class SceltaLivello : MonoBehaviour
                         )
                     {
                         // casella a sinistra di colore verde o giallo, difficoltà 1 o 2
-                        if(gameObject.name == "Casella 5,3")
+                        if(gameObject.name == controlloMappa.gameData.traguardo)
                         {
                             if(TempData.casellaCliccata == gameObject.name)
                             {
