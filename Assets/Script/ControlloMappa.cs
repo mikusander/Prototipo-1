@@ -83,6 +83,10 @@ public class ControlloMappa : MonoBehaviour
         else if (gameData.stringValues.Count == 1)
         {
             scrittaPrincipale.SetActive(true);
+            List<string> caselleGiusteSbagliate = new List<string>();
+            caselleGiusteSbagliate.AddRange(gameData.stringValues);
+            caselleGiusteSbagliate.AddRange(gameData.caselleSbagliate);
+            pesi = CondizioneGameOver(caselleGiusteSbagliate, "Casella 0,0");
             Transform casellaTransform = baseScacchiera.transform.Find("Casella 0,0");
             if ( casellaTransform != null )
             {
@@ -101,9 +105,9 @@ public class ControlloMappa : MonoBehaviour
                 if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
                 {
                     SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
-                    casellaSopra.color = new Color(255f, 255f, 0f, 255f);
+                    casellaSopra.color = Color.red;
                     Vector3 spawnPos = casellaSopraGameObject.transform.position;
-                    Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
+                    Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
                 }
                 GameObject casellaDiagonaleGameObject = GameObject.Find(Utils.DiagonaleSinistra(casella.name));
                 GameObject casellaSbagliataDiagonale = GameObject.Find("Errore " + Utils.DiagonaleSinistra(casella.name));
