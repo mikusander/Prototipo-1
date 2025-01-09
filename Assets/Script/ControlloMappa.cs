@@ -65,6 +65,28 @@ public class ControlloMappa : MonoBehaviour
                 bandieraTraguardo = Instantiate(bandieraTraguardo, spawnPos, UnityEngine.Quaternion.identity);
             }
         }
+        if(gameData.inizio == "")
+        {
+            string[] possibleChars = { "1", "2", "3", "0" };
+            int randomIndex = UnityEngine.Random.Range(0, possibleChars.Length);
+            gameData.inizio = "Casella " + "0," + possibleChars[randomIndex];
+            gameData.SaveData();
+            GameObject casellaInizio = GameObject.Find(gameData.inizio);
+            if(casellaInizio != null)
+            {
+                UnityEngine.Vector3 spawnPos = casellaInizio.transform.position;
+                player = Instantiate(player, spawnPos, UnityEngine.Quaternion.identity);
+            }
+        }
+        else
+        {
+            GameObject casellaInizio = GameObject.Find(gameData.inizio);
+            if(casellaInizio != null)
+            {
+                UnityEngine.Vector3 spawnPos = casellaInizio.transform.position;
+                player = Instantiate(player, spawnPos, UnityEngine.Quaternion.identity);
+            }
+        }
         bool nuovoErrore = false;
         if(gameData.caselleSbagliate.Count > 0 && TempData.ultimoErrore != gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1])
         {

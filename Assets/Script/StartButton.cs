@@ -16,10 +16,8 @@ public class StartButton : MonoBehaviour
             controlloMappa.gameData.traguardo = "Casella " + "5," + possibleChars[randomIndex];
             controlloMappa.gameData.SaveData();
             Transform casellaFinale = controlloMappa.baseScacchiera.transform.Find(controlloMappa.gameData.traguardo);
-            Debug.Log(controlloMappa.gameData.traguardo);
             if(casellaFinale != null)
             {
-                Debug.Log("ciao");
                 UnityEngine.Vector3 spawnPos = casellaFinale.transform.position;
                 controlloMappa.bandieraTraguardo = Instantiate(controlloMappa.bandieraTraguardo, spawnPos, UnityEngine.Quaternion.identity);
             }

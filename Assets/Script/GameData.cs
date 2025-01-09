@@ -10,6 +10,7 @@ public class GameData : MonoBehaviour
 
     // Variabile aggiuntiva per "traguardo"
     public string traguardo;
+    public string inizio;
 
     // Percorso del file JSON
     private string filePath;
@@ -31,7 +32,8 @@ public class GameData : MonoBehaviour
         {
             stringValues = stringValues,
             caselleSbagliate = caselleSbagliate,
-            traguardo = traguardo // Salva anche il valore di traguardo
+            traguardo = traguardo, // Salva anche il valore di traguardo
+            inizio = inizio
         };
 
         // Serializza l'oggetto in formato JSON
@@ -58,6 +60,7 @@ public class GameData : MonoBehaviour
                 stringValues = data.stringValues ?? new List<string>();
                 caselleSbagliate = data.caselleSbagliate ?? new List<string>();
                 traguardo = data.traguardo ?? string.Empty; // Carica il valore di traguardo
+                inizio = data.inizio ?? string.Empty;
             }
         }
         else
@@ -75,7 +78,8 @@ public class GameData : MonoBehaviour
         {
             stringValues = new List<string>(),      // Lista vuota di stringhe
             caselleSbagliate = new List<string>(),  // Lista vuota di caselle sbagliate
-            traguardo = ""                         // Valore iniziale di traguardo
+            traguardo = "",                         // Valore iniziale di traguardo
+            inizio = ""
         };
 
         // Serializza i dati iniziali in formato JSON
@@ -88,6 +92,7 @@ public class GameData : MonoBehaviour
         stringValues = defaultData.stringValues;
         caselleSbagliate = defaultData.caselleSbagliate;
         traguardo = defaultData.traguardo;
+        inizio = defaultData.inizio;
     }
 }
 
@@ -98,4 +103,5 @@ public class DataToSave
     [SerializeField] public List<string> stringValues;     // Lista del percorso del personaggio percorso
     [SerializeField] public List<string> caselleSbagliate; // Lista delle caselle che si sono sbagliate
     [SerializeField] public string traguardo;             // Variabile aggiuntiva "traguardo"
+    [SerializeField] public string inizio;
 }
