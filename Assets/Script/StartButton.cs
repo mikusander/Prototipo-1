@@ -8,21 +8,29 @@ public class StartButton : MonoBehaviour
     public void AvviaGioco()
     {
         controlloMappa.scrittaPrincipale.SetActive(true);
-        Transform casellaTransform = controlloMappa.baseScacchiera.transform.Find("Casella 0,0");
-        if ( casellaTransform != null )
+        string[] possibleChars = { "1", "2", "3", "0" };
+        int randomIndex = UnityEngine.Random.Range(0, possibleChars.Length);
+        controlloMappa.gameData.traguardo = "Casella " + "5," + possibleChars[randomIndex];
+        Transform casellaFinale = controlloMappa.baseScacchiera.transform.Find(controlloMappa.gameData.traguardo);
+        if (casellaFinale != null)
         {
-            string[] possibleChars = { "1", "2", "3", "0" };
-            int randomIndex = UnityEngine.Random.Range(0, possibleChars.Length);
-            controlloMappa.gameData.traguardo = "Casella " + "5," + possibleChars[randomIndex];
-            controlloMappa.gameData.SaveData();
-            Transform casellaFinale = controlloMappa.baseScacchiera.transform.Find(controlloMappa.gameData.traguardo);
-            if(casellaFinale != null)
-            {
-                UnityEngine.Vector3 spawnPos = casellaFinale.transform.position;
-                controlloMappa.bandieraTraguardo = Instantiate(controlloMappa.bandieraTraguardo, spawnPos, UnityEngine.Quaternion.identity);
-            }
-            controlloMappa.gameData.stringValues.Add("Casella 0,0");
-            controlloMappa.gameData.SaveData();
+            UnityEngine.Vector3 spawnPos = casellaFinale.transform.position;
+            controlloMappa.bandieraTraguardo = Instantiate(controlloMappa.bandieraTraguardo, spawnPos, UnityEngine.Quaternion.identity);
+        }
+        int randomIndexInizio = UnityEngine.Random.Range(0, possibleChars.Length);
+        controlloMappa.gameData.inizio = "Casella " + "0," + possibleChars[randomIndexInizio];
+        controlloMappa.gameData.stringValues.Add(controlloMappa.gameData.inizio);
+        Transform casellaInizio = controlloMappa.baseScacchiera.transform.Find(controlloMappa.gameData.inizio);
+        if (casellaInizio != null)
+        {
+            UnityEngine.Vector3 spawnPos = casellaInizio.transform.position;
+            controlloMappa.player = Instantiate(controlloMappa.player, spawnPos, UnityEngine.Quaternion.identity);
+        }
+        List<string> singleElementList = new List<string> { controlloMappa.gameData.inizio };
+        controlloMappa.pesi = controlloMappa.CondizioneGameOver(singleElementList, controlloMappa.gameData.inizio);
+        Transform casellaTransform = controlloMappa.baseScacchiera.transform.Find(controlloMappa.gameData.inizio);
+        if (casellaTransform != null)
+        {
             GameObject casella = casellaTransform.gameObject;
             // Cambia colore usando il componente Renderer
             SpriteRenderer renderer = casella.GetComponent<SpriteRenderer>();
@@ -33,47 +41,125 @@ public class StartButton : MonoBehaviour
                 // Modifica il colore del materiale
                 renderer.color = Color.white;
             }
-            Transform casellaSopraTransform = controlloMappa.baseScacchiera.transform.Find("Casella 1,0");
-            if (casellaSopraTransform != null )
+            GameObject casellaSopraGameObject = controlloMappa.baseScacchiera.transform.Find(Utils.Sopra(casella.name)).gameObject;
+            if (casellaSopraGameObject != null)
             {
-                GameObject casellaSopra = casellaSopraTransform.gameObject;
-                SpriteRenderer rendererSopra = casellaSopra.GetComponent<SpriteRenderer>();
-                if (rendererSopra != null)
+                SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
+                if(controlloMappa.pesi[0] == 1)
                 {
-                    rendererSopra.color = new Color (255f, 255f, 0f, 255f);
-                    Vector3 spawnPos = casellaSopraTransform.position;
-                    Instantiate(controlloMappa.difficoltaDue, spawnPos, Quaternion.identity);
+                    casellaSopra.color = Color.red;
+                    UnityEngine.Vector3 spawnPos = casellaSopraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaTre, spawnPos, UnityEngine.Quaternion.identity);
+                }
+                else if(controlloMappa.pesi[0] == 2)
+                {
+                    casellaSopra.color = new Color(255f, 255f, 0f, 255f);
+                    UnityEngine.Vector3 spawnPos = casellaSopraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaDue, spawnPos, UnityEngine.Quaternion.identity);
+                }
+                else if(controlloMappa.pesi[0] == 3)
+                {
+                    casellaSopra.color = Color.green;
+                    UnityEngine.Vector3 spawnPos = casellaSopraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaUno, spawnPos, UnityEngine.Quaternion.identity);
                 }
             }
-            Transform casellaDiagonaleTransform = controlloMappa.baseScacchiera.transform.Find("Casella 1,1");
-            if (casellaDiagonaleTransform != null )
+            GameObject casellaDiagonaleGameObject = controlloMappa.baseScacchiera.transform.Find(Utils.DiagonaleSinistra(casella.name)).gameObject;
+            if (casellaDiagonaleGameObject != null)
             {
-                GameObject casellaDiagonale = casellaDiagonaleTransform.gameObject;
-                SpriteRenderer rendererDiagonale = casellaDiagonale.GetComponent<SpriteRenderer>();
-                if (rendererDiagonale != null)
+                SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
+                if(controlloMappa.pesi[7] == 1)
                 {
-                    rendererDiagonale.color = Color.red;
-                    Vector3 spawnPos = casellaDiagonaleTransform.position;
-                    Instantiate(controlloMappa.difficoltaTre, spawnPos, Quaternion.identity);
+                    casellaDiagonale.color = Color.red;
+                    UnityEngine.Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaTre, spawnPos, UnityEngine.Quaternion.identity);
+                }
+                else if(controlloMappa.pesi[7] == 2)
+                {
+                    casellaDiagonale.color = new Color(255f, 255f, 0f, 255f);
+                    UnityEngine.Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaDue, spawnPos, UnityEngine.Quaternion.identity);
+                }
+                else if(controlloMappa.pesi[7] == 3)
+                {
+                    casellaDiagonale.color = Color.green;
+                    UnityEngine.Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaUno, spawnPos, UnityEngine.Quaternion.identity);
                 }
             }
-            Transform casellaSinistraTransform = controlloMappa.baseScacchiera.transform.Find("Casella 0,1");
-            if ( casellaSinistraTransform != null )
+            GameObject casellaSinistraGameObject = controlloMappa.baseScacchiera.transform.Find(Utils.Sinistra(casella.name)).gameObject;
+            if (casellaSinistraGameObject != null)
             {
-                GameObject casellaSinistra = casellaSinistraTransform.gameObject;
-                SpriteRenderer rendererSinistra = casellaSinistra.GetComponent<SpriteRenderer>();
-                if (rendererSinistra != null)
+                SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
+                if(controlloMappa.pesi[6] == 1)
                 {
-                    rendererSinistra.color = Color.green;
-                    Vector3 spawnPos = casellaSinistraTransform.position;
-                    Instantiate(controlloMappa.difficoltaUno, spawnPos, Quaternion.identity);
+                    casellaSinistra.color = Color.red;
+                    UnityEngine.Vector3 spawnPos = casellaSinistraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaTre, spawnPos, UnityEngine.Quaternion.identity);
+                }
+                else if(controlloMappa.pesi[6] == 2)
+                {
+                    casellaSinistra.color = new Color(255f, 255f, 0f, 255f);
+                    UnityEngine.Vector3 spawnPos = casellaSinistraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaDue, spawnPos, UnityEngine.Quaternion.identity);
+                }
+                else if(controlloMappa.pesi[6] == 3)
+                {
+                    casellaSinistra.color = Color.green;
+                    UnityEngine.Vector3 spawnPos = casellaSinistraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaUno, spawnPos, UnityEngine.Quaternion.identity);
                 }
             }
-            Vector3 spawnPosition = casella.transform.position;
-            controlloMappa.player = Instantiate(controlloMappa.player, spawnPosition, Quaternion.identity);
+            GameObject casellaDiagonaleDestraGameObject = controlloMappa.baseScacchiera.transform.Find(Utils.DiagonaleDestra(casella.name)).gameObject;
+            if(casellaDiagonaleDestraGameObject != null)
+            {
+                SpriteRenderer casellaDiagonaleDestra = casellaDiagonaleDestraGameObject.GetComponent<SpriteRenderer>();
+                if (controlloMappa.pesi[1] == 1)
+                {
+                    casellaDiagonaleDestra.color = Color.red;
+                    UnityEngine.Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaTre, spawnPos, UnityEngine.Quaternion.identity);
+                }
+                else if (controlloMappa.pesi[1] == 2)
+                {
+                    casellaDiagonaleDestra.color = new Color(255f, 255f, 0f, 255f);
+                    UnityEngine.Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaDue, spawnPos, UnityEngine.Quaternion.identity);
+                }
+                else if (controlloMappa.pesi[1] == 3)
+                {
+                    casellaDiagonaleDestra.color = Color.green;
+                    UnityEngine.Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaUno, spawnPos, UnityEngine.Quaternion.identity);
+                }
+            }
+            GameObject casellaDestraGameObject = controlloMappa.baseScacchiera.transform.Find(Utils.Destra(casella.name)).gameObject;
+            if (casellaDiagonaleDestraGameObject != null)
+            {
+                SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
+                if (controlloMappa.pesi[2] == 1)
+                {
+                    casellaDestra.color = Color.red;
+                    UnityEngine.Vector3 spawnPos = casellaDestraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaTre, spawnPos, UnityEngine.Quaternion.identity);
+                }
+                else if (controlloMappa.pesi[2] == 2)
+                {
+                    casellaDestra.color = new Color(255f, 255f, 0f, 255f);
+                    UnityEngine.Vector3 spawnPos = casellaDestraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaDue, spawnPos, UnityEngine.Quaternion.identity);
+                }
+                else if (controlloMappa.pesi[2] == 3)
+                {
+                    casellaDestra.color = Color.green;
+                    UnityEngine.Vector3 spawnPos = casellaDestraGameObject.transform.position;
+                    Instantiate(controlloMappa.difficoltaUno, spawnPos, UnityEngine.Quaternion.identity);
+                }
+            }
         }
         gameObject.SetActive(false);
         controlloMappa.scrittaIniziale.SetActive(false);
         controlloMappa.baseScacchiera.SetActive(true);
+        controlloMappa.gameData.SaveData();
     }
 }

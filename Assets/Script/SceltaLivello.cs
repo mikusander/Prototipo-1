@@ -155,7 +155,6 @@ public class SceltaLivello : MonoBehaviour
                             }
                             else
                             {
-                                Debug.Log(controlloMappa.pesi.Count());
                                 if(controlloMappa.pesi[7] == 3)
                                 {
                                     controlloMappa.scrittaPrincipale.SetActive(false);
