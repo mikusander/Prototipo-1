@@ -128,7 +128,7 @@ public class ControlloMappa : MonoBehaviour
             caselleGiusteSbagliate.AddRange(gameData.caselleSbagliate);
             string ultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 1];
             Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
-            pesi = CondizioneGameOver(caselleGiusteSbagliate, ultimaCasellaString);
+            pesi = CondizioneGameOver(caselleGiusteSbagliate, ultimaCasellaString, gameData.traguardo);
             Transform casellaTransform = baseScacchiera.transform.Find(gameData.inizio);
             if ( casellaTransform != null )
             {
@@ -292,7 +292,7 @@ public class ControlloMappa : MonoBehaviour
             caselleGiusteSbagliate.AddRange(gameData.caselleSbagliate);
             string ultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 1];
             Transform ultimaCasellaTransform = baseScacchiera.transform.Find(ultimaCasellaString);
-            pesi = CondizioneGameOver(caselleGiusteSbagliate, ultimaCasellaString);
+            pesi = CondizioneGameOver(caselleGiusteSbagliate, ultimaCasellaString, gameData.traguardo);
             GameObject casellaSopraGameObject = GameObject.Find(Utils.Sopra(ultimaCasellaString));
             GameObject casellaSbagliataSopra = GameObject.Find("Errore " + Utils.Sopra(ultimaCasellaString));
             if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
@@ -622,7 +622,7 @@ public class ControlloMappa : MonoBehaviour
         }
     }
 
-    public int[] CondizioneGameOver(List<string> caselleGiusteSbagliate, string ultimaCasella){
+    public int[] CondizioneGameOver(List<string> caselleGiusteSbagliate, string ultimaCasella, string casellaTraguardo){
         
         int[,] matrice = new int[6, 4];
 
@@ -632,19 +632,15 @@ public class ControlloMappa : MonoBehaviour
             matrice[numeri[0], numeri[1]] = -1;
         }
 
-        // Stampa il risultato
-        PrintMatrix(matrice);
+        int[] numeriCasellaFinale = Utils.PrendiNumeri(casellaTraguardo);
 
         // Partenza del BFS
-        int startX = 5, startY = 3;
+        int startX = numeriCasellaFinale[0], startY = numeriCasellaFinale[1];
 
         // Chiama l'algoritmo BFS
         BFS(matrice, startX, startY);
 
-        matrice[5, 3] = 1;
-        
-        // Stampa il risultato
-        PrintMatrix(matrice);
+        matrice[numeriCasellaFinale[0], numeriCasellaFinale[1]] = 1;
 
         int[] appo = Utils.PrendiNumeri(ultimaCasella);
 
@@ -728,13 +724,6 @@ public class ControlloMappa : MonoBehaviour
             }
         }
 
-        string stampa = "";
-        foreach(int i in pesi)
-        {
-            stampa += i + " ";
-        }
-        Debug.Log(stampa);
-
         return pesi;
     }
 
@@ -790,24 +779,6 @@ public class ControlloMappa : MonoBehaviour
                 }
             }
         }
-    }
-
-    public static void PrintMatrix(int[,] matrice)
-    {
-        int rows = matrice.GetLength(0);
-        int cols = matrice.GetLength(1);
-        string matrix = "";
-
-        for (int i = 0; i < rows; i++)
-        {
-            string row = "";
-            for (int j = 0; j < cols; j++)
-            {
-                row += matrice[i, j].ToString("D2") + " ";
-            }
-            matrix += row + "\n";
-        }
-        Debug.Log(matrix);
     }
 
     // Update is called once per frame

@@ -27,7 +27,7 @@ public class StartButton : MonoBehaviour
             controlloMappa.player = Instantiate(controlloMappa.player, spawnPos, UnityEngine.Quaternion.identity);
         }
         List<string> singleElementList = new List<string> { controlloMappa.gameData.inizio };
-        controlloMappa.pesi = controlloMappa.CondizioneGameOver(singleElementList, controlloMappa.gameData.inizio);
+        controlloMappa.pesi = controlloMappa.CondizioneGameOver(singleElementList, controlloMappa.gameData.inizio, controlloMappa.gameData.traguardo);
         Transform casellaTransform = controlloMappa.baseScacchiera.transform.Find(controlloMappa.gameData.inizio);
         if (casellaTransform != null)
         {

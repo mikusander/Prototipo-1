@@ -168,4 +168,22 @@ public static class Utils
         }
         return false;
     }
+
+    public static void PrintMatrix(int[,] matrice)
+    {
+        int rows = matrice.GetLength(0);
+        int cols = matrice.GetLength(1);
+        string matrix = "";
+
+        for (int i = 0; i < rows; i++)
+        {
+            string row = "";
+            for (int j = 0; j < cols; j++)
+            {
+                row += matrice[i, j].ToString("D2") + " ";
+            }
+            matrix += row + "\n";
+        }
+        Debug.Log(matrix);
+    }
 }
