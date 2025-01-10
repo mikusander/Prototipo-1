@@ -1,5 +1,1 @@
 La velocità della luce è di circa 300.000 chilometri al secondo;true
-L'Antartide ha più deserti sabbiosi dell'Africa; false
-Il Nobel per la letteratura è stato assegnato a Gabriel García Márquez nel 1982;true
-Il vincitore del pallone d'oro 2024 è messi?;false
-Ronaldo il fenomeno non ha mai vinto un pallone d'oro;false

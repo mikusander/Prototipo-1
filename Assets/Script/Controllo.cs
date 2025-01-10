@@ -39,7 +39,7 @@ public class Controllo : MonoBehaviour
     public int numeroDomande;
     public Question currentQuestion;
     public int puntiAttuali = 0;
-    public bool isUltima = false;
+    public bool isUltima = true;
     public GameData gameData;
     private int totaleDomande;
     private int vitt;
@@ -86,6 +86,7 @@ public class Controllo : MonoBehaviour
     {
         if (gameover)
         {
+            Debug.Log("1");
             if (puntiAttuali >= vitt + 1)
             {
                 gameData.stringValues.Add(TempData.ultimaCasella);
@@ -99,14 +100,6 @@ public class Controllo : MonoBehaviour
                 TempData.vittoria = false;
             }
             SceneManager.LoadScene("Mappa");
-        }
-        else if ((numeroDomande + puntiAttuali) < vitt + 1)
-        {
-            gameover = true;
-            gameData.caselleSbagliate.Add(TempData.ultimaCasella);
-            gameData.SaveData();
-            TempData.vittoria = false;
-            SceneManager.LoadScene("mappa");
         }
         else if (questions.Count == 0 && !isUltima) 
         {

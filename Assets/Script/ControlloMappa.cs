@@ -733,9 +733,9 @@ public class ControlloMappa : MonoBehaviour
         int rows = matrice.GetLength(0);
         int cols = matrice.GetLength(1);
 
-        // Direzioni per muoversi (su, giù, sinistra, destra + diagonali)
-        int[] dirX = { -1,  1,  0,  0, -1, -1,  1,  1 };
-        int[] dirY = {  0,  0, -1,  1, -1,  1, -1,  1 };
+        // Direzioni per muoversi (su, giù, sinistra, destra)
+        int[] dirX = { -1,  1,  0,  0 };
+        int[] dirY = {  0,  0, -1,  1 };
 
         // Inizializza la coda per il BFS
         Queue<(int, int)> queue = new Queue<(int, int)>();
@@ -749,7 +749,7 @@ public class ControlloMappa : MonoBehaviour
             // Estrai l'elemento in testa alla coda
             var (x, y) = queue.Dequeue();
 
-            // Esplora le direzioni adiacenti e diagonali
+            // Esplora le direzioni adiacenti
             for (int i = 0; i < dirX.Length; i++)
             {
                 int newX = x + dirX[i];
@@ -780,6 +780,7 @@ public class ControlloMappa : MonoBehaviour
             }
         }
     }
+
 
     // Update is called once per frame
     void Update()

@@ -322,6 +322,8 @@ public class SceltaLivello : MonoBehaviour
                             {
                                 TempData.difficolta = "Domande difficili";
                             }
+                            TempData.ultimaCasella = gameObject.name;
+                            SceneManager.LoadScene("RispostaDomande");
                         }
                         else
                         {

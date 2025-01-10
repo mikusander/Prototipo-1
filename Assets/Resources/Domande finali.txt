@@ -1,5 +1,1 @@
 L'italia ha 20 regioni?;true
-Fellini era un regista?;true
-I mesi dell'anno sono 13?;false
-Il cavallo di Napoleone era bianco?;true
-I canguri sono rettili?;false
