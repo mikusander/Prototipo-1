@@ -664,6 +664,10 @@ public class ControlloMappa : MonoBehaviour
             (-1,  1)  // Alto-destra
         };
 
+        int contaMin = 0;
+        int contaMax = 0;
+        int contaCaselle = 0;
+
         foreach (var (dx, dy) in directions)
         {
             int newX = varX + dx;
@@ -672,14 +676,17 @@ public class ControlloMappa : MonoBehaviour
             // Controlla che la nuova posizione sia valida
             if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrice[newX, newY] != -1)
             {
+                contaCaselle += 1;
                 // Aggiorna il minimo
                 if (miMa[0] > matrice[newX, newY])
                 {
+                    contaMin += 1;
                     miMa[0] = matrice[newX, newY];
                 }
                 // Aggiorna il massimo
                 if (miMa[1] < matrice[newX, newY])
                 {
+                    contaMax += 1;
                     miMa[1] = matrice[newX, newY];
                 }
             }
@@ -700,6 +707,8 @@ public class ControlloMappa : MonoBehaviour
 
         int[] pesi = new int[8];
 
+        int numeroCaselleUno = 0, numeroCaselleDue = 0, numeroCaselleUnoDue = contaCaselle - contaMax;
+
         foreach (var (dx, dy) in directions)
         {
             int newX = varX + dx;
@@ -709,17 +718,52 @@ public class ControlloMappa : MonoBehaviour
             if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrice[newX, newY] != -1)
             {
                 int indice = directionIndices[(dx, dy)]; // Ottieni l'indice associato alla direzione
-                if (matrice[newX, newY] == miMa[0])
+                if(contaCaselle - contaMax - contaMin == 0)
                 {
-                    pesi[indice] = 1;
-                }
-                else if (matrice[newX, newY] == miMa[1])
-                {
-                    pesi[indice] = 3;
+                    if (matrice[newX, newY] == miMa[0])
+                    {
+                        pesi[indice] = 1;
+                    }
+                    else
+                    {
+                        if (numeroCaselleUno == (int) numeroCaselleUnoDue / 2)
+                        {
+                            pesi[indice] = 2;
+                            numeroCaselleDue += 1;
+                        }
+                        else if (numeroCaselleDue == (int) numeroCaselleUnoDue / 2)
+                        {
+                            pesi[indice] = 3;
+                            numeroCaselleUno += 1;
+                        }
+                        else
+                        {
+                            pesi[indice] = UnityEngine.Random.Range(2,4);
+                            if(pesi[indice] == 3)
+                            {
+                                numeroCaselleUno += 1;
+                            }
+                            else
+                            {
+                                numeroCaselleDue += 1;
+                            }
+                        }
+                    }
                 }
                 else
                 {
-                    pesi[indice] = 2;
+                    if (matrice[newX, newY] == miMa[0])
+                    {
+                        pesi[indice] = 1;
+                    }
+                    else if (matrice[newX, newY] == miMa[1])
+                    {
+                        pesi[indice] = 3;
+                    }
+                    else
+                    {
+                        pesi[indice] = 2;
+                    }
                 }
             }
         }
