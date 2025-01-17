@@ -51,7 +51,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
-    public static string rightDiagonal(string pos)
+    public static string RightDiagonal(string pos)
     {
         int[] numeri = takeNumbers(pos);
         numeri[0] += 1;
@@ -63,7 +63,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
-    public static string diagonalRightBelow(string pos)
+    public static string DiagonalRightBelow(string pos)
     {
         int[] numeri = takeNumbers(pos);
         numeri[0] -= 1;
@@ -75,7 +75,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
-    public static string leftDiagonalBelow(string pos)
+    public static string LeftDiagonalBelow(string pos)
     {
         int[] numeri = takeNumbers(pos);
         numeri[0] -= 1;

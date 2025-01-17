@@ -27,6 +27,7 @@ public class ControlloMappa : MonoBehaviour
     public GameObject finishLineFlag;
     [SerializeField] private GameObject finishLineLogo;
     public int[] weights;
+    public int[] attualWeights;
     private List<string> rightWrongBoxes = new List<string>();
 
     // Start is called before the first frame update
@@ -150,6 +151,8 @@ public class ControlloMappa : MonoBehaviour
                 gameData.SaveData();
             }
 
+            // load a weights of the near boxes
+            attualWeights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
             if(
                 gameData.lastLose[0] == gameData.correctBoxes[gameData.correctBoxes.Count - 1]
                 &&
@@ -160,7 +163,7 @@ public class ControlloMappa : MonoBehaviour
             }
             else
             {
-                weights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
+                weights = attualWeights;
                 gameData.lastLose[2] = Utils.TransformListIntToString(weights);
                 gameData.SaveData();
             }
@@ -177,6 +180,7 @@ public class ControlloMappa : MonoBehaviour
                     renderer.color = Color.white;
                 }
 
+                /*
                 GameObject boxAboveGameObject = GameObject.Find(Utils.Above(casella.name));
                 GameObject boxAboveWrong = GameObject.Find("Errore " + Utils.Above(casella.name));
                 // assign the color and the number of the difficolt of the box above
@@ -255,8 +259,8 @@ public class ControlloMappa : MonoBehaviour
                     }
                 }
 
-                GameObject rightDiagonalBoxGameObject = GameObject.Find(Utils.rightDiagonal(casella.name));
-                GameObject rightDiagonalBoxWrongGameObject = GameObject.Find("Errore " + Utils.rightDiagonal(casella.name));
+                GameObject rightDiagonalBoxGameObject = GameObject.Find(Utils.RightDiagonal(casella.name));
+                GameObject rightDiagonalBoxWrongGameObject = GameObject.Find("Errore " + Utils.RightDiagonal(casella.name));
                 // assign the color and the number of the difficolt of the box right diagonal
                 if(rightDiagonalBoxGameObject != null && rightDiagonalBoxWrongGameObject == null)
                 {
@@ -306,8 +310,11 @@ public class ControlloMappa : MonoBehaviour
                         Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
                     }
                 }
+                */
+                ProcessBoxes(lastBoxString);
 
-                if ( weights.Max() == 0 )
+                // check if there is a game over
+                if ( attualWeights.Max() == 0 )
                 {
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
@@ -331,6 +338,8 @@ public class ControlloMappa : MonoBehaviour
                 gameData.SaveData();
             }
 
+            // load a weights of the near boxes
+            attualWeights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
             if(
                 gameData.lastLose[0] == gameData.correctBoxes[gameData.correctBoxes.Count - 1]
                 &&
@@ -341,11 +350,11 @@ public class ControlloMappa : MonoBehaviour
             }
             else
             {
-                weights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
+                weights = attualWeights;
                 gameData.lastLose[2] = Utils.TransformListIntToString(weights);
                 gameData.SaveData();
             }
-            
+            /*
             GameObject boxAboveGameObject = GameObject.Find(Utils.Above(lastBoxString));
             GameObject boxAboveWrong = GameObject.Find("Errore " + Utils.Above(lastBoxString));
             // assign the color and the number of difficolt of the box above
@@ -457,8 +466,8 @@ public class ControlloMappa : MonoBehaviour
                 }
             }
 
-            GameObject rightDiagonalBoxGameObject = GameObject.Find(Utils.rightDiagonal(lastBoxString));
-            GameObject rightDiagonalBoxWrong = GameObject.Find("Errore " + Utils.rightDiagonal(lastBoxString));
+            GameObject rightDiagonalBoxGameObject = GameObject.Find(Utils.RightDiagonal(lastBoxString));
+            GameObject rightDiagonalBoxWrong = GameObject.Find("Errore " + Utils.RightDiagonal(lastBoxString));
             // assign the color and the number of difficolt of the box right diagonal
             if(rightDiagonalBoxGameObject != null && rightDiagonalBoxWrong == null)
             {
@@ -531,8 +540,8 @@ public class ControlloMappa : MonoBehaviour
                 }
             }
 
-            GameObject DiagonalBelowRightBoxGameObject = GameObject.Find(Utils.diagonalRightBelow(lastBoxString));
-            GameObject wrongDiagonalBoxBelowRight = GameObject.Find("Errore " + Utils.diagonalRightBelow(lastBoxString));
+            GameObject DiagonalBelowRightBoxGameObject = GameObject.Find(Utils.DiagonalRightBelow(lastBoxString));
+            GameObject wrongDiagonalBoxBelowRight = GameObject.Find("Errore " + Utils.DiagonalRightBelow(lastBoxString));
             // assign the color and the number of difficolt of the box diagonal below right
             if(DiagonalBelowRightBoxGameObject != null && wrongDiagonalBoxBelowRight == null)
             {
@@ -561,8 +570,8 @@ public class ControlloMappa : MonoBehaviour
                 }
             }
 
-            GameObject diagonalBelowLeftBoxGameObject = GameObject.Find(Utils.leftDiagonalBelow(lastBoxString));
-            GameObject wrongDiagonalBoxBelowLeft = GameObject.Find("Errore " + Utils.leftDiagonalBelow(lastBoxString));
+            GameObject diagonalBelowLeftBoxGameObject = GameObject.Find(Utils.LeftDiagonalBelow(lastBoxString));
+            GameObject wrongDiagonalBoxBelowLeft = GameObject.Find("Errore " + Utils.LeftDiagonalBelow(lastBoxString));
             // assign the color and the number of difficolt of the box diagonal below left
             if(diagonalBelowLeftBoxGameObject != null && wrongDiagonalBoxBelowLeft == null)
             {
@@ -619,7 +628,9 @@ public class ControlloMappa : MonoBehaviour
                         Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
                     }
                 }
-            }
+            } */
+
+            ProcessBoxes(lastBoxString);
 
             // if the player win the game start animaton from penultimate box to last box
             if(TempData.game && TempData.vittoria)
@@ -653,7 +664,7 @@ public class ControlloMappa : MonoBehaviour
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
                 }
-                else if(weights.Max() == 0)
+                else if(attualWeights.Max() == 0)
                 {
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
@@ -926,6 +937,68 @@ public class ControlloMappa : MonoBehaviour
                     matrix[i, j] = -1; // Non raggiunto
                 }
             }
+        }
+    }
+
+    private void HandleBox(GameObject boxGameObject, GameObject boxWrong, int weightIndex, string finishLineName, UnityEngine.Vector3 spawnPosition, GameObject difficultyOne, GameObject difficultyTwo, GameObject difficultyThree)
+    {
+        if (boxGameObject != null && boxWrong == null)
+        {
+            SpriteRenderer boxRenderer = boxGameObject.GetComponent<SpriteRenderer>();
+
+            // If the box is the finish line
+            if (boxGameObject.name == finishLineName)
+            {
+                finishLineFlag.SetActive(false);
+                Instantiate(finishLineLogo, spawnPosition, Quaternion.identity);
+                boxRenderer.color = Color.white;
+            }
+            else if (boxRenderer.color != Color.white && attualWeights[weightIndex] != 0)
+            {
+                switch (weights[weightIndex])
+                {
+                    case 1:
+                        boxRenderer.color = Color.red;
+                        Instantiate(difficultyThree, spawnPosition, Quaternion.identity);
+                        break;
+                    case 2:
+                        boxRenderer.color = new Color(255f / 255f, 255f / 255f, 0f / 255f, 255f / 255f);
+                        Instantiate(difficultyTwo, spawnPosition, Quaternion.identity);
+                        break;
+                    case 3:
+                        boxRenderer.color = Color.green;
+                        Instantiate(difficultyOne, spawnPosition, Quaternion.identity);
+                        break;
+                }
+            }
+        }
+    }
+
+    public void ProcessBoxes(string lastBoxString)
+    {
+        var directions = new (string UtilsMethod, int WeightIndex)[]
+        {
+            ("Above", 0),
+            ("LeftDiagonal", 7),
+            ("Sinistra", 6),
+            ("RightDiagonal", 1),
+            ("Destra", 2),
+            ("DiagonalRightBelow", 3),
+            ("LeftDiagonalBelow", 5),
+            ("Below", 4)
+        };
+
+        foreach (var (methodName, weightIndex) in directions)
+        {
+            string boxName = (string)typeof(Utils).GetMethod(methodName).Invoke(null, new object[] { lastBoxString });
+            string errorBoxName = "Errore " + boxName;
+
+            GameObject boxGameObject = GameObject.Find(boxName);
+            GameObject boxWrong = GameObject.Find(errorBoxName);
+
+            UnityEngine.Vector3 spawnPosition = boxGameObject != null ? boxGameObject.transform.position : Vector3.zero;
+
+            HandleBox(boxGameObject, boxWrong, weightIndex, gameData.finishLine, spawnPosition, difficultyOne, difficultyTwo, difficultyThree);
         }
     }
 

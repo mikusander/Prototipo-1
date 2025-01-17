@@ -258,7 +258,7 @@ public class SceltaLivello : MonoBehaviour
                         && 
                         casellaSbagliata == null 
                         && 
-                        gameObject.name == Utils.rightDiagonal(controlloMappa.gameData.correctBoxes[controlloMappa.gameData.correctBoxes.Count - 1])
+                        gameObject.name == Utils.RightDiagonal(controlloMappa.gameData.correctBoxes[controlloMappa.gameData.correctBoxes.Count - 1])
                         )
                     {
                         // casella in diagonale a destra
@@ -408,7 +408,7 @@ public class SceltaLivello : MonoBehaviour
                         && 
                         casellaSbagliata == null 
                         && 
-                        gameObject.name == Utils.diagonalRightBelow(controlloMappa.gameData.correctBoxes[controlloMappa.gameData.correctBoxes.Count - 1])
+                        gameObject.name == Utils.DiagonalRightBelow(controlloMappa.gameData.correctBoxes[controlloMappa.gameData.correctBoxes.Count - 1])
                         )
                     {
                         // casella in diagonale inferiore a destra di colore giallo, difficoltà di livello 2
@@ -460,7 +460,7 @@ public class SceltaLivello : MonoBehaviour
                         && 
                         casellaSbagliata == null 
                         && 
-                        gameObject.name == Utils.leftDiagonalBelow(controlloMappa.gameData.correctBoxes[controlloMappa.gameData.correctBoxes.Count - 1])
+                        gameObject.name == Utils.LeftDiagonalBelow(controlloMappa.gameData.correctBoxes[controlloMappa.gameData.correctBoxes.Count - 1])
                         )
                     {
                         // casella in diagonale inferiore a sinistra di colore giallo, difficolta 2

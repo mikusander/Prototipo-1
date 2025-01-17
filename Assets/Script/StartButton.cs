@@ -126,7 +126,7 @@ public class StartButton : MonoBehaviour
             }
 
             // assign the color and the number of the dissiculty at the right diagonal box
-            GameObject rightDiagonalBoxGameObject = controlloMappa.chessboardBase.transform.Find(Utils.rightDiagonal(casella.name)).gameObject;
+            GameObject rightDiagonalBoxGameObject = controlloMappa.chessboardBase.transform.Find(Utils.RightDiagonal(casella.name)).gameObject;
             if(rightDiagonalBoxGameObject != null)
             {
                 SpriteRenderer rightDiagonalBox = rightDiagonalBoxGameObject.GetComponent<SpriteRenderer>();
