@@ -8,15 +8,19 @@ public class StartButton : MonoBehaviour
     public void PlayGame()
     {
         controlloMappa.mainWriting.SetActive(true);
+        
+        // create a random flag line
         string[] possibleChars = { "1", "2", "3", "0" };
         int randomIndex = UnityEngine.Random.Range(0, possibleChars.Length);
         controlloMappa.gameData.finishLine = "Casella " + "5," + possibleChars[randomIndex];
-        Transform casellaFinale = controlloMappa.chessboardBase.transform.Find(controlloMappa.gameData.finishLine);
-        if (casellaFinale != null)
+        Transform finishLine = controlloMappa.chessboardBase.transform.Find(controlloMappa.gameData.finishLine);
+        if (finishLine != null)
         {
-            UnityEngine.Vector3 spawnPos = casellaFinale.transform.position;
+            UnityEngine.Vector3 spawnPos = finishLine.transform.position;
             controlloMappa.finishLineFlag = Instantiate(controlloMappa.finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
         }
+
+        // create a random start box
         int randomIndexstart = UnityEngine.Random.Range(0, possibleChars.Length);
         controlloMappa.gameData.start = "Casella " + "0," + possibleChars[randomIndexstart];
         controlloMappa.gameData.correctBoxes.Add(controlloMappa.gameData.start);
@@ -26,25 +30,27 @@ public class StartButton : MonoBehaviour
             UnityEngine.Vector3 spawnPos = startBox.transform.position;
             controlloMappa.player = Instantiate(controlloMappa.player, spawnPos, UnityEngine.Quaternion.identity);
         }
-        List<string> singleElementList = new List<string> { controlloMappa.gameData.start };
 
+        // inizialize the first bfs
+        List<string> singleElementList = new List<string> { controlloMappa.gameData.start };
         controlloMappa.weights = controlloMappa.ConditionGameOver(singleElementList, controlloMappa.gameData.start, controlloMappa.gameData.finishLine);
         controlloMappa.gameData.lastLose[2] = Utils.TransformListIntToString(controlloMappa.weights);
         controlloMappa.gameData.SaveData();
 
+        // search the start box
         Transform casellaTransform = controlloMappa.chessboardBase.transform.Find(controlloMappa.gameData.start);
         if (casellaTransform != null)
         {
             GameObject casella = casellaTransform.gameObject;
-            // Cambia colore usando il componente Renderer
             SpriteRenderer renderer = casella.GetComponent<SpriteRenderer>();
 
-            // Verifica che il GameObject abbia un Renderer
+            // change the color of the first box
             if (renderer != null)
             {
-                // Modifica il colore del materiale
                 renderer.color = Color.white;
             }
+
+            // assign the color and the number of difficulty at the box above
             GameObject boxAboveGameObject = controlloMappa.chessboardBase.transform.Find(Utils.Above(casella.name)).gameObject;
             if (boxAboveGameObject != null)
             {
@@ -68,52 +74,58 @@ public class StartButton : MonoBehaviour
                     Instantiate(controlloMappa.difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
                 }
             }
-            GameObject casellaDiagonaleGameObject = controlloMappa.chessboardBase.transform.Find(Utils.LeftDiagonal(casella.name)).gameObject;
-            if (casellaDiagonaleGameObject != null)
+
+            // assign the color and the number of difficulty at the left diagonal box superior
+            GameObject leftDiagonalBoxGameObject = controlloMappa.chessboardBase.transform.Find(Utils.LeftDiagonal(casella.name)).gameObject;
+            if (leftDiagonalBoxGameObject != null)
             {
-                SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
+                SpriteRenderer diagonalBox = leftDiagonalBoxGameObject.GetComponent<SpriteRenderer>();
                 if(controlloMappa.weights[7] == 1)
                 {
-                    casellaDiagonale.color = Color.red;
-                    UnityEngine.Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
+                    diagonalBox.color = Color.red;
+                    UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
                 }
                 else if(controlloMappa.weights[7] == 2)
                 {
-                    casellaDiagonale.color = new Color(255f, 255f, 0f, 255f);
-                    UnityEngine.Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
+                    diagonalBox.color = new Color(255f, 255f, 0f, 255f);
+                    UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
                 }
                 else if(controlloMappa.weights[7] == 3)
                 {
-                    casellaDiagonale.color = Color.green;
-                    UnityEngine.Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
+                    diagonalBox.color = Color.green;
+                    UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
                 }
             }
-            GameObject casellaSinistraGameObject = controlloMappa.chessboardBase.transform.Find(Utils.Sinistra(casella.name)).gameObject;
-            if (casellaSinistraGameObject != null)
+
+            // assign the color and the number at the difficulty 
+            GameObject leftBoxGameObject = controlloMappa.chessboardBase.transform.Find(Utils.Sinistra(casella.name)).gameObject;
+            if (leftBoxGameObject != null)
             {
-                SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
+                SpriteRenderer leftBox = leftBoxGameObject.GetComponent<SpriteRenderer>();
                 if(controlloMappa.weights[6] == 1)
                 {
-                    casellaSinistra.color = Color.red;
-                    UnityEngine.Vector3 spawnPos = casellaSinistraGameObject.transform.position;
+                    leftBox.color = Color.red;
+                    UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
                 }
                 else if(controlloMappa.weights[6] == 2)
                 {
-                    casellaSinistra.color = new Color(255f, 255f, 0f, 255f);
-                    UnityEngine.Vector3 spawnPos = casellaSinistraGameObject.transform.position;
+                    leftBox.color = new Color(255f, 255f, 0f, 255f);
+                    UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
                 }
                 else if(controlloMappa.weights[6] == 3)
                 {
-                    casellaSinistra.color = Color.green;
-                    UnityEngine.Vector3 spawnPos = casellaSinistraGameObject.transform.position;
+                    leftBox.color = Color.green;
+                    UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
                 }
             }
+
+            // assign the color and the number of the dissiculty at the right diagonal box
             GameObject rightDiagonalBoxGameObject = controlloMappa.chessboardBase.transform.Find(Utils.rightDiagonal(casella.name)).gameObject;
             if(rightDiagonalBoxGameObject != null)
             {
@@ -137,26 +149,28 @@ public class StartButton : MonoBehaviour
                     Instantiate(controlloMappa.difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
                 }
             }
-            GameObject casellaDestraGameObject = controlloMappa.chessboardBase.transform.Find(Utils.Destra(casella.name)).gameObject;
+
+            // assign the color and the number of the difficulty at the the right box
+            GameObject rightBoxGameObject = controlloMappa.chessboardBase.transform.Find(Utils.Destra(casella.name)).gameObject;
             if (rightDiagonalBoxGameObject != null)
             {
-                SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
+                SpriteRenderer rightBox = rightBoxGameObject.GetComponent<SpriteRenderer>();
                 if (controlloMappa.weights[2] == 1)
                 {
-                    casellaDestra.color = Color.red;
-                    UnityEngine.Vector3 spawnPos = casellaDestraGameObject.transform.position;
+                    rightBox.color = Color.red;
+                    UnityEngine.Vector3 spawnPos = rightBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
                 }
                 else if (controlloMappa.weights[2] == 2)
                 {
-                    casellaDestra.color = new Color(255f, 255f, 0f, 255f);
-                    UnityEngine.Vector3 spawnPos = casellaDestraGameObject.transform.position;
+                    rightBox.color = new Color(255f, 255f, 0f, 255f);
+                    UnityEngine.Vector3 spawnPos = rightBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
                 }
                 else if (controlloMappa.weights[2] == 3)
                 {
-                    casellaDestra.color = Color.green;
-                    UnityEngine.Vector3 spawnPos = casellaDestraGameObject.transform.position;
+                    rightBox.color = Color.green;
+                    UnityEngine.Vector3 spawnPos = rightBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
                 }
             }

@@ -639,6 +639,7 @@ public class ControlloMappa : MonoBehaviour
             }
             else
             {
+                // spawn player
                 if (lastBoxTransform != null)
                 {
                     GameObject lastBox = lastBoxTransform.gameObject;
@@ -658,6 +659,7 @@ public class ControlloMappa : MonoBehaviour
                     restart.SetActive(true);
                 }
             }
+
             // check if there is a win condition
             if (gameData.correctBoxes[gameData.correctBoxes.Count - 1] == gameData.finishLine)
             {
@@ -668,32 +670,29 @@ public class ControlloMappa : MonoBehaviour
         }
     }
 
+    // animation for the error game object
     IEnumerator ErrorAnimation(Animator animator)
     {
-        // Avvia l'animazione
         animator.SetTrigger("Attivazione");
 
-        // Ottieni la durata dello stato attivo
         AnimatorStateInfo animationInfo = animator.GetCurrentAnimatorStateInfo(0);
         float animationDuration = animationInfo.length;
 
-        // Aspetta la durata dell'animazione
         yield return new WaitForSeconds(animationDuration);
     }
 
-    // Coroutine che muove l'oggetto
+    // player animation when he wins
     IEnumerator MoveToTarget(UnityEngine.Vector3 playerPosition, UnityEngine.Vector3 targetPosition, float duration)
     {
         UnityEngine.Vector3 startPosition = playerPosition;
         float timeElapsed = 0;
+
         Animator animator = player.GetComponent<Animator>();
-        // Attiva l'animazione di movimento
         if (animator != null)
         {
             animator.SetTrigger("Attivazione");
         }
 
-        // Movimento lineare (dal punto A al punto B)
         while (timeElapsed < duration)
         {
             player.transform.position = UnityEngine.Vector3.Lerp(startPosition, targetPosition, timeElapsed / duration);
@@ -701,9 +700,7 @@ public class ControlloMappa : MonoBehaviour
             yield return null; // Aspetta il prossimo frame
         }
 
-        // Assicurati che il gameObject arrivi esattamente alla destinazione
         player.transform.position = targetPosition;
-        // Attiva l'animazione di movimento
         if (animator != null)
         {
             animator.SetTrigger("Disattivazione");
@@ -722,16 +719,19 @@ public class ControlloMappa : MonoBehaviour
 
         int[] numerifinalBox = Utils.takeNumbers(finishLineFlag);
 
-        // Partenza del BFS
+        // departure of the bfs
         int startX = numerifinalBox[0], startY = numerifinalBox[1];
 
-        // Chiama l'algoritmo BFS
+        // call bfs algoritm
         BFS(matrix, startX, startY);
 
+        // assign the weight 1 at the final box
         matrix[numerifinalBox[0], numerifinalBox[1]] = 1;
 
+        // take the position of the player box position
         int[] appo = Utils.takeNumbers(lastBox);
 
+        // return the list of weights of the box near the player box position
         return minMax(matrix, appo[0], appo[1]);
     }
 
@@ -740,21 +740,22 @@ public class ControlloMappa : MonoBehaviour
         int[] miMa = new int[2];
         miMa[0] = 100;
         miMa[1] = 0;
+
         var directions = new List<(int, int)>
         {
-            (-1,  0), // Su
-            ( 1,  0), // Giù
-            ( 0, -1), // Sinistra
-            ( 0,  1), // Destra
-            (-1, -1), // Alto-sinistra
-            ( 1,  1), // Basso-destra
-            ( 1, -1), // Basso-sinistra
-            (-1,  1)  // Alto-destra
+            (-1,  0), // above
+            ( 1,  0), // below
+            ( 0, -1), // left
+            ( 0,  1), // right
+            (-1, -1), // above-left
+            ( 1,  1), // below-right
+            ( 1, -1), // below-left
+            (-1,  1)  // above-right
         };
 
-        int contaMin = 0;
-        int contaMax = 0;
-        int contaCaselle = 0;
+        int minCount = 0;
+        int maxCount = 0;
+        int boxCount = 0;
 
         foreach (var (dx, dy) in directions)
         {
@@ -764,13 +765,11 @@ public class ControlloMappa : MonoBehaviour
             // Controlla che la nuova posizione sia valida
             if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
             {
-                contaCaselle += 1;
-                // Aggiorna il minimo
+                boxCount += 1;
                 if (miMa[0] > matrix[newX, newY])
                 {
                     miMa[0] = matrix[newX, newY];
                 }
-                // Aggiorna il massimo
                 if (miMa[1] < matrix[newX, newY])
                 {
                     miMa[1] = matrix[newX, newY];
@@ -788,11 +787,11 @@ public class ControlloMappa : MonoBehaviour
             {
                 if (miMa[0] == matrix[newX, newY])
                 {
-                    contaMin += 1;
+                    minCount += 1;
                 }
                 if (miMa[1] == matrix[newX, newY])
                 {
-                    contaMax += 1;
+                    maxCount += 1;
                 }
             }
         }
@@ -812,7 +811,7 @@ public class ControlloMappa : MonoBehaviour
 
         int[] weights = new int[8];
 
-        int numeroCaselleUno = 0, numeroCaselleDue = 0, numeroCaselleUnoDue = contaCaselle - contaMin;
+        int numberBoxOne = 0, numberBoxTwo = 0, numberBoxOneTwo = boxCount - minCount;
 
         foreach (var (dx, dy) in directions)
         {
@@ -823,7 +822,7 @@ public class ControlloMappa : MonoBehaviour
             if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
             {
                 int indice = directionIndices[(dx, dy)]; // Ottieni l'indice associato alla direzione
-                if(contaCaselle - contaMax - contaMin == 0)
+                if(boxCount - maxCount - minCount == 0)
                 {
                     if (matrix[newX, newY] == miMa[0])
                     {
@@ -831,26 +830,26 @@ public class ControlloMappa : MonoBehaviour
                     }
                     else
                     {
-                        if (numeroCaselleUno == (int) numeroCaselleUnoDue / 2)
+                        if (numberBoxOne == (int) numberBoxOneTwo / 2)
                         {
                             weights[indice] = 2;
-                            numeroCaselleDue += 1;
+                            numberBoxTwo += 1;
                         }
-                        else if (numeroCaselleDue == (int) numeroCaselleUnoDue / 2)
+                        else if (numberBoxTwo == (int) numberBoxOneTwo / 2)
                         {
                             weights[indice] = 3;
-                            numeroCaselleUno += 1;
+                            numberBoxOne += 1;
                         }
                         else
                         {
                             weights[indice] = UnityEngine.Random.Range(2,4);
                             if(weights[indice] == 3)
                             {
-                                numeroCaselleUno += 1;
+                                numberBoxOne += 1;
                             }
                             else
                             {
-                                numeroCaselleDue += 1;
+                                numberBoxTwo += 1;
                             }
                         }
                     }

@@ -201,6 +201,6 @@ public static class Utils
             }
             matrixx += row + "\n";
         }
-        Debug.Log(matrix);
+        Debug.Log(matrixx);
     }
 }
