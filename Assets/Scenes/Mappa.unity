@@ -2536,24 +2536,23 @@ MonoBehaviour:
   gameoverLogo: {fileID: 948630118}
   restart: {fileID: 1714341405}
   player: {fileID: 4303749262893101892, guid: a8167cf620ff84b4ea86c464ca802cff, type: 3}
-  errore: {fileID: 2075936451989792750, guid: 71312f535f4cc774e9efbdf8111e21ad, type: 3}
-  baseScacchiera: {fileID: 1700244045}
+  error: {fileID: 2075936451989792750, guid: 71312f535f4cc774e9efbdf8111e21ad, type: 3}
+  chessboardBase: {fileID: 1700244045}
   gameData: {fileID: 1066360593}
   moveDuration: 2
-  bottoneIniziale: {fileID: 1981687734}
-  scrittaIniziale: {fileID: 45897874}
-  scrittaPrincipale: {fileID: 734141895}
-  difficoltaUno: {fileID: 7153141326902596772, guid: d6a47b4f93b730747ae6c5ab24e01b79, type: 3}
-  difficoltaDue: {fileID: 868504995234437120, guid: bdc9ceffdf495484da7e38f7e875e0a7, type: 3}
-  difficoltaTre: {fileID: 4808282991115013504, guid: b029f3bdf474f1c418361252cc20354c, type: 3}
-  testoDifficoltaUno: {fileID: 1135847565}
-  testoDifficoltaDue: {fileID: 572483104}
-  testoDifficoltaTre: {fileID: 673565795}
-  testoDifficoltaFinale: {fileID: 831085313}
-  bandieraTraguardo: {fileID: 1145045233988076131, guid: 22b8a34240722fd4a9132b390ed894ad, type: 3}
-  logoTraguardo: {fileID: 9013855627397451872, guid: 3df61e314da81e84780c08b729cbcebf, type: 3}
-  valoreCasuale: 0
-  pesi: 
+  initialButton: {fileID: 1981687734}
+  initialWriting: {fileID: 45897874}
+  mainWriting: {fileID: 734141895}
+  difficultyOne: {fileID: 7153141326902596772, guid: d6a47b4f93b730747ae6c5ab24e01b79, type: 3}
+  difficultyTwo: {fileID: 868504995234437120, guid: bdc9ceffdf495484da7e38f7e875e0a7, type: 3}
+  difficultyThree: {fileID: 4808282991115013504, guid: b029f3bdf474f1c418361252cc20354c, type: 3}
+  textDifficultyOne: {fileID: 1135847565}
+  textDifficultyTwo: {fileID: 572483104}
+  textDifficultyThree: {fileID: 673565795}
+  textDifficultyFinal: {fileID: 831085313}
+  finishLineFlag: {fileID: 1145045233988076131, guid: 22b8a34240722fd4a9132b390ed894ad, type: 3}
+  finishLineLogo: {fileID: 9013855627397451872, guid: 3df61e314da81e84780c08b729cbcebf, type: 3}
+  weights: 
 --- !u!4 &1066360592
 Transform:
   m_ObjectHideFlags: 0
@@ -2581,9 +2580,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c73044e800fc6442adaa31d6c35e9ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stringValues: []
-  caselleSbagliate: []
-  traguardo: 
+  correctBoxes: []
+  wrongBoxes: []
+  finishLine: 
+  start: 
+  lastLose:
+  - 
+  - 
+  - 
 --- !u!1 &1071421911
 GameObject:
   m_ObjectHideFlags: 0
@@ -5052,7 +5056,7 @@ GameObject:
   - component: {fileID: 1981687737}
   - component: {fileID: 1981687736}
   m_Layer: 5
-  m_Name: Button
+  m_Name: initialButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5136,7 +5140,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1981687736}
         m_TargetAssemblyTypeName: StartButton, Assembly-CSharp
-        m_MethodName: AvviaGioco
+        m_MethodName: PlayGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

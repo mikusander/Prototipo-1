@@ -53,7 +53,7 @@ public class Controllo : MonoBehaviour
         {
             gameData.LoadData();
         }
-        TempData.gioco = true;
+        TempData.game = true;
         TempData.vittoria = false;
         // Carica le domande dal file di testo
         LoadQuestionsFromFile();
@@ -89,13 +89,13 @@ public class Controllo : MonoBehaviour
             Debug.Log("1");
             if (puntiAttuali >= vitt + 1)
             {
-                gameData.stringValues.Add(TempData.ultimaCasella);
+                gameData.correctBoxes.Add(TempData.lastBox);
                 gameData.SaveData();
                 TempData.vittoria = true;
             }
             else
             {
-                gameData.caselleSbagliate.Add(TempData.ultimaCasella);
+                gameData.wrongBoxes.Add(TempData.lastBox);
                 gameData.SaveData();
                 TempData.vittoria = false;
             }
@@ -106,13 +106,13 @@ public class Controllo : MonoBehaviour
             gameover = true;
             if (puntiAttuali >= vitt + 1)
             {
-                gameData.stringValues.Add(TempData.ultimaCasella);
+                gameData.correctBoxes.Add(TempData.lastBox);
                 gameData.SaveData();
                 TempData.vittoria = true;
             }
             else
             {
-                gameData.caselleSbagliate.Add(TempData.ultimaCasella);
+                gameData.wrongBoxes.Add(TempData.lastBox);
                 gameData.SaveData();
                 TempData.vittoria = false;
             }

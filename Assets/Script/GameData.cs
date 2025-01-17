@@ -5,12 +5,13 @@ using System.IO;
 public class GameData : MonoBehaviour
 {
     // Liste di stringhe di dimensione variabile
-    public List<string> stringValues = new List<string>();
-    public List<string> caselleSbagliate = new List<string>();
+    public List<string> correctBoxes = new List<string>();
+    public List<string> wrongBoxes = new List<string>();
 
-    // Variabile aggiuntiva per "traguardo"
-    public string traguardo;
-    public string inizio;
+    // Variabili aggiuntive
+    public string finishLine;
+    public string start;
+    public string[] lastLose = new string[3]; // Array di stringhe con due elementi
 
     // Percorso del file JSON
     private string filePath;
@@ -27,13 +28,14 @@ public class GameData : MonoBehaviour
     // Metodo per salvare i dati su file
     public void SaveData()
     {
-        // Crea una struttura che contiene le liste e il valore traguardo
+        // Crea una struttura che contiene le liste e il valore finishLine
         DataToSave data = new DataToSave
         {
-            stringValues = stringValues,
-            caselleSbagliate = caselleSbagliate,
-            traguardo = traguardo, // Salva anche il valore di traguardo
-            inizio = inizio
+            correctBoxes = correctBoxes,
+            wrongBoxes = wrongBoxes,
+            finishLine = finishLine, // Salva anche il valore di finishLine
+            start = start,
+            lastLose = lastLose
         };
 
         // Serializza l'oggetto in formato JSON
@@ -57,10 +59,11 @@ public class GameData : MonoBehaviour
             // Verifica che i dati non siano null prima di assegnarli
             if (data != null)
             {
-                stringValues = data.stringValues ?? new List<string>();
-                caselleSbagliate = data.caselleSbagliate ?? new List<string>();
-                traguardo = data.traguardo ?? string.Empty; // Carica il valore di traguardo
-                inizio = data.inizio ?? string.Empty;
+                correctBoxes = data.correctBoxes ?? new List<string>();
+                wrongBoxes = data.wrongBoxes ?? new List<string>();
+                finishLine = data.finishLine ?? string.Empty; // Carica il valore di finishLine
+                start = data.start ?? string.Empty;
+                lastLose = data.lastLose ?? new string[3]; // Imposta un array di default se null
             }
         }
         else
@@ -76,10 +79,11 @@ public class GameData : MonoBehaviour
         // Dati iniziali (modifica secondo necessità)
         DataToSave defaultData = new DataToSave
         {
-            stringValues = new List<string>(),      // Lista vuota di stringhe
-            caselleSbagliate = new List<string>(),  // Lista vuota di caselle sbagliate
-            traguardo = "",                         // Valore iniziale di traguardo
-            inizio = ""
+            correctBoxes = new List<string>(),      // Lista vuota di stringhe
+            wrongBoxes = new List<string>(),        // Lista vuota di caselle sbagliate
+            finishLine = "",                         // Valore iniziale di finishLine
+            start = "",
+            lastLose = new string[3] { "", "", "" }      // Array di default con due stringhe vuote
         };
 
         // Serializza i dati iniziali in formato JSON
@@ -89,10 +93,11 @@ public class GameData : MonoBehaviour
         File.WriteAllText(filePath, json);
 
         // Assegna i dati iniziali alle variabili per usarli subito
-        stringValues = defaultData.stringValues;
-        caselleSbagliate = defaultData.caselleSbagliate;
-        traguardo = defaultData.traguardo;
-        inizio = defaultData.inizio;
+        correctBoxes = defaultData.correctBoxes;
+        wrongBoxes = defaultData.wrongBoxes;
+        finishLine = defaultData.finishLine;
+        start = defaultData.start;
+        lastLose = defaultData.lastLose;
     }
 }
 
@@ -100,8 +105,9 @@ public class GameData : MonoBehaviour
 [System.Serializable]
 public class DataToSave
 {
-    [SerializeField] public List<string> stringValues;     // Lista del percorso del personaggio percorso
-    [SerializeField] public List<string> caselleSbagliate; // Lista delle caselle che si sono sbagliate
-    [SerializeField] public string traguardo;             // Variabile aggiuntiva "traguardo"
-    [SerializeField] public string inizio;
+    [SerializeField] public List<string> correctBoxes;     // Lista del percorso del personaggio percorso
+    [SerializeField] public List<string> wrongBoxes;      // Lista delle caselle che si sono sbagliate
+    [SerializeField] public string finishLine;            // Variabile aggiuntiva "finishLine"
+    [SerializeField] public string start;                 // Punto di partenza
+    [SerializeField] public string[] lastLose;            // Array di stringhe con due elementi
 }

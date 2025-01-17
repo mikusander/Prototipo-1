@@ -7,8 +7,10 @@ public class RestartGame : MonoBehaviour
     // Funzione per ricaricare la scena attuale
     public void RestartCurrentScene()
     {
-        controlloMappa.gameData.stringValues.Clear();
-        controlloMappa.gameData.caselleSbagliate.Clear();
+        controlloMappa.gameData.correctBoxes.Clear();
+        controlloMappa.gameData.wrongBoxes.Clear();
+        controlloMappa.gameData.start = "";
+        controlloMappa.gameData.finishLine = "";
         controlloMappa.gameData.SaveData();
         // Ottiene il nome della scena attiva
         string currentSceneName = SceneManager.GetActiveScene().name;

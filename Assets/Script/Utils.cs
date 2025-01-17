@@ -1,13 +1,14 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public static class Utils
 {
     // Esempio di funzione statica
-    public static string Sopra(string pos)
+    public static string Above(string pos)
     {
-        int[] numeri = PrendiNumeri(pos);
+        int[] numeri = takeNumbers(pos);
         numeri[0] += 1;
         if(numeri[0] > 5)
         {
@@ -18,7 +19,7 @@ public static class Utils
 
     public static string Sinistra(string pos)
     {
-        int[] numeri = PrendiNumeri(pos);
+        int[] numeri = takeNumbers(pos);
         numeri[1] += 1;
         if(numeri[1] > 3)
         {
@@ -29,7 +30,7 @@ public static class Utils
 
     public static string Destra(string pos)
     {
-        int[] numeri = PrendiNumeri(pos);
+        int[] numeri = takeNumbers(pos);
         numeri[1] -= 1;
         if(numeri[1] < 0)
         {
@@ -38,9 +39,9 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
-    public static string DiagonaleSinistra(string pos)
+    public static string LeftDiagonal(string pos)
     {
-        int[] numeri = PrendiNumeri(pos);
+        int[] numeri = takeNumbers(pos);
         numeri[0] += 1;
         numeri[1] += 1;
         if(numeri[0] > 5 || numeri[1] > 3)
@@ -50,9 +51,9 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
-    public static string DiagonaleDestra(string pos)
+    public static string rightDiagonal(string pos)
     {
-        int[] numeri = PrendiNumeri(pos);
+        int[] numeri = takeNumbers(pos);
         numeri[0] += 1;
         numeri[1] -= 1;
         if(numeri[0] > 5 || numeri [1] < 0)
@@ -62,9 +63,9 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
-    public static string DiagonaleSottoDestra(string pos)
+    public static string diagonalRightBelow(string pos)
     {
-        int[] numeri = PrendiNumeri(pos);
+        int[] numeri = takeNumbers(pos);
         numeri[0] -= 1;
         numeri[1] -= 1;
         if(numeri[0] < 0 || numeri[1] < 0)
@@ -74,9 +75,9 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
-    public static string DiagonaleSottoSinistra(string pos)
+    public static string leftDiagonalBelow(string pos)
     {
-        int[] numeri = PrendiNumeri(pos);
+        int[] numeri = takeNumbers(pos);
         numeri[0] -= 1;
         numeri[1] += 1;
         if(numeri[0] < 0 || numeri[1] > 3)
@@ -86,9 +87,9 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
-    public static string Sotto(string pos)
+    public static string Below(string pos)
     {
-        int[] numeri = PrendiNumeri(pos);
+        int[] numeri = takeNumbers(pos);
         numeri[0] -= 1;
         if(numeri[0] < 0)
         {
@@ -97,7 +98,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
-    public static int[] PrendiNumeri(string casella)
+    public static int[] takeNumbers(string casella)
     {
         int[] ris = new int[2];
 
@@ -114,7 +115,7 @@ public static class Utils
         return "Casella " + y.ToString() + "," + x.ToString();
     }
 
-    public static bool ControlloPresenza(List<string> caselle, string casella)
+    public static bool presenceControl(List<string> caselle, string casella)
     {
         foreach(string i in caselle)
         {
@@ -126,9 +127,9 @@ public static class Utils
         return false;
     }
 
-    public static bool RigaSuperiore(string casella, List<string> caselleSbagliate)
+    public static bool SuperiorLine(string casella, List<string> wrongBoxes)
     {
-        int[] numeri = PrendiNumeri(casella);
+        int[] numeri = takeNumbers(casella);
         numeri[0] += 1;
         string[] caselleSuperiori = { 
             "Casella " + numeri[0].ToString() + ",0",
@@ -138,7 +139,7 @@ public static class Utils
             };
         foreach( string i in caselleSuperiori )
         {
-            if( !ControlloPresenza(caselleSbagliate, i) )
+            if( !presenceControl(wrongBoxes, i) )
             {
                 return false;
             }
@@ -146,9 +147,25 @@ public static class Utils
         return true;
     }
 
-    public static bool RigaSuperioreEDestra(string casella, List<string> caselleSbagliate)
+    public static string TransformListIntToString(int[] weightsList)
     {
-        int[] numeri = PrendiNumeri(casella);
+        return string.Join(" ", weightsList);
+    }
+
+    public static int[] TransformStringToList(string weightsString)
+    {
+        int [] appo = new int[8];
+        string [] appog = weightsString.Split(" ");
+        for(int x = 0; x < appog.Length; x++)
+        {
+            appo[x] = int.Parse(appog[x]);
+        }
+        return appo;
+    }
+
+    public static bool SuperiorRightLine(string casella, List<string> wrongBoxes)
+    {
+        int[] numeri = takeNumbers(casella);
         numeri[1] += 1;
         string casellaDestra = "Casella " + numeri[0].ToString() + numeri[1].ToString();
         numeri[0] += 1;
@@ -161,7 +178,7 @@ public static class Utils
             };
         foreach( string i in caselleSuperiori )
         {
-            if( ControlloPresenza(caselleSbagliate, i) )
+            if( presenceControl(wrongBoxes, i) )
             {
                 return true;
             }
@@ -169,20 +186,20 @@ public static class Utils
         return false;
     }
 
-    public static void PrintMatrix(int[,] matrice)
+    public static void PrintMatrix(int[,] matrix)
     {
-        int rows = matrice.GetLength(0);
-        int cols = matrice.GetLength(1);
-        string matrix = "";
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+        string matrixx = "";
 
         for (int i = 0; i < rows; i++)
         {
             string row = "";
             for (int j = 0; j < cols; j++)
             {
-                row += matrice[i, j].ToString("D2") + " ";
+                row += matrix[i, j].ToString("D2") + " ";
             }
-            matrix += row + "\n";
+            matrixx += row + "\n";
         }
         Debug.Log(matrix);
     }
