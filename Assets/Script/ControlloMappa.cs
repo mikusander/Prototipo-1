@@ -27,7 +27,7 @@ public class ControlloMappa : MonoBehaviour
     public GameObject finishLineFlag;
     [SerializeField] private GameObject finishLineLogo;
     public int[] weights;
-    public int[] attualWeights;
+    public int[] actualWeights;
     private List<string> rightWrongBoxes = new List<string>();
 
     // Start is called before the first frame update
@@ -93,6 +93,7 @@ public class ControlloMappa : MonoBehaviour
                 player = Instantiate(player, spawnPos, UnityEngine.Quaternion.identity);
             }
         }
+
         // if the player have lost the last game, activate the wrong box animation
         bool newError = false;
         if(gameData.wrongBoxes.Count > 0 && TempData.lastError != gameData.wrongBoxes[gameData.wrongBoxes.Count - 1])
@@ -133,6 +134,7 @@ public class ControlloMappa : MonoBehaviour
             initialButton.SetActive(true);
             initialWriting.SetActive(true);
         }
+
         // if the correct boxes are one load the initial start game
         else if (gameData.correctBoxes.Count == 1)
         {
@@ -151,8 +153,8 @@ public class ControlloMappa : MonoBehaviour
                 gameData.SaveData();
             }
 
-            // load a weights of the near boxes
-            attualWeights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
+            // load a weights of the boxes near the current box
+            actualWeights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
             if(
                 gameData.lastLose[0] == gameData.correctBoxes[gameData.correctBoxes.Count - 1]
                 &&
@@ -163,7 +165,7 @@ public class ControlloMappa : MonoBehaviour
             }
             else
             {
-                weights = attualWeights;
+                weights = actualWeights;
                 gameData.lastLose[2] = Utils.TransformListIntToString(weights);
                 gameData.SaveData();
             }
@@ -180,141 +182,11 @@ public class ControlloMappa : MonoBehaviour
                     renderer.color = Color.white;
                 }
 
-                /*
-                GameObject boxAboveGameObject = GameObject.Find(Utils.Above(casella.name));
-                GameObject boxAboveWrong = GameObject.Find("Errore " + Utils.Above(casella.name));
-                // assign the color and the number of the difficolt of the box above
-                if (boxAboveGameObject != null && boxAboveWrong == null)
-                {
-                    SpriteRenderer boxAbove = boxAboveGameObject.GetComponent<SpriteRenderer>();
-                    if(weights[0] == 1)
-                    {
-                        boxAbove.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = boxAboveGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[0] == 2)
-                    {
-                        boxAbove.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = boxAboveGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[0] == 3)
-                    {
-                        boxAbove.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = boxAboveGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-                
-                GameObject leftDiagonalBoxGameObject = GameObject.Find(Utils.LeftDiagonal(casella.name));
-                GameObject diagonalBoxError = GameObject.Find("Errore " + Utils.LeftDiagonal(casella.name));
-                // assign the color and the number of the difficolt of the box left diagonal
-                if (leftDiagonalBoxGameObject != null && diagonalBoxError == null)
-                {
-                    SpriteRenderer diagonalBox = leftDiagonalBoxGameObject.GetComponent<SpriteRenderer>();
-                    if(weights[7] == 1)
-                    {
-                        diagonalBox.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[7] == 2)
-                    {
-                        diagonalBox.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[7] == 3)
-                    {
-                        diagonalBox.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-
-                GameObject leftBoxGameObject = GameObject.Find(Utils.Sinistra(casella.name));
-                GameObject leftBoxWrong = GameObject.Find("Errore " + Utils.Sinistra(casella.name));
-                // assign the color and the number of the difficolt of the box left
-                if (leftBoxGameObject != null && leftBoxWrong == null)
-                {
-                    SpriteRenderer leftBox = leftBoxGameObject.GetComponent<SpriteRenderer>();
-                    if(weights[6] == 1)
-                    {
-                        leftBox.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[6] == 2)
-                    {
-                        leftBox.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[6] == 3)
-                    {
-                        leftBox.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-
-                GameObject rightDiagonalBoxGameObject = GameObject.Find(Utils.RightDiagonal(casella.name));
-                GameObject rightDiagonalBoxWrongGameObject = GameObject.Find("Errore " + Utils.RightDiagonal(casella.name));
-                // assign the color and the number of the difficolt of the box right diagonal
-                if(rightDiagonalBoxGameObject != null && rightDiagonalBoxWrongGameObject == null)
-                {
-                    SpriteRenderer rightDiagonalBox = rightDiagonalBoxGameObject.GetComponent<SpriteRenderer>();
-                    if (weights[1] == 1)
-                    {
-                        rightDiagonalBox.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = rightDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if (weights[1] == 2)
-                    {
-                        rightDiagonalBox.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = rightDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if (weights[1] == 3)
-                    {
-                        rightDiagonalBox.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = rightDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-
-                GameObject rightBoxGameObject = GameObject.Find(Utils.Destra(casella.name));
-                GameObject rightBoxWrongGameobject = GameObject.Find("Errore " + Utils.Destra(casella.name));
-                // assign the color and the number of the difficolt of the box right
-                if (rightDiagonalBoxGameObject != null && rightDiagonalBoxWrongGameObject == null)
-                {
-                    SpriteRenderer rightBox = rightBoxGameObject.GetComponent<SpriteRenderer>();
-                    if (weights[2] == 1)
-                    {
-                        rightBox.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = rightBoxGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if (weights[2] == 2)
-                    {
-                        rightBox.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = rightBoxGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if (weights[2] == 3)
-                    {
-                        rightBox.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = rightBoxGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-                */
+                // assign the number and the color at the boxes near current box
                 ProcessBoxes(lastBoxString);
 
                 // check if there is a game over
-                if ( attualWeights.Max() == 0 )
+                if ( actualWeights.Max() == 0 )
                 {
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
@@ -339,7 +211,7 @@ public class ControlloMappa : MonoBehaviour
             }
 
             // load a weights of the near boxes
-            attualWeights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
+            actualWeights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
             if(
                 gameData.lastLose[0] == gameData.correctBoxes[gameData.correctBoxes.Count - 1]
                 &&
@@ -350,286 +222,12 @@ public class ControlloMappa : MonoBehaviour
             }
             else
             {
-                weights = attualWeights;
+                weights = actualWeights;
                 gameData.lastLose[2] = Utils.TransformListIntToString(weights);
                 gameData.SaveData();
             }
-            /*
-            GameObject boxAboveGameObject = GameObject.Find(Utils.Above(lastBoxString));
-            GameObject boxAboveWrong = GameObject.Find("Errore " + Utils.Above(lastBoxString));
-            // assign the color and the number of difficolt of the box above
-            if (boxAboveGameObject != null && boxAboveWrong == null)
-            {
-                SpriteRenderer boxAbove = boxAboveGameObject.GetComponent<SpriteRenderer>();
-                // if the upper box is the finish line, assign the "the end" logo to that box
-                if(boxAboveGameObject.name == gameData.finishLine)
-                {
-                    finishLineFlag.SetActive(false);
-                    UnityEngine.Vector3 spawnPos = GameObject.Find(gameData.finishLine).transform.position;
-                    Instantiate(finishLineLogo, spawnPos, UnityEngine.Quaternion.identity);
-                    boxAbove.color = Color.white;
-                }
-                else if(boxAbove.color != Color.white)
-                {
-                    if(weights[0] == 1)
-                    {
-                        boxAbove.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = boxAboveGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[0] == 2)
-                    {
-                        boxAbove.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = boxAboveGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[0] == 3)
-                    {
-                        boxAbove.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = boxAboveGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-            }
 
-            GameObject leftDiagonalBoxGameObject = GameObject.Find(Utils.LeftDiagonal(lastBoxString));
-            GameObject diagonalBoxError = GameObject.Find("Errore " + Utils.LeftDiagonal(lastBoxString));
-            // assign the color and the number of difficolt of the box diagonal
-            if (leftDiagonalBoxGameObject != null && diagonalBoxError == null)
-            {
-                SpriteRenderer diagonalBox = leftDiagonalBoxGameObject.GetComponent<SpriteRenderer>();
-                // if the diagonal box is the finish line, assign the "the end" logo to that box
-                if(leftDiagonalBoxGameObject.name == gameData.finishLine)
-                {
-                    finishLineFlag.SetActive(false);
-                    UnityEngine.Vector3 spawnPos = GameObject.Find(gameData.finishLine).transform.position;
-                    Instantiate(finishLineLogo, spawnPos, UnityEngine.Quaternion.identity);
-                    diagonalBox.color = Color.white;
-                }
-                else if(diagonalBox.color != Color.white)
-                {
-                    if(weights[7] == 1)
-                    {
-                        diagonalBox.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[7] == 2)
-                    {
-                        diagonalBox.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[7] == 3)
-                    {
-                        diagonalBox.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-            }
-
-            GameObject leftBoxGameObject = GameObject.Find(Utils.Sinistra(lastBoxString));
-            GameObject leftBoxWrong = GameObject.Find("Errore " + Utils.Sinistra(lastBoxString));
-            // assign the color and the number of difficolt of the box left
-            if (leftBoxGameObject != null && leftBoxWrong == null)
-            {
-                SpriteRenderer leftBox = leftBoxGameObject.GetComponent<SpriteRenderer>();
-                // if the left box is the finish line, assign the "the end" logo to that box
-                if(leftBoxGameObject.name == gameData.finishLine)
-                {
-                    finishLineFlag.SetActive(false);
-                    UnityEngine.Vector3 spawnPos = GameObject.Find(gameData.finishLine).transform.position;
-                    Instantiate(finishLineLogo, spawnPos, UnityEngine.Quaternion.identity);
-                    leftBox.color = Color.white;
-                }
-                else if(leftBox.color != Color.white)
-                {
-                    if(weights[6] == 1)
-                    {
-                        leftBox.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[6] == 2)
-                    {
-                        leftBox.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[6] == 3)
-                    {
-                        leftBox.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-            }
-
-            GameObject rightDiagonalBoxGameObject = GameObject.Find(Utils.RightDiagonal(lastBoxString));
-            GameObject rightDiagonalBoxWrong = GameObject.Find("Errore " + Utils.RightDiagonal(lastBoxString));
-            // assign the color and the number of difficolt of the box right diagonal
-            if(rightDiagonalBoxGameObject != null && rightDiagonalBoxWrong == null)
-            {
-                SpriteRenderer rightDiagonalBox = rightDiagonalBoxGameObject.GetComponent<SpriteRenderer>();
-                // if the diagonal right box is the finish line, assign the "the end" logo to that box
-                if(rightDiagonalBoxGameObject.name == gameData.finishLine)
-                {
-                    finishLineFlag.SetActive(false);
-                    UnityEngine.Vector3 spawnPos = GameObject.Find(gameData.finishLine).transform.position;
-                    Instantiate(finishLineLogo, spawnPos, UnityEngine.Quaternion.identity);
-                    rightDiagonalBox.color = Color.white;
-                }
-                else if(rightDiagonalBox.color != Color.white)
-                {
-                    if(weights[1] == 1)
-                    {
-                        rightDiagonalBox.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = rightDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[1] == 2)
-                    {
-                        rightDiagonalBox.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = rightDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[1] == 3)
-                    {
-                        rightDiagonalBox.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = rightDiagonalBoxGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-            }
-
-            GameObject rightBoxGameObject = GameObject.Find(Utils.Destra(lastBoxString));
-            GameObject rightBoxWrong = GameObject.Find("Errore " + Utils.Destra(lastBoxString));
-            // assign the color and the number of difficolt of the box right
-            if(rightBoxGameObject != null && rightBoxWrong == null)
-            {
-                SpriteRenderer rightBox = rightBoxGameObject.GetComponent<SpriteRenderer>();
-                // if the right box is the finish line, assign the "the end" logo to that box
-                if(rightBoxGameObject.name == gameData.finishLine)
-                {
-                    finishLineFlag.SetActive(false);
-                    UnityEngine.Vector3 spawnPos = GameObject.Find(gameData.finishLine).transform.position;
-                    Instantiate(finishLineLogo, spawnPos, UnityEngine.Quaternion.identity);
-                    rightBox.color = Color.white;
-                }
-                else if(rightBox.color != Color.white)
-                {
-                    if(weights[2] == 1)
-                    {
-                        rightBox.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = rightBoxGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity); 
-                    }
-                    else if(weights[2] == 2)
-                    {
-                        rightBox.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = rightBoxGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[2] == 3)
-                    {
-                        rightBox.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = rightBoxGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-            }
-
-            GameObject DiagonalBelowRightBoxGameObject = GameObject.Find(Utils.DiagonalRightBelow(lastBoxString));
-            GameObject wrongDiagonalBoxBelowRight = GameObject.Find("Errore " + Utils.DiagonalRightBelow(lastBoxString));
-            // assign the color and the number of difficolt of the box diagonal below right
-            if(DiagonalBelowRightBoxGameObject != null && wrongDiagonalBoxBelowRight == null)
-            {
-                SpriteRenderer DiagonalBelowRightBox = DiagonalBelowRightBoxGameObject.GetComponent<SpriteRenderer>();
-                // if the diagonal right below box is the finish line, assign the "the end" logo to that box
-                if(DiagonalBelowRightBox.color != Color.white)
-                {
-                    if(weights[3] == 1)
-                    {
-                        DiagonalBelowRightBox.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = DiagonalBelowRightBoxGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[3] == 2)
-                    {
-                        DiagonalBelowRightBox.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = DiagonalBelowRightBoxGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[3] == 3)
-                    {
-                        DiagonalBelowRightBox.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = DiagonalBelowRightBoxGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-            }
-
-            GameObject diagonalBelowLeftBoxGameObject = GameObject.Find(Utils.LeftDiagonalBelow(lastBoxString));
-            GameObject wrongDiagonalBoxBelowLeft = GameObject.Find("Errore " + Utils.LeftDiagonalBelow(lastBoxString));
-            // assign the color and the number of difficolt of the box diagonal below left
-            if(diagonalBelowLeftBoxGameObject != null && wrongDiagonalBoxBelowLeft == null)
-            {
-                SpriteRenderer diagonalBelowLeftBox = diagonalBelowLeftBoxGameObject.GetComponent<SpriteRenderer>();
-                // if the diagonal left below box is the finish line, assign the "the end" logo to that box
-                if(diagonalBelowLeftBox.color != Color.white)
-                {
-                    if(weights[5] == 1)
-                    {
-                        diagonalBelowLeftBox.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = diagonalBelowLeftBoxGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[5] == 2)
-                    {
-                        diagonalBelowLeftBox.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = diagonalBelowLeftBoxGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[5] == 3)
-                    {
-                        diagonalBelowLeftBox.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = diagonalBelowLeftBoxGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-            }
-
-            GameObject belowBoxGameObject = GameObject.Find(Utils.Below(lastBoxString));
-            GameObject belowBoxWrong = GameObject.Find("Errore " + Utils.Below(lastBoxString));
-            // assign the color and the number of difficolt of the box below
-            if(belowBoxGameObject != null && belowBoxWrong == null)
-            {
-                SpriteRenderer belowBox = belowBoxGameObject.GetComponent<SpriteRenderer>();
-                // if the box below is the finish line, assign the "the end" logo to that box
-                if(belowBox.color != Color.white)
-                {
-                    if(weights[4] == 1)
-                    {
-                        belowBox.color = Color.red;
-                        UnityEngine.Vector3 spawnPos = belowBoxGameObject.transform.position;
-                        Instantiate(difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[4] == 2)
-                    {
-                        belowBox.color = new Color(255f, 255f, 0f, 255f);
-                        UnityEngine.Vector3 spawnPos = belowBoxGameObject.transform.position;
-                        Instantiate(difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                    else if(weights[4] == 3)
-                    {
-                        belowBox.color = Color.green;
-                        UnityEngine.Vector3 spawnPos = belowBoxGameObject.transform.position;
-                        Instantiate(difficultyOne, spawnPos, UnityEngine.Quaternion.identity);
-                    }
-                }
-            } */
-
+            // assign the number and the color of the boxes near the current box
             ProcessBoxes(lastBoxString);
 
             // if the player win the game start animaton from penultimate box to last box
@@ -664,7 +262,7 @@ public class ControlloMappa : MonoBehaviour
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
                 }
-                else if(attualWeights.Max() == 0)
+                else if(actualWeights.Max() == 0)
                 {
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
@@ -953,7 +551,7 @@ public class ControlloMappa : MonoBehaviour
                 Instantiate(finishLineLogo, spawnPosition, Quaternion.identity);
                 boxRenderer.color = Color.white;
             }
-            else if (boxRenderer.color != Color.white && attualWeights[weightIndex] != 0)
+            else if (boxRenderer.color != Color.white && actualWeights[weightIndex] != 0)
             {
                 switch (weights[weightIndex])
                 {
@@ -979,13 +577,13 @@ public class ControlloMappa : MonoBehaviour
         var directions = new (string UtilsMethod, int WeightIndex)[]
         {
             ("Above", 0),
-            ("LeftDiagonal", 7),
-            ("Sinistra", 6),
             ("RightDiagonal", 1),
             ("Destra", 2),
             ("DiagonalRightBelow", 3),
+            ("Below", 4),
             ("LeftDiagonalBelow", 5),
-            ("Below", 4)
+            ("Sinistra", 6),
+            ("LeftDiagonal", 7)
         };
 
         foreach (var (methodName, weightIndex) in directions)
@@ -1001,7 +599,6 @@ public class ControlloMappa : MonoBehaviour
             HandleBox(boxGameObject, boxWrong, weightIndex, gameData.finishLine, spawnPosition, difficultyOne, difficultyTwo, difficultyThree);
         }
     }
-
 
     // Update is called once per frame
     void Update()

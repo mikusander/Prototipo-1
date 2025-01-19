@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -86,7 +84,6 @@ public class Controllo : MonoBehaviour
     {
         if (gameover)
         {
-            Debug.Log("1");
             if (puntiAttuali >= vitt + 1)
             {
                 gameData.correctBoxes.Add(TempData.lastBox);
