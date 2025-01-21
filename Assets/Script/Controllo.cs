@@ -18,63 +18,60 @@ public class Controllo : MonoBehaviour
         }
     }
 
-    // Variabile per la camera principale
     private Camera mainCamera;
+    [SerializeField] private GameObject canvasPrefab;
 
-    // Variabile pubblica per il prefab del Canvas
-    public GameObject canvasPrefab;
-
-    public float spawnDelay = 1.6f; // Ritardo prima di spawnare un nuovo prefab
+    private float spawnDelay = 1.6f;
 
     private GameObject canvasInstance;
 
     public bool gameover = false;
 
     public bool inCreazione = false;
-
-    // Lista di domande
-    public List<Question> questions = new List<Question>();
-    public int numeroDomande;
+    private List<Question> questions = new List<Question>();
+    private int numeroDomande;
     public Question currentQuestion;
     public int puntiAttuali = 0;
     public bool isUltima = true;
     public GameData gameData;
-    private int totaleDomande;
+    public int totaleDomande;
     private int vitt;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Carica i dati salvati (se esistono)
+        // Load saved data (if it exists)
         gameData = GetComponent<GameData>();
         if (gameData != null)
         {
             gameData.LoadData();
         }
+
+        // Assign true to the variable game to indicate that the game has been played, it is used to subsequently start the animation
         TempData.game = true;
         TempData.vittoria = false;
-        // Carica le domande dal file di testo
+
+        // Load questions from text file
         LoadQuestionsFromFile();
         numeroDomande = questions.Count;
         totaleDomande = questions.Count;
         vitt = (int)(totaleDomande / 2);
 
-        // Recupera la Main Camera
+        // Recover the Main Camera
         mainCamera = Camera.main;
 
+        // takes a random question
         int randomIndex = Random.Range(0, numeroDomande);
-
         currentQuestion = questions[randomIndex];
 
-        // Rimuove la domanda usata dalla lista
+        // Removes the used question from the list
         questions.RemoveAt(randomIndex);
-
         numeroDomande = questions.Count;
 
-        // Instanzia il prefab del Canvas
+        // Instantiate the Canvas prefab
         canvasInstance = Instantiate(canvasPrefab);
 
-        // Assegna la Main Camera come Render Camera
+        // Assign the Main Camera as the Render Camera
         Canvas canvas = canvasInstance.GetComponent<Canvas>();
 
         canvas.worldCamera = mainCamera;
@@ -82,6 +79,7 @@ public class Controllo : MonoBehaviour
 
     private void Update()
     {
+        // checks whether the player won or lost
         if (gameover)
         {
             if (puntiAttuali >= vitt + 1)
@@ -98,7 +96,7 @@ public class Controllo : MonoBehaviour
             }
             SceneManager.LoadScene("Mappa");
         }
-        else if (questions.Count == 0 && !isUltima) 
+        else if (questions.Count == 0 && !isUltima)
         {
             gameover = true;
             if (puntiAttuali >= vitt + 1)
@@ -116,72 +114,61 @@ public class Controllo : MonoBehaviour
             SceneManager.LoadScene("Mappa");
         }
 
-        // Controlla se il prefab attuale è null o distrutto
+        // Check if the current prefab is null
         if (!TempData.animazione && canvasInstance == null && !inCreazione && !gameover && !isUltima)
         {
             inCreazione = true;
-            // Avvia la coroutine per spawnare un nuovo prefab
             StartCoroutine(SpawnPrefab());
         }
     }
 
     private IEnumerator SpawnPrefab()
     {
-        // Aspetta un certo intervallo prima di spawnare
         yield return new WaitForSeconds(spawnDelay);
-
-        // Instanzia il prefab del Canvas
         canvasInstance = Instantiate(canvasPrefab);
 
-        // Scegli un prefab casuale dalla lista
+        // choose a random question
         int randomIndex = Random.Range(0, numeroDomande);
         currentQuestion = questions[randomIndex];
-
-        // Rimuove la domanda usata dalla lista
         questions.RemoveAt(randomIndex);
-        
         numeroDomande = questions.Count;
 
+        // If it is the last question it makes the isUltima variable true
         if (questions.Count == 0)
         {
             isUltima = true;
         }
 
-        // Assegna la Main Camera come Render Camera
         Canvas canvas = canvasInstance.GetComponent<Canvas>();
-
         canvas.worldCamera = mainCamera;
-
         inCreazione = false;
     }
 
     void LoadQuestionsFromFile()
     {
 
-        // Carica il file di testo dalla cartella Resources
+        // Load the text file from the Resources folder
         TextAsset questionData = Resources.Load<TextAsset>(TempData.difficolta);
 
-        // Controlla se il file è stato trovato
+        // Check if the file was found
         if (questionData == null)
         {
             Debug.LogError("File Domande.txt non trovato in Resources!");
             return;
         }
 
-        // Leggi ogni riga e aggiungi le domande alla lista
+        // Read each line and add questions to the list
         string[] lines = questionData.text.Split('\n');
         foreach (string line in lines)
         {
-            if (string.IsNullOrWhiteSpace(line)) continue; // Salta righe vuote
+            if (string.IsNullOrWhiteSpace(line)) continue;
 
-            // Dividi la linea in domanda e risposta
             string[] parts = line.Split(';');
             if (parts.Length == 2)
             {
                 string questionText = parts[0].Trim();
                 bool correctAnswer = bool.Parse(parts[1].Trim());
 
-                // Aggiungi la domanda alla lista
                 questions.Add(new Question(questionText, correctAnswer));
             }
             else
@@ -193,15 +180,12 @@ public class Controllo : MonoBehaviour
 
     IEnumerator AnimationMano(Animator animator)
     {
-        // Avvia l'animazione
         TempData.animazione = true;
         animator.SetTrigger("Attivazione");
 
-        // Ottieni la durata dello stato attivo
         AnimatorStateInfo animationInfo = animator.GetCurrentAnimatorStateInfo(0);
         float animationDuration = animationInfo.length;
 
-        // Aspetta la durata dell'animazione
         float dura = 0.6f;
         yield return new WaitForSeconds(dura);
         TempData.animazione = false;

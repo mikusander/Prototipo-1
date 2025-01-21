@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class RestartGame : MonoBehaviour
 {
     public ControlloMappa controlloMappa;
-    // Funzione per ricaricare la scena attuale
+    // Function to reload the current scene
     public void RestartCurrentScene()
     {
         controlloMappa.gameData.correctBoxes.Clear();
@@ -12,9 +12,9 @@ public class RestartGame : MonoBehaviour
         controlloMappa.gameData.start = "";
         controlloMappa.gameData.finishLine = "";
         controlloMappa.gameData.SaveData();
-        // Ottiene il nome della scena attiva
+        // Gets the name of the active scene
         string currentSceneName = SceneManager.GetActiveScene().name;
-        // Ricarica la scena attiva
+        // Reload the active scene
         SceneManager.LoadScene(currentSceneName);
     }
 }

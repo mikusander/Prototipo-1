@@ -3,28 +3,28 @@ using UnityEngine.UI; // Importa il namespace UI per usare Text
 
 public class TimerScript : MonoBehaviour
 {
-    public float tempoTotale = 60f; // Durata del timer in secondi
+    private float tempoTotale = 60f; // Durata del timer in secondi
     private float tempoRimanente;
-    public Text testoTimer; // Trascina qui il GameObject Text
+    [SerializeField] private Text testoTimer;
 
-    public Controllo controllo;
+    [SerializeField] private Controllo controllo;
 
     void Start()
     {
-        tempoRimanente = tempoTotale; // Inizializza il tempo rimanente
+        tempoRimanente = tempoTotale; // Initialize the remaining time
     }
 
     void Update()
     {
         if (tempoRimanente > 1 && !controllo.gameover)
         {
-            if(!controllo.inCreazione)
+            if (!controllo.inCreazione)
             {
-                tempoRimanente -= Time.deltaTime; // Riduci il tempo rimanente
-                int minuti = Mathf.FloorToInt(tempoRimanente / 60); // Calcola minuti
-                int secondi = Mathf.FloorToInt(tempoRimanente % 60); // Calcola secondi
+                tempoRimanente -= Time.deltaTime; // Reduce the remaining time
+                int minuti = Mathf.FloorToInt(tempoRimanente / 60); // Calculate minutes
+                int secondi = Mathf.FloorToInt(tempoRimanente % 60); // Calculate seconds
 
-                // Aggiorna il testo del timer con i minuti e secondi rimanenti
+                // Update the timer text with minutes and seconds remaining
                 testoTimer.text = string.Format("{0:00}:{1:00}", minuti, secondi);
             }
         }

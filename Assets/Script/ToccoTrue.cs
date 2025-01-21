@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class ToccoFrecciaSu : MonoBehaviour
 {
-    public Controllo controllo;
+    [SerializeField] private Controllo controllo;
     private GameObject cartaDomanda;
-    public GameObject ditoInSu;
-    public GameObject ditoInGiu;
+    [SerializeField] private GameObject ditoInSu;
+    [SerializeField] private GameObject ditoInGiu;
     private Vector3 spawnPosition = new Vector3(0, 1, 0);
-    public float destroyDelay = 2f;
+    private float destroyDelay = 2f;
     private Camera mainCamera;
 
     // Start is called before the first frame update
     void Start()
     {
-        mainCamera = Camera.main;  // Riferimento alla telecamera principale
+        mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -23,23 +23,23 @@ public class ToccoFrecciaSu : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // Verifica se abbiamo cliccato sul GameObject tramite un Raycast
+            // Check if we clicked on the GameObject via a Raycast
             RaycastHit2D hit = Physics2D.Raycast(mainCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             if (hit.collider != null && hit.collider.gameObject == gameObject && !controllo.inCreazione)
             {
                 if (controllo.currentQuestion.correctAnswer)
                 {
                     controllo.puntiAttuali += 1;
-                    // Trova il Canvas "Domanda"
+                    // Find the "Domanda" Canvas
                     GameObject canvasDomanda = GameObject.Find("Domanda(Clone)");
 
-                    // Verifica se il Canvas � stato trovato
+                    // Check if the Canvas was found
                     if (canvasDomanda != null)
                     {
-                        // Cerca il GameObject "CartaDomanda" all'interno del Canvas "Domanda"
+                        // Search for the "Carta Domanda" GameObject inside the "Domanda" Canvas
                         Transform cartaTransform = canvasDomanda.transform.Find("CartaDomanda");
 
-                        // Verifica se "CartaDomanda" è stato trovato
+                        // Check if the "CartaDomanda" was found
                         if (cartaTransform != null)
                         {
                             cartaDomanda = cartaTransform.gameObject;
@@ -63,16 +63,16 @@ public class ToccoFrecciaSu : MonoBehaviour
                 }
                 else
                 {
-                    // Trova il Canvas "Domanda"
+                    // Find the canvas "Domanda"
                     GameObject canvasDomanda = GameObject.Find("Domanda(Clone)");
 
-                    // Verifica se il Canvas � stato trovato
+                    // Check if the canvas was found
                     if (canvasDomanda != null)
                     {
-                        // Cerca il GameObject "CartaDomanda" all'interno del Canvas "Domanda"
+                        // Search for the "CartaDomanda" GameObject inside the "Domanda"
                         Transform cartaTransform = canvasDomanda.transform.Find("CartaDomanda");
 
-                        // Verifica se "CartaDomanda" è stato trovato
+                        // Check if the "CartaDomanda" was found
                         if (cartaTransform != null)
                         {
                             cartaDomanda = cartaTransform.gameObject;
@@ -99,15 +99,15 @@ public class ToccoFrecciaSu : MonoBehaviour
     }
     IEnumerator AnimationMano(Animator animator)
     {
-        // Avvia l'animazione
+        // Start the animation
         TempData.animazione = true;
         animator.SetTrigger("Attivazione");
 
-        // Ottieni la durata dello stato attivo
+        // Get the active state duration
         AnimatorStateInfo animationInfo = animator.GetCurrentAnimatorStateInfo(0);
         float animationDuration = animationInfo.length;
 
-        // Aspetta la durata dell'animazione
+        // Wait for the duration of the animation
         float dura = 0.6f;
         yield return new WaitForSeconds(dura);
         TempData.animazione = false;

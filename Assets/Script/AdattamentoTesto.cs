@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 public class TextBackground : MonoBehaviour
 {
-    public Text text; // Riferimento all'oggetto di testo
-    public Image background; // Riferimento all'oggetto di sfondo
-    public float padding = 10f; // Spazio extra tra il testo e lo sfondo
+    [SerializeField] private Text text;
+    [SerializeField] private Image background;
+    private float padding = 10f;
 
     void Start()
     {
@@ -14,20 +14,20 @@ public class TextBackground : MonoBehaviour
 
     void Update()
     {
-        // Se il testo cambia nel tempo, aggiorna le dimensioni
+        // If the text changes over time, update the size
         UpdateBackgroundSize();
     }
 
     void UpdateBackgroundSize()
     {
-        // Ottieni i RectTransform del testo e dello sfondo
+        // Get the RectTransforms of the text and background
         RectTransform textRect = text.GetComponent<RectTransform>();
         RectTransform backgroundRect = background.GetComponent<RectTransform>();
 
-        // Imposta le dimensioni dello sfondo con padding
+        // Set the size of the padding background
         backgroundRect.sizeDelta = new Vector2(textRect.sizeDelta.x + padding * 4, textRect.sizeDelta.y + padding * 2);
 
-        // Allinea lo sfondo con il testo
-        backgroundRect.position = textRect.position; // Allinea la posizione del background
+        // Align the background with the text
+        backgroundRect.position = textRect.position;
     }
 }

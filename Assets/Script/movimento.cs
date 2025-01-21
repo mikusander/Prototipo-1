@@ -8,18 +8,18 @@ public class DragGameObject2D : MonoBehaviour
     private bool isDragging = false;
     private Vector3 offset;
     private Camera mainCamera;
-    public GameObject yesRect;
-    public GameObject noRect;
+    [SerializeField] private GameObject yesRect;
+    [SerializeField] private GameObject noRect;
     private Vector3 inizialPosition;
     private Vector3 yesPosition = new Vector3(4.5f, 0f, 0f);
     private Vector3 noPosition = new Vector3(-1f, 0f, 0f);
-    public float destroyDelay = 2f;
-    public GameObject ditoInSu;
-    public GameObject ditoInGiu;
+    private float destroyDelay = 2f;
+    [SerializeField] private GameObject ditoInSu;
+    [SerializeField] private GameObject ditoInGiu;
     private Vector3 spawnPosition = new Vector3(0, 1, 0);
-    public GameObject canva;
-    public Text testo;
-    public Controllo controllo;
+    [SerializeField] private GameObject canva;
+    [SerializeField] private Text testo;
+    private Controllo controllo;
 
     void Start()
     {
@@ -27,7 +27,7 @@ public class DragGameObject2D : MonoBehaviour
         testo.text = controllo.currentQuestion.text;
 
         inizialPosition = transform.position;
-        mainCamera = Camera.main;  // Riferimento alla telecamera principale
+        mainCamera = Camera.main;
     }
 
     void Update()
@@ -36,15 +36,13 @@ public class DragGameObject2D : MonoBehaviour
         {
             Destroy(canva);
         }
-        // Gestisce l'input del mouse
+
         if (Input.GetMouseButtonDown(0))
         {
-            // Verifica se abbiamo cliccato sul GameObject tramite un Raycast
             RaycastHit2D hit = Physics2D.Raycast(mainCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             if (hit.collider != null && hit.collider.gameObject == gameObject)
             {
                 isDragging = true;
-                // Calcola l'offset tra la posizione del GameObject e il clic del mouse
                 offset = transform.position - mainCamera.ScreenToWorldPoint(Input.mousePosition);
             }
         }
@@ -95,14 +93,14 @@ public class DragGameObject2D : MonoBehaviour
                     Destroy(instance, destroyDelay);
                 }
             }
-            else 
+            else
             {
                 transform.position = inizialPosition;
             }
-            isDragging = false;  // Quando rilasciamo il mouse, smettiamo di trascinare
+            isDragging = false;
         }
 
-        if(transform.position.x > inizialPosition.x && isDragging)
+        if (transform.position.x > inizialPosition.x && isDragging)
         {
             yesRect.SetActive(false);
             noRect.SetActive(true);
@@ -115,7 +113,7 @@ public class DragGameObject2D : MonoBehaviour
 
         if (isDragging)
         {
-            // Aggiorna la posizione del GameObject mentre trasciniamo
+            // Update the position of the GameObject as we drag
             Vector3 newPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition) + offset;
             newPosition.z = 0;  // Manteniamo la posizione Z costante in 2D
             newPosition.y = transform.position.y;
@@ -124,15 +122,15 @@ public class DragGameObject2D : MonoBehaviour
     }
     IEnumerator AnimationMano(Animator animator)
     {
-        // Avvia l'animazione
+        // Start the animation
         TempData.animazione = true;
         animator.SetTrigger("Attivazione");
 
-        // Ottieni la durata dello stato attivo
+        // Get the active state duration
         AnimatorStateInfo animationInfo = animator.GetCurrentAnimatorStateInfo(0);
         float animationDuration = animationInfo.length;
 
-        // Aspetta la durata dell'animazione
+        // Wait for the duration of the animation
         float dura = 0.6f;
         yield return new WaitForSeconds(dura);
         TempData.animazione = false;

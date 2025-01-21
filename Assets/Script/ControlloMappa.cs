@@ -350,6 +350,7 @@ public class ControlloMappa : MonoBehaviour
         miMa[0] = 100;
         miMa[1] = 0;
 
+        // directions of the boxes adjacent to the current one
         var directions = new List<(int, int)>
         {
             (-1,  0), // above
@@ -362,50 +363,7 @@ public class ControlloMappa : MonoBehaviour
             (-1,  1)  // above-right
         };
 
-        int minCount = 0;
-        int maxCount = 0;
-        int boxCount = 0;
-
-        foreach (var (dx, dy) in directions)
-        {
-            int newX = varX + dx;
-            int newY = varY + dy;
-            
-            // Controlla che la nuova posizione sia valida
-            if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
-            {
-                boxCount += 1;
-                if (miMa[0] > matrix[newX, newY])
-                {
-                    miMa[0] = matrix[newX, newY];
-                }
-                if (miMa[1] < matrix[newX, newY])
-                {
-                    miMa[1] = matrix[newX, newY];
-                }
-            }
-        }
-
-        foreach (var (dx, dy) in directions)
-        {
-            int newX = varX + dx;
-            int newY = varY + dy;
-            
-            // Controlla che la nuova posizione sia valida
-            if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
-            {
-                if (miMa[0] == matrix[newX, newY])
-                {
-                    minCount += 1;
-                }
-                if (miMa[1] == matrix[newX, newY])
-                {
-                    maxCount += 1;
-                }
-            }
-        }
-
-        // Mappa di direzioni e indici corrispondenti per 'weights'
+        // Map of directions and corresponding indices for 'weights'
         var directionIndices = new Dictionary<(int, int), int>
         {
             { (1,  0), 0 }, // Su
@@ -418,19 +376,47 @@ public class ControlloMappa : MonoBehaviour
             { (1, 1), 7 }  // Alto-sinistra
         };
 
+        int minCount = 0, maxCount = 0, boxCount = 0;
+
+        // loop to check what the maximum value of the adjacent boxes is
+        foreach (var (dx, dy) in directions)
+        {
+            int newX = varX + dx;
+            int newY = varY + dy;
+            
+            // Check if the new position is valid
+            if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
+            {
+                boxCount += 1;
+                if (miMa[0] > matrix[newX, newY]) miMa[0] = matrix[newX, newY];
+                if (miMa[1] < matrix[newX, newY]) miMa[1] = matrix[newX, newY];
+            }
+        }
+
+        // loop to count how many maximum and minimum weight boxes there are
+        foreach (var (dx, dy) in directions)
+        {
+            int newX = varX + dx, newY = varY + dy;
+            
+            if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
+            {
+                if (miMa[0] == matrix[newX, newY]) minCount += 1;
+                if (miMa[1] == matrix[newX, newY]) maxCount += 1;
+            }
+        }
+
         int[] weights = new int[8];
 
         int numberBoxOne = 0, numberBoxTwo = 0, numberBoxOneTwo = boxCount - minCount;
 
         foreach (var (dx, dy) in directions)
         {
-            int newX = varX + dx;
-            int newY = varY + dy;
+            int newX = varX + dx, newY = varY + dy;
 
-            // Controlla che la nuova posizione sia valida
             if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
             {
-                int indice = directionIndices[(dx, dy)]; // Ottieni l'indice associato alla direzione
+                int indice = directionIndices[(dx, dy)];
+                // if there are no excess boxes between maximum and minimum I divide the weight 1 and 2 between the boxes that do not have the maximum weight
                 if(boxCount - maxCount - minCount == 0)
                 {
                     if (matrix[newX, newY] == miMa[0])
@@ -480,42 +466,37 @@ public class ControlloMappa : MonoBehaviour
                 }
             }
         }
-
         return weights;
     }
 
 
     public static void BFS(int[,] matrix, int startX, int startY)
     {
-        int rows = matrix.GetLength(0);
-        int cols = matrix.GetLength(1);
+        int rows = matrix.GetLength(0), cols = matrix.GetLength(1);
 
-        // Direzioni per muoversi (su, giù, sinistra, destra)
-        int[] dirX = { -1,  1,  0,  0 };
-        int[] dirY = {  0,  0, -1,  1 };
+        // Directions to move (up, down, left, right)
+        int[] dirX = { -1,  1,  0,  0 }, dirY = {  0,  0, -1,  1 };
 
-        // Inizializza la coda per il BFS
+        // Initialize the queue for the BFS
         Queue<(int, int)> queue = new Queue<(int, int)>();
 
-        // Aggiungi il punto di partenza alla coda e imposta la distanza iniziale a 0
+        // Add the starting point to the queue and set the starting distance to 0
         queue.Enqueue((startX, startY));
         matrix[startX, startY] = 0;
 
         while (queue.Count > 0)
         {
-            // Estrai l'elemento in testa alla coda
+            // Extract the item at the head of the queue
             var (x, y) = queue.Dequeue();
 
-            // Esplora le direzioni adiacenti
+            // Explore adjacent directions
             for (int i = 0; i < dirX.Length; i++)
             {
-                int newX = x + dirX[i];
-                int newY = y + dirY[i];
+                int newX = x + dirX[i], newY = y + dirY[i];
 
-                // Controlla se la nuova posizione è valida
                 if (newX >= 0 && newX < rows && newY >= 0 && newY < cols)
                 {
-                    // Continua solo se la casella è raggiungibile e non ancora visitata
+                    // Continue only if the box is reachable and not yet visited
                     if (matrix[newX, newY] == 0)
                     {
                         matrix[newX, newY] = matrix[x, y] + 1; // Aggiorna il numero di passi
@@ -525,15 +506,12 @@ public class ControlloMappa : MonoBehaviour
             }
         }
 
-        // Imposta a -1 le caselle inaccessibili che non sono state raggiunte
+        // Set inaccessible boxes that have not been reached to -1
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
-                if (matrix[i, j] == 0 && (i != startX || j != startY))
-                {
-                    matrix[i, j] = -1; // Non raggiunto
-                }
+                if (matrix[i, j] == 0 && (i != startX || j != startY)) matrix[i, j] = -1;
             }
         }
     }

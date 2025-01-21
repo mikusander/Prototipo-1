@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class Utils
 {
-    // Esempio di funzione statica
+    // Function to create the name of the upper box
     public static string Above(string pos)
     {
         int[] numeri = takeNumbers(pos);
@@ -17,6 +17,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
+    // Function to create the name of the box on the left
     public static string Sinistra(string pos)
     {
         int[] numeri = takeNumbers(pos);
@@ -28,6 +29,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
+    // Function to create the name of the box on the right
     public static string Destra(string pos)
     {
         int[] numeri = takeNumbers(pos);
@@ -39,6 +41,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
+    // Function to create the name of the left diagonal box
     public static string LeftDiagonal(string pos)
     {
         int[] numeri = takeNumbers(pos);
@@ -51,6 +54,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
+    // Function to create the name of the right diagonal box
     public static string RightDiagonal(string pos)
     {
         int[] numeri = takeNumbers(pos);
@@ -63,6 +67,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
+    // Function to create the name of the lower right diagonal box
     public static string DiagonalRightBelow(string pos)
     {
         int[] numeri = takeNumbers(pos);
@@ -75,6 +80,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
+    // Function to create the name of the lower left diagonal box
     public static string LeftDiagonalBelow(string pos)
     {
         int[] numeri = takeNumbers(pos);
@@ -87,6 +93,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
+    // Function to create the name of the lower box
     public static string Below(string pos)
     {
         int[] numeri = takeNumbers(pos);
@@ -98,6 +105,7 @@ public static class Utils
         return "Casella " + numeri[0].ToString() + "," + numeri[1].ToString();
     }
 
+    // Function that takes the numbers of the box name
     public static int[] takeNumbers(string casella)
     {
         int[] ris = new int[2];
@@ -110,11 +118,13 @@ public static class Utils
         return ris;
     }
 
+    // Function thah creates a name of the box
     public static string CreaCasella(int x, int y)
     {
         return "Casella " + y.ToString() + "," + x.ToString();
     }
 
+    // Function that checks for the presence of an element in a list
     public static bool presenceControl(List<string> caselle, string casella)
     {
         foreach(string i in caselle)
@@ -127,6 +137,7 @@ public static class Utils
         return false;
     }
 
+    // function that checks whether the top line is passable
     public static bool SuperiorLine(string casella, List<string> wrongBoxes)
     {
         int[] numeri = takeNumbers(casella);
@@ -147,11 +158,13 @@ public static class Utils
         return true;
     }
 
+    // Function that transforms a list of integers into a string with spaces in between
     public static string TransformListIntToString(int[] weightsList)
     {
         return string.Join(" ", weightsList);
     }
 
+    // Function that transforms a string with integers into a list of integers
     public static int[] TransformStringToList(string weightsString)
     {
         int [] appo = new int[8];
@@ -163,29 +176,7 @@ public static class Utils
         return appo;
     }
 
-    public static bool SuperiorRightLine(string casella, List<string> wrongBoxes)
-    {
-        int[] numeri = takeNumbers(casella);
-        numeri[1] += 1;
-        string casellaDestra = "Casella " + numeri[0].ToString() + numeri[1].ToString();
-        numeri[0] += 1;
-        string[] caselleSuperiori = { 
-            "Casella " + numeri[0].ToString() + ",0",
-            "Casella " + numeri[0].ToString() + ",1",
-            "Casella " + numeri[0].ToString() + ",2",
-            "Casella " + numeri[0].ToString() + ",3",
-            casellaDestra
-            };
-        foreach( string i in caselleSuperiori )
-        {
-            if( presenceControl(wrongBoxes, i) )
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    // Function to print the entire contents of an array of integers
     public static void PrintMatrix(int[,] matrix)
     {
         int rows = matrix.GetLength(0);
