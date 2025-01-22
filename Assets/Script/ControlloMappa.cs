@@ -29,6 +29,32 @@ public class ControlloMappa : MonoBehaviour
     public int[] weights;
     public int[] actualWeights;
     private List<string> rightWrongBoxes = new List<string>();
+    public Dictionary<string, List<string>> adjacencyList = new Dictionary<string, List<string>>
+    {
+        {"Casella 1", new List<string> { "Casella 2", "Casella 6" } },
+        {"Casella 2", new List<string> { "Casella 1", "Casella 3", "Casella 6", "Casella 7", "Casella 8" } },
+        {"Casella 3", new List<string> { "Casella 2", "Casella 4", "Casella 8" } },
+        {"Casella 4", new List<string> { "Casella 3", "Casella 8", "Casella 9", "Casella 10", "Casella 5" } },
+        {"Casella 5", new List<string> { "Casella 4", "Casella 10" } },
+        {"Casella 6", new List<string> { "Casella 1", "Casella 2", "Casella 7", "Casella 11" } },
+        {"Casella 7", new List<string> { "Casella 2", "Casella 6", "Casella 8", "Casella 11", "Casella 12", "Casella 13" } },
+        {"Casella 8", new List<string> { "Casella 2", "Casella 3", "Casella 4", "Casella 7", "Casella 9", "Casella 13" } },
+        {"Casella 9", new List<string> { "Casella 4", "Casella 8", "Casella 10", "Casella 13", "Casella 14", "Casella 15" } },
+        {"Casella 10", new List<string> { "Casella 4", "Casella 5", "Casella 9", "Casella 15" } },
+        {"Casella 11", new List<string> { "Casella 6", "Casella 7", "Casella 12", "Casella 16" } },
+        {"Casella 12", new List<string> { "Casella 7", "Casella 11", "Casella 13", "Casella 16", "Casella 17", "Casella 18" } },
+        {"Casella 13", new List<string> { "Casella 7", "Casella 8", "Casella 9", "Casella 12", "Casella 14", "Casella 18" } },
+        {"Casella 14", new List<string> { "Casella 9", "Casella 13", "Casella 15", "Casella 18", "Casella 19", "Casella 20" } },
+        {"Casella 15", new List<string> { "Casella 9", "Casella 10", "Casella 14", "Casella 20" } },
+        {"Casella 16", new List<string> { "Casella 11", "Casella 12", "Casella 17", "Casella 21" } },
+        {"Casella 17", new List<string> { "Casella 12", "Casella 16", "Casella 18", "Casella 21", "Casella 22" } },
+        {"Casella 18", new List<string> { "Casella 12", "Casella 13", "Casella 14", "Casella 17", "Casella 19", "Casella 22" } },
+        {"Casella 19", new List<string> { "Casella 14", "Casella 18", "Casella 20", "Casella 22", "Casella 23" } },
+        {"Casella 20", new List<string> { "Casella 14", "Casella 15", "Casella 19", "Casella 23" } },
+        {"Casella 21", new List<string> { "Casella 16", "Casella 17" } },
+        {"Casella 22", new List<string> { "Casella 17", "Casella 18", "Casella 19" } },
+        {"Casella 23", new List<string> { "Casella 19", "Casella 20" } },
+    };
 
     // Start is called before the first frame update
     void Start()
@@ -46,52 +72,7 @@ public class ControlloMappa : MonoBehaviour
             chessboardBase.SetActive(true);
         }
 
-        // random choice of the initial box
-        string[] possibleChars = { "3", "0" };
-        int randomIndexstart = UnityEngine.Random.Range(0, possibleChars.Length);
-        if (gameData.start == "")
-        {
-            gameData.start = "Casella " + "0," + possibleChars[randomIndexstart];
-            gameData.SaveData();
-            GameObject startBox = GameObject.Find(gameData.start);
-            if (startBox != null)
-            {
-                UnityEngine.Vector3 spawnPos = startBox.transform.position;
-                player = Instantiate(player, spawnPos, UnityEngine.Quaternion.identity);
-            }
-        }
-        else if (gameData.correctBoxes.Count < 2) // if the start box has already been initialized, player spawn in this box
-        {
-            GameObject startBox = GameObject.Find(gameData.start);
-            if (startBox != null)
-            {
-                UnityEngine.Vector3 spawnPos = startBox.transform.position;
-                player = Instantiate(player, spawnPos, UnityEngine.Quaternion.identity);
-            }
-        }
 
-        // Random choice of finish line location
-        if (gameData.finishLine == "")
-        {
-            string randomIndex = possibleChars[randomIndexstart] == "3" ? "0" : possibleChars[randomIndexstart] == "0" ? "3" : possibleChars[randomIndexstart];
-            gameData.finishLine = "Casella " + "5," + randomIndex;
-            gameData.SaveData();
-            GameObject finalBox = GameObject.Find(gameData.finishLine);
-            if (finalBox != null)
-            {
-                UnityEngine.Vector3 spawnPos = finalBox.transform.position;
-                finishLineFlag = Instantiate(finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
-            }
-        }
-        else    // if the finish line has already been initialized, spawn it
-        {
-            GameObject finalBox = GameObject.Find(gameData.finishLine);
-            if (finalBox != null)
-            {
-                UnityEngine.Vector3 spawnPos = finalBox.transform.position;
-                finishLineFlag = Instantiate(finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
-            }
-        }
 
         // if the player have lost the last game, activate the wrong box animation
         bool newError = false;
