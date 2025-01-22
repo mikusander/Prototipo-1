@@ -8,19 +8,9 @@ public class StartButton : MonoBehaviour
     public void PlayGame()
     {
         controlloMappa.mainWriting.SetActive(true);
-        
-        // create a random flag line
-        string[] possibleChars = { "1", "2", "3", "0" };
-        int randomIndex = UnityEngine.Random.Range(0, possibleChars.Length);
-        controlloMappa.gameData.finishLine = "Casella " + "5," + possibleChars[randomIndex];
-        Transform finishLine = controlloMappa.chessboardBase.transform.Find(controlloMappa.gameData.finishLine);
-        if (finishLine != null)
-        {
-            UnityEngine.Vector3 spawnPos = finishLine.transform.position;
-            controlloMappa.finishLineFlag = Instantiate(controlloMappa.finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
-        }
 
         // create a random start box
+        string[] possibleChars = { "3", "0" };
         int randomIndexstart = UnityEngine.Random.Range(0, possibleChars.Length);
         controlloMappa.gameData.start = "Casella " + "0," + possibleChars[randomIndexstart];
         controlloMappa.gameData.correctBoxes.Add(controlloMappa.gameData.start);
@@ -29,6 +19,16 @@ public class StartButton : MonoBehaviour
         {
             UnityEngine.Vector3 spawnPos = startBox.transform.position;
             controlloMappa.player = Instantiate(controlloMappa.player, spawnPos, UnityEngine.Quaternion.identity);
+        }
+
+        // create a random flag line
+        string randomIndex = possibleChars[randomIndexstart] == "3" ? "0" : possibleChars[randomIndexstart] == "0" ? "3" : possibleChars[randomIndexstart];
+        controlloMappa.gameData.finishLine = "Casella " + "5," + randomIndex;
+        Transform finishLine = controlloMappa.chessboardBase.transform.Find(controlloMappa.gameData.finishLine);
+        if (finishLine != null)
+        {
+            UnityEngine.Vector3 spawnPos = finishLine.transform.position;
+            controlloMappa.finishLineFlag = Instantiate(controlloMappa.finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
         }
 
         // inizialize the first bfs
@@ -55,19 +55,19 @@ public class StartButton : MonoBehaviour
             if (boxAboveGameObject != null)
             {
                 SpriteRenderer boxAbove = boxAboveGameObject.GetComponent<SpriteRenderer>();
-                if(controlloMappa.weights[0] == 1)
+                if (controlloMappa.weights[0] == 1)
                 {
                     boxAbove.color = Color.red;
                     UnityEngine.Vector3 spawnPos = boxAboveGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
                 }
-                else if(controlloMappa.weights[0] == 2)
+                else if (controlloMappa.weights[0] == 2)
                 {
                     boxAbove.color = new Color(255f, 255f, 0f, 255f);
                     UnityEngine.Vector3 spawnPos = boxAboveGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
                 }
-                else if(controlloMappa.weights[0] == 3)
+                else if (controlloMappa.weights[0] == 3)
                 {
                     boxAbove.color = Color.green;
                     UnityEngine.Vector3 spawnPos = boxAboveGameObject.transform.position;
@@ -80,19 +80,19 @@ public class StartButton : MonoBehaviour
             if (leftDiagonalBoxGameObject != null)
             {
                 SpriteRenderer diagonalBox = leftDiagonalBoxGameObject.GetComponent<SpriteRenderer>();
-                if(controlloMappa.weights[7] == 1)
+                if (controlloMappa.weights[7] == 1)
                 {
                     diagonalBox.color = Color.red;
                     UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
                 }
-                else if(controlloMappa.weights[7] == 2)
+                else if (controlloMappa.weights[7] == 2)
                 {
                     diagonalBox.color = new Color(255f, 255f, 0f, 255f);
                     UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
                 }
-                else if(controlloMappa.weights[7] == 3)
+                else if (controlloMappa.weights[7] == 3)
                 {
                     diagonalBox.color = Color.green;
                     UnityEngine.Vector3 spawnPos = leftDiagonalBoxGameObject.transform.position;
@@ -105,19 +105,19 @@ public class StartButton : MonoBehaviour
             if (leftBoxGameObject != null)
             {
                 SpriteRenderer leftBox = leftBoxGameObject.GetComponent<SpriteRenderer>();
-                if(controlloMappa.weights[6] == 1)
+                if (controlloMappa.weights[6] == 1)
                 {
                     leftBox.color = Color.red;
                     UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyThree, spawnPos, UnityEngine.Quaternion.identity);
                 }
-                else if(controlloMappa.weights[6] == 2)
+                else if (controlloMappa.weights[6] == 2)
                 {
                     leftBox.color = new Color(255f, 255f, 0f, 255f);
                     UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
                     Instantiate(controlloMappa.difficultyTwo, spawnPos, UnityEngine.Quaternion.identity);
                 }
-                else if(controlloMappa.weights[6] == 3)
+                else if (controlloMappa.weights[6] == 3)
                 {
                     leftBox.color = Color.green;
                     UnityEngine.Vector3 spawnPos = leftBoxGameObject.transform.position;
@@ -127,7 +127,7 @@ public class StartButton : MonoBehaviour
 
             // assign the color and the number of the dissiculty at the right diagonal box
             GameObject rightDiagonalBoxGameObject = controlloMappa.chessboardBase.transform.Find(Utils.RightDiagonal(casella.name)).gameObject;
-            if(rightDiagonalBoxGameObject != null)
+            if (rightDiagonalBoxGameObject != null)
             {
                 SpriteRenderer rightDiagonalBox = rightDiagonalBoxGameObject.GetComponent<SpriteRenderer>();
                 if (controlloMappa.weights[1] == 1)

@@ -1,2 +1,1 @@
 La velocità della luce è di circa 300.000 chilometri al secondo;true
-La capitale d'italia è roma;true

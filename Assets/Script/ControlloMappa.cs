@@ -46,39 +46,15 @@ public class ControlloMappa : MonoBehaviour
             chessboardBase.SetActive(true);
         }
 
-        // Random choice of finish line location
-        if(gameData.finishLine == "")
-        {
-            string[] possibleChars = { "1", "2", "3", "0" };
-            int randomIndex = UnityEngine.Random.Range(0, possibleChars.Length);
-            gameData.finishLine = "Casella " + "5," + possibleChars[randomIndex];
-            gameData.SaveData();
-            GameObject finalBox = GameObject.Find(gameData.finishLine);
-            if(finalBox != null)
-            {
-                UnityEngine.Vector3 spawnPos = finalBox.transform.position;
-                finishLineFlag = Instantiate(finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
-            }
-        }
-        else    // if the finish line has already been initialized, spawn it
-        {
-            GameObject finalBox = GameObject.Find(gameData.finishLine);
-            if(finalBox != null)
-            {
-                UnityEngine.Vector3 spawnPos = finalBox.transform.position;
-                finishLineFlag = Instantiate(finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
-            }
-        }
-
         // random choice of the initial box
-        if(gameData.start == "")
+        string[] possibleChars = { "3", "0" };
+        int randomIndexstart = UnityEngine.Random.Range(0, possibleChars.Length);
+        if (gameData.start == "")
         {
-            string[] possibleChars = { "1", "2", "3", "0" };
-            int randomIndex = UnityEngine.Random.Range(0, possibleChars.Length);
-            gameData.start = "Casella " + "0," + possibleChars[randomIndex];
+            gameData.start = "Casella " + "0," + possibleChars[randomIndexstart];
             gameData.SaveData();
             GameObject startBox = GameObject.Find(gameData.start);
-            if(startBox != null)
+            if (startBox != null)
             {
                 UnityEngine.Vector3 spawnPos = startBox.transform.position;
                 player = Instantiate(player, spawnPos, UnityEngine.Quaternion.identity);
@@ -87,16 +63,39 @@ public class ControlloMappa : MonoBehaviour
         else if (gameData.correctBoxes.Count < 2) // if the start box has already been initialized, player spawn in this box
         {
             GameObject startBox = GameObject.Find(gameData.start);
-            if(startBox != null)
+            if (startBox != null)
             {
                 UnityEngine.Vector3 spawnPos = startBox.transform.position;
                 player = Instantiate(player, spawnPos, UnityEngine.Quaternion.identity);
             }
         }
 
+        // Random choice of finish line location
+        if (gameData.finishLine == "")
+        {
+            string randomIndex = possibleChars[randomIndexstart] == "3" ? "0" : possibleChars[randomIndexstart] == "0" ? "3" : possibleChars[randomIndexstart];
+            gameData.finishLine = "Casella " + "5," + randomIndex;
+            gameData.SaveData();
+            GameObject finalBox = GameObject.Find(gameData.finishLine);
+            if (finalBox != null)
+            {
+                UnityEngine.Vector3 spawnPos = finalBox.transform.position;
+                finishLineFlag = Instantiate(finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
+            }
+        }
+        else    // if the finish line has already been initialized, spawn it
+        {
+            GameObject finalBox = GameObject.Find(gameData.finishLine);
+            if (finalBox != null)
+            {
+                UnityEngine.Vector3 spawnPos = finalBox.transform.position;
+                finishLineFlag = Instantiate(finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
+            }
+        }
+
         // if the player have lost the last game, activate the wrong box animation
         bool newError = false;
-        if(gameData.wrongBoxes.Count > 0 && TempData.lastError != gameData.wrongBoxes[gameData.wrongBoxes.Count - 1])
+        if (gameData.wrongBoxes.Count > 0 && TempData.lastError != gameData.wrongBoxes[gameData.wrongBoxes.Count - 1])
         {
             newError = true;
         }
@@ -116,7 +115,7 @@ public class ControlloMappa : MonoBehaviour
         }
 
         // assign at the memory the last error for the next wrong box animation
-        if(gameData.wrongBoxes.Count > 1)
+        if (gameData.wrongBoxes.Count > 1)
         {
             TempData.lastError = "Errore " + gameData.wrongBoxes[gameData.wrongBoxes.Count - 1];
         }
@@ -142,11 +141,11 @@ public class ControlloMappa : MonoBehaviour
             mainWriting.SetActive(true);
             rightWrongBoxes.AddRange(gameData.correctBoxes);
             rightWrongBoxes.AddRange(gameData.wrongBoxes);
-            
+
             string lastBoxString = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
             Transform lastBoxTransform = chessboardBase.transform.Find(lastBoxString);
-            
-            if(TempData.game && !TempData.vittoria)
+
+            if (TempData.game && !TempData.vittoria)
             {
                 gameData.lastLose[0] = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
                 gameData.lastLose[1] = "yes";
@@ -155,7 +154,7 @@ public class ControlloMappa : MonoBehaviour
 
             // load a weights of the boxes near the current box
             actualWeights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
-            if(
+            if (
                 gameData.lastLose[0] == gameData.correctBoxes[gameData.correctBoxes.Count - 1]
                 &&
                 gameData.lastLose[1] == "yes"
@@ -171,11 +170,11 @@ public class ControlloMappa : MonoBehaviour
             }
 
             Transform boxTransform = chessboardBase.transform.Find(gameData.start);
-            if ( boxTransform != null )
+            if (boxTransform != null)
             {
                 GameObject casella = boxTransform.gameObject;
                 SpriteRenderer renderer = casella.GetComponent<SpriteRenderer>();
-                
+
                 // change the color of the box
                 if (renderer != null)
                 {
@@ -186,7 +185,7 @@ public class ControlloMappa : MonoBehaviour
                 ProcessBoxes(lastBoxString);
 
                 // check if there is a game over
-                if ( actualWeights.Max() == 0 )
+                if (actualWeights.Max() == 0)
                 {
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
@@ -203,7 +202,7 @@ public class ControlloMappa : MonoBehaviour
             string lastBoxString = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
             Transform lastBoxTransform = chessboardBase.transform.Find(lastBoxString);
 
-            if(TempData.game && !TempData.vittoria)
+            if (TempData.game && !TempData.vittoria)
             {
                 gameData.lastLose[0] = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
                 gameData.lastLose[1] = "yes";
@@ -212,7 +211,7 @@ public class ControlloMappa : MonoBehaviour
 
             // load a weights of the near boxes
             actualWeights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
-            if(
+            if (
                 gameData.lastLose[0] == gameData.correctBoxes[gameData.correctBoxes.Count - 1]
                 &&
                 gameData.lastLose[1] == "yes"
@@ -231,7 +230,7 @@ public class ControlloMappa : MonoBehaviour
             ProcessBoxes(lastBoxString);
 
             // if the player win the game start animaton from penultimate box to last box
-            if(TempData.game && TempData.vittoria)
+            if (TempData.game && TempData.vittoria)
             {
                 gameData.lastLose[1] = "no";
                 gameData.SaveData();
@@ -257,12 +256,12 @@ public class ControlloMappa : MonoBehaviour
                 }
 
                 // Check if there is a lose condition
-                if(Utils.SuperiorLine(lastBoxString, rightWrongBoxes))
+                if (Utils.SuperiorLine(lastBoxString, rightWrongBoxes))
                 {
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
                 }
-                else if(actualWeights.Max() == 0)
+                else if (actualWeights.Max() == 0)
                 {
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
@@ -316,11 +315,12 @@ public class ControlloMappa : MonoBehaviour
         }
     }
 
-    public int[] ConditionGameOver(List<string> rightWrongBoxes, string lastBox, string finishLineFlag){
-        
+    public int[] ConditionGameOver(List<string> rightWrongBoxes, string lastBox, string finishLineFlag)
+    {
+
         int[,] matrix = new int[6, 4];
 
-        for( int x = 0; x < rightWrongBoxes.Count; x++ )
+        for (int x = 0; x < rightWrongBoxes.Count; x++)
         {
             int[] numeri = Utils.takeNumbers(rightWrongBoxes[x]);
             matrix[numeri[0], numeri[1]] = -1;
@@ -348,7 +348,7 @@ public class ControlloMappa : MonoBehaviour
     {
         int[] miMa = new int[2];
         miMa[0] = 100;
-        miMa[1] = 0;
+        miMa[1] = 100;
 
         // directions of the boxes adjacent to the current one
         var directions = new List<(int, int)>
@@ -376,20 +376,32 @@ public class ControlloMappa : MonoBehaviour
             { (1, 1), 7 }  // Alto-sinistra
         };
 
-        int minCount = 0, maxCount = 0, boxCount = 0;
+        int secondMaxCount = 0, maxCount = 0, boxCount = 0;
 
         // loop to check what the maximum value of the adjacent boxes is
         foreach (var (dx, dy) in directions)
         {
             int newX = varX + dx;
             int newY = varY + dy;
-            
+
             // Check if the new position is valid
             if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
             {
                 boxCount += 1;
                 if (miMa[0] > matrix[newX, newY]) miMa[0] = matrix[newX, newY];
-                if (miMa[1] < matrix[newX, newY]) miMa[1] = matrix[newX, newY];
+            }
+        }
+
+        // loop to check what the second maximum value of the adjacent boxes is
+        foreach (var (dx, dy) in directions)
+        {
+            int newX = varX + dx;
+            int newY = varY + dy;
+
+            // Check if the new position is valid
+            if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
+            {
+                if (miMa[0] != matrix[newX, newY] && miMa[1] > matrix[newX, newY]) miMa[1] = matrix[newX, newY];
             }
         }
 
@@ -397,17 +409,17 @@ public class ControlloMappa : MonoBehaviour
         foreach (var (dx, dy) in directions)
         {
             int newX = varX + dx, newY = varY + dy;
-            
+
             if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
             {
-                if (miMa[0] == matrix[newX, newY]) minCount += 1;
+                if (miMa[0] == matrix[newX, newY]) secondMaxCount += 1;
                 if (miMa[1] == matrix[newX, newY]) maxCount += 1;
             }
         }
 
         int[] weights = new int[8];
 
-        int numberBoxOne = 0, numberBoxTwo = 0, numberBoxOneTwo = boxCount - minCount;
+        int numberBoxOne = 0, numberBoxTwo = 0, numberBoxOneTwo = boxCount - secondMaxCount;
 
         foreach (var (dx, dy) in directions)
         {
@@ -417,7 +429,7 @@ public class ControlloMappa : MonoBehaviour
             {
                 int indice = directionIndices[(dx, dy)];
                 // if there are no excess boxes between maximum and minimum I divide the weight 1 and 2 between the boxes that do not have the maximum weight
-                if(boxCount - maxCount - minCount == 0)
+                if (boxCount - maxCount - secondMaxCount == 0)
                 {
                     if (matrix[newX, newY] == miMa[0])
                     {
@@ -425,20 +437,20 @@ public class ControlloMappa : MonoBehaviour
                     }
                     else
                     {
-                        if (numberBoxOne == (int) numberBoxOneTwo / 2)
+                        if (numberBoxOne == (int)numberBoxOneTwo / 2)
                         {
                             weights[indice] = 2;
                             numberBoxTwo += 1;
                         }
-                        else if (numberBoxTwo == (int) numberBoxOneTwo / 2)
+                        else if (numberBoxTwo == (int)numberBoxOneTwo / 2)
                         {
                             weights[indice] = 3;
                             numberBoxOne += 1;
                         }
                         else
                         {
-                            weights[indice] = UnityEngine.Random.Range(2,4);
-                            if(weights[indice] == 3)
+                            weights[indice] = UnityEngine.Random.Range(2, 4);
+                            if (weights[indice] == 3)
                             {
                                 numberBoxOne += 1;
                             }
@@ -457,11 +469,11 @@ public class ControlloMappa : MonoBehaviour
                     }
                     else if (matrix[newX, newY] == miMa[1])
                     {
-                        weights[indice] = 3;
+                        weights[indice] = 2;
                     }
                     else
                     {
-                        weights[indice] = 2;
+                        weights[indice] = 3;
                     }
                 }
             }
@@ -475,7 +487,7 @@ public class ControlloMappa : MonoBehaviour
         int rows = matrix.GetLength(0), cols = matrix.GetLength(1);
 
         // Directions to move (up, down, left, right)
-        int[] dirX = { -1,  1,  0,  0 }, dirY = {  0,  0, -1,  1 };
+        int[] dirX = { -1, 1, 0, 0 }, dirY = { 0, 0, -1, 1 };
 
         // Initialize the queue for the BFS
         Queue<(int, int)> queue = new Queue<(int, int)>();
