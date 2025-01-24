@@ -10,7 +10,7 @@ public static class Utils
     {
         int[] numeri = takeNumbers(pos);
         numeri[0] += 1;
-        if(numeri[0] > 5)
+        if (numeri[0] > 5)
         {
             return "";
         }
@@ -22,7 +22,7 @@ public static class Utils
     {
         int[] numeri = takeNumbers(pos);
         numeri[1] += 1;
-        if(numeri[1] > 3)
+        if (numeri[1] > 3)
         {
             return "";
         }
@@ -34,7 +34,7 @@ public static class Utils
     {
         int[] numeri = takeNumbers(pos);
         numeri[1] -= 1;
-        if(numeri[1] < 0)
+        if (numeri[1] < 0)
         {
             return "";
         }
@@ -47,7 +47,7 @@ public static class Utils
         int[] numeri = takeNumbers(pos);
         numeri[0] += 1;
         numeri[1] += 1;
-        if(numeri[0] > 5 || numeri[1] > 3)
+        if (numeri[0] > 5 || numeri[1] > 3)
         {
             return "";
         }
@@ -60,7 +60,7 @@ public static class Utils
         int[] numeri = takeNumbers(pos);
         numeri[0] += 1;
         numeri[1] -= 1;
-        if(numeri[0] > 5 || numeri [1] < 0)
+        if (numeri[0] > 5 || numeri[1] < 0)
         {
             return "";
         }
@@ -73,7 +73,7 @@ public static class Utils
         int[] numeri = takeNumbers(pos);
         numeri[0] -= 1;
         numeri[1] -= 1;
-        if(numeri[0] < 0 || numeri[1] < 0)
+        if (numeri[0] < 0 || numeri[1] < 0)
         {
             return "";
         }
@@ -86,7 +86,7 @@ public static class Utils
         int[] numeri = takeNumbers(pos);
         numeri[0] -= 1;
         numeri[1] += 1;
-        if(numeri[0] < 0 || numeri[1] > 3)
+        if (numeri[0] < 0 || numeri[1] > 3)
         {
             return "";
         }
@@ -98,7 +98,7 @@ public static class Utils
     {
         int[] numeri = takeNumbers(pos);
         numeri[0] -= 1;
-        if(numeri[0] < 0)
+        if (numeri[0] < 0)
         {
             return "";
         }
@@ -127,9 +127,9 @@ public static class Utils
     // Function that checks for the presence of an element in a list
     public static bool presenceControl(List<string> caselle, string casella)
     {
-        foreach(string i in caselle)
+        foreach (string i in caselle)
         {
-            if(i == casella)
+            if (i == casella)
             {
                 return true;
             }
@@ -142,15 +142,15 @@ public static class Utils
     {
         int[] numeri = takeNumbers(casella);
         numeri[0] += 1;
-        string[] caselleSuperiori = { 
+        string[] caselleSuperiori = {
             "Casella " + numeri[0].ToString() + ",0",
             "Casella " + numeri[0].ToString() + ",1",
             "Casella " + numeri[0].ToString() + ",2",
             "Casella " + numeri[0].ToString() + ",3"
             };
-        foreach( string i in caselleSuperiori )
+        foreach (string i in caselleSuperiori)
         {
-            if( !presenceControl(wrongBoxes, i) )
+            if (!presenceControl(wrongBoxes, i))
             {
                 return false;
             }
@@ -167,9 +167,9 @@ public static class Utils
     // Function that transforms a string with integers into a list of integers
     public static int[] TransformStringToList(string weightsString)
     {
-        int [] appo = new int[8];
-        string [] appog = weightsString.Split(" ");
-        for(int x = 0; x < appog.Length; x++)
+        int[] appo = new int[8];
+        string[] appog = weightsString.Split(" ");
+        for (int x = 0; x < appog.Length; x++)
         {
             appo[x] = int.Parse(appog[x]);
         }
@@ -193,5 +193,15 @@ public static class Utils
             matrixx += row + "\n";
         }
         Debug.Log(matrixx);
+    }
+
+    public static string TransformDictionaryToString(Dictionary<string, int> adiacencyList)
+    {
+        string result = "";
+        foreach (string key in adiacencyList.Keys)
+        {
+            result += key + "," + adiacencyList[key] + ")";
+        }
+        return result;
     }
 }

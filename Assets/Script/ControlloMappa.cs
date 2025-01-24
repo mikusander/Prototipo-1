@@ -26,7 +26,7 @@ public class ControlloMappa : MonoBehaviour
     public GameObject textDifficultyFinal;
     public GameObject finishLineFlag;
     [SerializeField] private GameObject finishLineLogo;
-    public int[] weights;
+    public Dictionary<string, int> weights;
     public int[] actualWeights;
     private List<string> rightWrongBoxes = new List<string>();
     public Dictionary<string, List<string>> adjacencyList = new Dictionary<string, List<string>>
@@ -55,6 +55,14 @@ public class ControlloMappa : MonoBehaviour
         {"Casella 22", new List<string> { "Casella 17", "Casella 18", "Casella 19" } },
         {"Casella 23", new List<string> { "Casella 19", "Casella 20" } },
     };
+
+    // list of the initial position of the start position player and the position of the finish line
+    public List<Vector3> initialPosition = new List<Vector3> {
+            new Vector3(1f, -1.7f, 0f),
+            new Vector3(-1f, -1.7f, 0f),
+            new Vector3(-1f, 4.1f, 0f),
+            new Vector3(1f, 4.1f, 0f)
+        };
 
     // Start is called before the first frame update
     void Start()
@@ -104,8 +112,11 @@ public class ControlloMappa : MonoBehaviour
         // colors the boxes that have been exceeded white
         for (int i = 0; i < gameData.correctBoxes.Count; i++)
         {
-            SpriteRenderer colore = GameObject.Find(gameData.correctBoxes[i]).GetComponent<SpriteRenderer>();
-            colore.color = Color.white;
+            if (gameData.correctBoxes[i] != gameData.start && gameData.correctBoxes[i] != gameData.finishLine)
+            {
+                SpriteRenderer colore = GameObject.Find(gameData.correctBoxes[i]).GetComponent<SpriteRenderer>();
+                colore.color = Color.white;
+            }
         }
 
         // if there are no checked boxes it loads the home screen
@@ -114,6 +125,7 @@ public class ControlloMappa : MonoBehaviour
             initialButton.SetActive(true);
             initialWriting.SetActive(true);
         }
+        /*
 
         // if the correct boxes are one load the initial start game
         else if (gameData.correctBoxes.Count == 1)
@@ -256,7 +268,7 @@ public class ControlloMappa : MonoBehaviour
                 theEnd.SetActive(true);
                 restart.SetActive(true);
             }
-        }
+        }*/
     }
 
     // animation for the error game object
@@ -296,279 +308,89 @@ public class ControlloMappa : MonoBehaviour
         }
     }
 
-    public int[] ConditionGameOver(List<string> rightWrongBoxes, string lastBox, string finishLineFlag)
+    // Calcola le distanze da una casella iniziale (initialBFSNode) a tutte le altre caselle
+    public Dictionary<string, int> CalculateDistances(Dictionary<string, List<string>> adjacencyList, string initialBFSNode, string currentNode)
     {
+        // Distanze inizializzate a infinito (o un grande valore arbitrario)
+        Dictionary<string, int> distances = new Dictionary<string, int>();
 
-        int[,] matrix = new int[6, 4];
-
-        for (int x = 0; x < rightWrongBoxes.Count; x++)
+        foreach (var node in adjacencyList.Keys)
         {
-            int[] numeri = Utils.takeNumbers(rightWrongBoxes[x]);
-            matrix[numeri[0], numeri[1]] = -1;
+            distances[node] = int.MaxValue;
         }
 
-        int[] numerifinalBox = Utils.takeNumbers(finishLineFlag);
+        // La distanza del nodo iniziale da sé stesso è 0
+        distances[initialBFSNode] = 0;
 
-        // departure of the bfs
-        int startX = numerifinalBox[0], startY = numerifinalBox[1];
+        // Coda per BFS
+        Queue<string> queue = new Queue<string>();
+        queue.Enqueue(initialBFSNode);
 
-        // call bfs algoritm
-        BFS(matrix, startX, startY);
-
-        // assign the weight 1 at the final box
-        matrix[numerifinalBox[0], numerifinalBox[1]] = 1;
-
-        // take the position of the player box position
-        int[] appo = Utils.takeNumbers(lastBox);
-
-        // return the list of weights of the box near the player box position
-        return minMax(matrix, appo[0], appo[1]);
-    }
-
-    private int[] minMax(int[,] matrix, int varX, int varY)
-    {
-        int[] miMa = new int[2];
-        miMa[0] = 100;
-        miMa[1] = 100;
-
-        // directions of the boxes adjacent to the current one
-        var directions = new List<(int, int)>
-        {
-            (-1,  0), // above
-            ( 1,  0), // below
-            ( 0, -1), // left
-            ( 0,  1), // right
-            (-1, -1), // above-left
-            ( 1,  1), // below-right
-            ( 1, -1), // below-left
-            (-1,  1)  // above-right
-        };
-
-        // Map of directions and corresponding indices for 'weights'
-        var directionIndices = new Dictionary<(int, int), int>
-        {
-            { (1,  0), 0 }, // Su
-            { (1,  -1), 1 }, // Alto-destra
-            { ( 0,  -1), 2 }, // Destra
-            { ( -1,  -1), 3 }, // Basso-destra
-            { ( -1,  0), 4 }, // Giù
-            { ( -1, 1), 5 }, // Basso-sinistra
-            { ( 0, 1), 6 }, // Sinistra
-            { (1, 1), 7 }  // Alto-sinistra
-        };
-
-        int secondMaxCount = 0, maxCount = 0, boxCount = 0;
-
-        // loop to check what the maximum value of the adjacent boxes is
-        foreach (var (dx, dy) in directions)
-        {
-            int newX = varX + dx;
-            int newY = varY + dy;
-
-            // Check if the new position is valid
-            if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
-            {
-                boxCount += 1;
-                if (miMa[0] > matrix[newX, newY]) miMa[0] = matrix[newX, newY];
-            }
-        }
-
-        // loop to check what the second maximum value of the adjacent boxes is
-        foreach (var (dx, dy) in directions)
-        {
-            int newX = varX + dx;
-            int newY = varY + dy;
-
-            // Check if the new position is valid
-            if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
-            {
-                if (miMa[0] != matrix[newX, newY] && miMa[1] > matrix[newX, newY]) miMa[1] = matrix[newX, newY];
-            }
-        }
-
-        // loop to count how many maximum and minimum weight boxes there are
-        foreach (var (dx, dy) in directions)
-        {
-            int newX = varX + dx, newY = varY + dy;
-
-            if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
-            {
-                if (miMa[0] == matrix[newX, newY]) secondMaxCount += 1;
-                if (miMa[1] == matrix[newX, newY]) maxCount += 1;
-            }
-        }
-
-        int[] weights = new int[8];
-
-        int numberBoxOne = 0, numberBoxTwo = 0, numberBoxOneTwo = boxCount - secondMaxCount;
-
-        foreach (var (dx, dy) in directions)
-        {
-            int newX = varX + dx, newY = varY + dy;
-
-            if (newX >= 0 && newX < 6 && newY >= 0 && newY < 4 && matrix[newX, newY] != -1)
-            {
-                int indice = directionIndices[(dx, dy)];
-                // if there are no excess boxes between maximum and minimum I divide the weight 1 and 2 between the boxes that do not have the maximum weight
-                if (boxCount - maxCount - secondMaxCount == 0)
-                {
-                    if (matrix[newX, newY] == miMa[0])
-                    {
-                        weights[indice] = 1;
-                    }
-                    else
-                    {
-                        if (numberBoxOne == (int)numberBoxOneTwo / 2)
-                        {
-                            weights[indice] = 2;
-                            numberBoxTwo += 1;
-                        }
-                        else if (numberBoxTwo == (int)numberBoxOneTwo / 2)
-                        {
-                            weights[indice] = 3;
-                            numberBoxOne += 1;
-                        }
-                        else
-                        {
-                            weights[indice] = UnityEngine.Random.Range(2, 4);
-                            if (weights[indice] == 3)
-                            {
-                                numberBoxOne += 1;
-                            }
-                            else
-                            {
-                                numberBoxTwo += 1;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if (matrix[newX, newY] == miMa[0])
-                    {
-                        weights[indice] = 1;
-                    }
-                    else if (matrix[newX, newY] == miMa[1])
-                    {
-                        weights[indice] = 2;
-                    }
-                    else
-                    {
-                        weights[indice] = 3;
-                    }
-                }
-            }
-        }
-        return weights;
-    }
-
-
-    public static void BFS(int[,] matrix, int startX, int startY)
-    {
-        int rows = matrix.GetLength(0), cols = matrix.GetLength(1);
-
-        // Directions to move (up, down, left, right)
-        int[] dirX = { -1, 1, 0, 0 }, dirY = { 0, 0, -1, 1 };
-
-        // Initialize the queue for the BFS
-        Queue<(int, int)> queue = new Queue<(int, int)>();
-
-        // Add the starting point to the queue and set the starting distance to 0
-        queue.Enqueue((startX, startY));
-        matrix[startX, startY] = 0;
-
+        // BFS
         while (queue.Count > 0)
         {
-            // Extract the item at the head of the queue
-            var (x, y) = queue.Dequeue();
+            string actualNode = queue.Dequeue();
 
-            // Explore adjacent directions
-            for (int i = 0; i < dirX.Length; i++)
+            // Scorri i nodi adiacenti
+            foreach (string neighbor in adjacencyList[actualNode])
             {
-                int newX = x + dirX[i], newY = y + dirY[i];
-
-                if (newX >= 0 && newX < rows && newY >= 0 && newY < cols)
+                // Se non è stato ancora visitato (distanza infinita), calcola la distanza
+                if (distances[neighbor] == int.MaxValue)
                 {
-                    // Continue only if the box is reachable and not yet visited
-                    if (matrix[newX, newY] == 0)
-                    {
-                        matrix[newX, newY] = matrix[x, y] + 1; // Aggiorna il numero di passi
-                        queue.Enqueue((newX, newY)); // Aggiungi la nuova posizione alla coda
-                    }
+                    distances[neighbor] = distances[actualNode] + 1;
+                    queue.Enqueue(neighbor);
                 }
             }
         }
 
-        // Set inaccessible boxes that have not been reached to -1
-        for (int i = 0; i < rows; i++)
+        // extraction of the weights of the boxes adjacent to the current box
+        Dictionary<string, int> currentAdjacency = new Dictionary<string, int>();
+        foreach (string value in adjacencyList[currentNode])
         {
-            for (int j = 0; j < cols; j++)
+            currentAdjacency[value] = distances[value];
+        }
+
+        int betterRoute = 100;
+        // search for the shortest route
+        foreach (string key in currentAdjacency.Keys)
+        {
+            if (currentAdjacency[key] < betterRoute) betterRoute = currentAdjacency[key];
+        }
+
+        int secondBetterRoute = 100;
+        // search for the second shortest route
+        foreach (string key in currentAdjacency.Keys)
+        {
+            if (currentAdjacency[key] != betterRoute && currentAdjacency[key] < secondBetterRoute)
+                secondBetterRoute = currentAdjacency[key];
+        }
+
+        Dictionary<string, int> result = new Dictionary<string, int>();
+        // I assign the difficulty to adjacent levels
+        foreach (string key in currentAdjacency.Keys)
+        {
+            if (currentAdjacency[key] == betterRoute)
             {
-                if (matrix[i, j] == 0 && (i != startX || j != startY)) matrix[i, j] = -1;
+                result[key] = 1;
+            }
+            else if (currentAdjacency[key] == secondBetterRoute)
+            {
+                result[key] = 2;
+            }
+            else
+            {
+                result[key] = 3;
             }
         }
-    }
 
-    private void HandleBox(GameObject boxGameObject, GameObject boxWrong, int weightIndex, string finishLineName, UnityEngine.Vector3 spawnPosition, GameObject difficultyOne, GameObject difficultyTwo, GameObject difficultyThree)
-    {
-        if (boxGameObject != null && boxWrong == null)
+        string stamp = "";
+        foreach (string key in distances.Keys)
         {
-            SpriteRenderer boxRenderer = boxGameObject.GetComponent<SpriteRenderer>();
-
-            // If the box is the finish line
-            if (boxGameObject.name == finishLineName)
-            {
-                finishLineFlag.SetActive(false);
-                Instantiate(finishLineLogo, spawnPosition, Quaternion.identity);
-                boxRenderer.color = Color.white;
-            }
-            else if (boxRenderer.color != Color.white && actualWeights[weightIndex] != 0)
-            {
-                switch (weights[weightIndex])
-                {
-                    case 1:
-                        boxRenderer.color = Color.red;
-                        Instantiate(difficultyThree, spawnPosition, Quaternion.identity);
-                        break;
-                    case 2:
-                        boxRenderer.color = new Color(255f / 255f, 255f / 255f, 0f / 255f, 255f / 255f);
-                        Instantiate(difficultyTwo, spawnPosition, Quaternion.identity);
-                        break;
-                    case 3:
-                        boxRenderer.color = Color.green;
-                        Instantiate(difficultyOne, spawnPosition, Quaternion.identity);
-                        break;
-                }
-            }
+            stamp += key + ": " + distances[key].ToString() + "\n";
         }
-    }
+        Debug.Log(stamp);
 
-    public void ProcessBoxes(string lastBoxString)
-    {
-        var directions = new (string UtilsMethod, int WeightIndex)[]
-        {
-            ("Above", 0),
-            ("RightDiagonal", 1),
-            ("Destra", 2),
-            ("DiagonalRightBelow", 3),
-            ("Below", 4),
-            ("LeftDiagonalBelow", 5),
-            ("Sinistra", 6),
-            ("LeftDiagonal", 7)
-        };
-
-        foreach (var (methodName, weightIndex) in directions)
-        {
-            string boxName = (string)typeof(Utils).GetMethod(methodName).Invoke(null, new object[] { lastBoxString });
-            string errorBoxName = "Errore " + boxName;
-
-            GameObject boxGameObject = GameObject.Find(boxName);
-            GameObject boxWrong = GameObject.Find(errorBoxName);
-
-            UnityEngine.Vector3 spawnPosition = boxGameObject != null ? boxGameObject.transform.position : Vector3.zero;
-
-            HandleBox(boxGameObject, boxWrong, weightIndex, gameData.finishLine, spawnPosition, difficultyOne, difficultyTwo, difficultyThree);
-        }
+        return result;
     }
 
     // Update is called once per frame

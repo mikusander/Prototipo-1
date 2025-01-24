@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class StartButton : MonoBehaviour
 {
@@ -10,33 +11,37 @@ public class StartButton : MonoBehaviour
         controlloMappa.mainWriting.SetActive(true);
 
         // create a random start box
-        string[] possibleChars = { "3", "0" };
-        int randomIndexstart = UnityEngine.Random.Range(0, possibleChars.Length);
-        controlloMappa.gameData.start = "Casella " + "0," + possibleChars[randomIndexstart];
+        System.Random random = new System.Random();
+        int randomIndexstart = random.Next(2);
+        controlloMappa.gameData.start = "Casella 0";
         controlloMappa.gameData.correctBoxes.Add(controlloMappa.gameData.start);
-        Transform startBox = controlloMappa.chessboardBase.transform.Find(controlloMappa.gameData.start);
-        if (startBox != null)
-        {
-            UnityEngine.Vector3 spawnPos = startBox.transform.position;
-            controlloMappa.player = Instantiate(controlloMappa.player, spawnPos, UnityEngine.Quaternion.identity);
-        }
+        UnityEngine.Vector3 spawnPos = controlloMappa.initialPosition[randomIndexstart];
+        controlloMappa.player = Instantiate(controlloMappa.player, spawnPos, UnityEngine.Quaternion.identity);
 
         // create a random flag line
-        string randomIndex = possibleChars[randomIndexstart] == "3" ? "0" : possibleChars[randomIndexstart] == "0" ? "3" : possibleChars[randomIndexstart];
-        controlloMappa.gameData.finishLine = "Casella " + "5," + randomIndex;
-        Transform finishLine = controlloMappa.chessboardBase.transform.Find(controlloMappa.gameData.finishLine);
-        if (finishLine != null)
+        int randomIndex = randomIndexstart == 0 ? 2 : 3;
+        controlloMappa.gameData.finishLine = "Casella 24";
+        spawnPos = controlloMappa.initialPosition[randomIndex];
+        controlloMappa.finishLineFlag = Instantiate(controlloMappa.finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
+
+        // Adding start and end boxes to the adjacency list
+        if (randomIndexstart == 0)
         {
-            UnityEngine.Vector3 spawnPos = finishLine.transform.position;
-            controlloMappa.finishLineFlag = Instantiate(controlloMappa.finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
+            controlloMappa.adjacencyList["Casella 0"] = new List<string> { "Casella 1", "Casella 2", "Casella 3" };
+            controlloMappa.adjacencyList["Casella 24"] = new List<string> { "Casella 19", "Casella 22", "Casella 23" };
+        }
+        else
+        {
+            controlloMappa.adjacencyList["Casella 0"] = new List<string> { "Casella 3", "Casella 4", "Casella 5" };
+            controlloMappa.adjacencyList["Casella 24"] = new List<string> { "Casella 17", "Casella 21", "Casella 22" };
         }
 
         // inizialize the first bfs
-        List<string> singleElementList = new List<string> { controlloMappa.gameData.start };
-        controlloMappa.weights = controlloMappa.ConditionGameOver(singleElementList, controlloMappa.gameData.start, controlloMappa.gameData.finishLine);
-        controlloMappa.gameData.lastLose[2] = Utils.TransformListIntToString(controlloMappa.weights);
+        controlloMappa.weights = controlloMappa.CalculateDistances(controlloMappa.adjacencyList, "Casella 24", "Casella 0");
+        controlloMappa.gameData.lastLose[2] = Utils.TransformDictionaryToString(controlloMappa.weights);
         controlloMappa.gameData.SaveData();
 
+        /*
         // search the start box
         Transform casellaTransform = controlloMappa.chessboardBase.transform.Find(controlloMappa.gameData.start);
         if (casellaTransform != null)
@@ -175,6 +180,7 @@ public class StartButton : MonoBehaviour
                 }
             }
         }
+        */
         gameObject.SetActive(false);
         controlloMappa.initialWriting.SetActive(false);
         controlloMappa.chessboardBase.SetActive(true);

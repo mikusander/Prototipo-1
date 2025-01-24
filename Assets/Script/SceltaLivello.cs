@@ -18,6 +18,7 @@ public class SceltaLivello : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         // Check if the left mouse button was clicked
         if (Input.GetMouseButtonDown(0))
         {
@@ -107,7 +108,7 @@ public class SceltaLivello : MonoBehaviour
                     }
                 }
             }
-        }
+        }*/
     }
 
     // disables all writing
