@@ -9,8 +9,7 @@ public class GameData : MonoBehaviour
     public List<string> wrongBoxes = new List<string>();
 
     // Variabili aggiuntive
-    public string finishLine;
-    public string start;
+    public int start;
     public string[] lastLose = new string[3]; // Array di stringhe con due elementi
 
     // Percorso del file JSON
@@ -33,7 +32,6 @@ public class GameData : MonoBehaviour
         {
             correctBoxes = correctBoxes,
             wrongBoxes = wrongBoxes,
-            finishLine = finishLine, // Salva anche il valore di finishLine
             start = start,
             lastLose = lastLose
         };
@@ -61,8 +59,7 @@ public class GameData : MonoBehaviour
             {
                 correctBoxes = data.correctBoxes ?? new List<string>();
                 wrongBoxes = data.wrongBoxes ?? new List<string>();
-                finishLine = data.finishLine ?? string.Empty; // Carica il valore di finishLine
-                start = data.start ?? string.Empty;
+                start = data.start;
                 lastLose = data.lastLose ?? new string[3]; // Imposta un array di default se null
             }
         }
@@ -81,8 +78,7 @@ public class GameData : MonoBehaviour
         {
             correctBoxes = new List<string>(),
             wrongBoxes = new List<string>(),
-            finishLine = "",
-            start = "",
+            start = -1,
             lastLose = new string[3] { "", "", "" }
         };
 
@@ -95,7 +91,6 @@ public class GameData : MonoBehaviour
         // Assign initial data to variables for immediate use
         correctBoxes = defaultData.correctBoxes;
         wrongBoxes = defaultData.wrongBoxes;
-        finishLine = defaultData.finishLine;
         start = defaultData.start;
         lastLose = defaultData.lastLose;
     }
@@ -107,7 +102,6 @@ public class DataToSave
 {
     [SerializeField] public List<string> correctBoxes;
     [SerializeField] public List<string> wrongBoxes;
-    [SerializeField] public string finishLine;
-    [SerializeField] public string start;
+    [SerializeField] public int start;
     [SerializeField] public string[] lastLose;
 }

@@ -204,4 +204,16 @@ public static class Utils
         }
         return result;
     }
+
+    public static Dictionary<string, int> TransformStringToDictionary(string adiacencyList)
+    {
+        Dictionary<string, int> result = new Dictionary<string, int>();
+        string[] appo = adiacencyList.Split(")");
+        for (int x = 0; x < appo.Length; x++)
+        {
+            string[] support = appo[x].Split(",");
+            result[support[0]] = int.Parse(support[1]);
+        }
+        return result;
+    }
 }

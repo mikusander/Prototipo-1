@@ -13,14 +13,14 @@ public class StartButton : MonoBehaviour
         // create a random start box
         System.Random random = new System.Random();
         int randomIndexstart = random.Next(2);
-        controlloMappa.gameData.start = "Casella 0";
-        controlloMappa.gameData.correctBoxes.Add(controlloMappa.gameData.start);
+        controlloMappa.gameData.start = randomIndexstart;
+        controlloMappa.gameData.SaveData();
+        controlloMappa.gameData.correctBoxes.Add("Casella 0");
         UnityEngine.Vector3 spawnPos = controlloMappa.initialPosition[randomIndexstart];
         controlloMappa.player = Instantiate(controlloMappa.player, spawnPos, UnityEngine.Quaternion.identity);
 
         // create a random flag line
         int randomIndex = randomIndexstart == 0 ? 2 : 3;
-        controlloMappa.gameData.finishLine = "Casella 24";
         spawnPos = controlloMappa.initialPosition[randomIndex];
         controlloMappa.finishLineFlag = Instantiate(controlloMappa.finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
 
@@ -37,9 +37,36 @@ public class StartButton : MonoBehaviour
         }
 
         // inizialize the first bfs
-        controlloMappa.weights = controlloMappa.CalculateDistances(controlloMappa.adjacencyList, "Casella 24", "Casella 0");
+        controlloMappa.weights = controlloMappa.CalculateDistances(controlloMappa.adjacencyList, new List<string>(), "Casella 24", "Casella 0");
         controlloMappa.gameData.lastLose[2] = Utils.TransformDictionaryToString(controlloMappa.weights);
         controlloMappa.gameData.SaveData();
+
+        foreach (string key in controlloMappa.weights.Keys)
+        {
+            GameObject box = controlloMappa.chessboardBase.transform.Find(key).gameObject;
+            if (box != null)
+            {
+                SpriteRenderer renderer = box.GetComponent<SpriteRenderer>();
+                if (renderer != null)
+                {
+                    switch (controlloMappa.weights[key])
+                    {
+                        case 1:
+                            renderer.color = Color.red;
+                            Instantiate(controlloMappa.difficultyThree, box.transform.position, Quaternion.identity);
+                            break;
+                        case 2:
+                            renderer.color = new Color(255f, 255f, 0f, 255f);
+                            Instantiate(controlloMappa.difficultyTwo, box.transform.position, Quaternion.identity);
+                            break;
+                        case 3:
+                            renderer.color = Color.green;
+                            Instantiate(controlloMappa.difficultyOne, box.transform.position, Quaternion.identity);
+                            break;
+                    }
+                }
+            }
+        }
 
         /*
         // search the start box

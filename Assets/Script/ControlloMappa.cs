@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ControlloMappa : MonoBehaviour
 {
@@ -27,7 +29,7 @@ public class ControlloMappa : MonoBehaviour
     public GameObject finishLineFlag;
     [SerializeField] private GameObject finishLineLogo;
     public Dictionary<string, int> weights;
-    public int[] actualWeights;
+    public Dictionary<string, int> actualWeights;
     private List<string> rightWrongBoxes = new List<string>();
     public Dictionary<string, List<string>> adjacencyList = new Dictionary<string, List<string>>
     {
@@ -112,7 +114,7 @@ public class ControlloMappa : MonoBehaviour
         // colors the boxes that have been exceeded white
         for (int i = 0; i < gameData.correctBoxes.Count; i++)
         {
-            if (gameData.correctBoxes[i] != gameData.start && gameData.correctBoxes[i] != gameData.finishLine)
+            if (gameData.correctBoxes[i] != "Casella 0" && gameData.correctBoxes[i] != "Casella 24")
             {
                 SpriteRenderer colore = GameObject.Find(gameData.correctBoxes[i]).GetComponent<SpriteRenderer>();
                 colore.color = Color.white;
@@ -125,6 +127,112 @@ public class ControlloMappa : MonoBehaviour
             initialButton.SetActive(true);
             initialWriting.SetActive(true);
         }
+
+        else if (gameData.correctBoxes.Count > 0)
+        {
+            mainWriting.SetActive(true);
+            rightWrongBoxes.AddRange(gameData.correctBoxes);
+            rightWrongBoxes.AddRange(gameData.wrongBoxes);
+
+            string lastBoxString = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
+
+            GameObject lastBox = null;
+            if (lastBoxString != "Casella 0" && lastBoxString != "Casella 24")
+            {
+                lastBox = chessboardBase.transform.Find(lastBoxString).gameObject;
+            }
+
+            if (TempData.game && !TempData.vittoria)
+            {
+                gameData.lastLose[0] = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
+                gameData.lastLose[1] = "yes";
+                gameData.SaveData();
+            }
+
+            // Adding start and end boxes to the adjacency list
+            if (gameData.start == 0)
+            {
+                adjacencyList["Casella 0"] = new List<string> { "Casella 1", "Casella 2", "Casella 3" };
+                adjacencyList["Casella 24"] = new List<string> { "Casella 19", "Casella 22", "Casella 23" };
+                if (lastBox != null)
+                {
+                    Instantiate(player, lastBox.transform.position, Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(player, initialPosition[0], Quaternion.identity);
+                }
+                Instantiate(finishLineFlag, initialPosition[2], Quaternion.identity);
+            }
+            else
+            {
+                adjacencyList["Casella 0"] = new List<string> { "Casella 3", "Casella 4", "Casella 5" };
+                adjacencyList["Casella 24"] = new List<string> { "Casella 17", "Casella 21", "Casella 22" };
+                if (lastBox != null)
+                {
+                    Instantiate(player, lastBox.transform.position, Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(player, initialPosition[1], Quaternion.identity);
+                }
+                Instantiate(finishLineFlag, initialPosition[3], Quaternion.identity);
+            }
+
+            // load a weights of the boxes near the current box
+            actualWeights = CalculateDistances(adjacencyList, rightWrongBoxes, "Casella 24", lastBoxString);
+            if (
+                gameData.lastLose[0] == gameData.correctBoxes[gameData.correctBoxes.Count - 1]
+                &&
+                gameData.lastLose[1] == "yes"
+              )
+            {
+                weights = Utils.TransformStringToDictionary(gameData.lastLose[2]);
+            }
+            else
+            {
+                weights = actualWeights;
+                gameData.lastLose[2] = Utils.TransformDictionaryToString(weights);
+                gameData.SaveData();
+            }
+
+            if (lastBox != null && lastBoxString != "Casella 0" && lastBoxString != "Casella 24")
+            {
+                SpriteRenderer renderer = lastBox.GetComponent<SpriteRenderer>();
+                if (renderer != null)
+                {
+                    renderer.color = Color.white;
+                }
+            }
+
+            foreach (string key in weights.Keys)
+            {
+                GameObject box = chessboardBase.transform.Find(key).gameObject;
+                if (box != null)
+                {
+                    SpriteRenderer rendererBox = box.GetComponent<SpriteRenderer>();
+                    if (rendererBox != null)
+                    {
+                        switch (weights[key])
+                        {
+                            case 1:
+                                rendererBox.color = Color.red;
+                                Instantiate(difficultyThree, box.transform.position, Quaternion.identity);
+                                break;
+                            case 2:
+                                rendererBox.color = new Color(255f, 255f, 0f, 255f);
+                                Instantiate(difficultyTwo, box.transform.position, Quaternion.identity);
+                                break;
+                            case 3:
+                                rendererBox.color = Color.green;
+                                Instantiate(difficultyOne, box.transform.position, Quaternion.identity);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
         /*
 
         // if the correct boxes are one load the initial start game
@@ -309,7 +417,7 @@ public class ControlloMappa : MonoBehaviour
     }
 
     // Calcola le distanze da una casella iniziale (initialBFSNode) a tutte le altre caselle
-    public Dictionary<string, int> CalculateDistances(Dictionary<string, List<string>> adjacencyList, string initialBFSNode, string currentNode)
+    public Dictionary<string, int> CalculateDistances(Dictionary<string, List<string>> adjacencyList, List<string> rightWrongBox, string initialBFSNode, string currentNode)
     {
         // Distanze inizializzate a infinito (o un grande valore arbitrario)
         Dictionary<string, int> distances = new Dictionary<string, int>();
@@ -334,6 +442,8 @@ public class ControlloMappa : MonoBehaviour
             // Scorri i nodi adiacenti
             foreach (string neighbor in adjacencyList[actualNode])
             {
+                if (neighbor == "Casella 0" || neighbor == "Casella 24")
+                    continue;
                 // Se non è stato ancora visitato (distanza infinita), calcola la distanza
                 if (distances[neighbor] == int.MaxValue)
                 {
@@ -382,13 +492,6 @@ public class ControlloMappa : MonoBehaviour
                 result[key] = 3;
             }
         }
-
-        string stamp = "";
-        foreach (string key in distances.Keys)
-        {
-            stamp += key + ": " + distances[key].ToString() + "\n";
-        }
-        Debug.Log(stamp);
 
         return result;
     }

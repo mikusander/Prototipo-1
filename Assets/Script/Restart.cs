@@ -9,8 +9,7 @@ public class RestartGame : MonoBehaviour
     {
         controlloMappa.gameData.correctBoxes.Clear();
         controlloMappa.gameData.wrongBoxes.Clear();
-        controlloMappa.gameData.start = "";
-        controlloMappa.gameData.finishLine = "";
+        controlloMappa.gameData.start = -1;
         controlloMappa.gameData.SaveData();
         // Gets the name of the active scene
         string currentSceneName = SceneManager.GetActiveScene().name;

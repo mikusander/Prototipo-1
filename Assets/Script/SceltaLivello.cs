@@ -18,7 +18,7 @@ public class SceltaLivello : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
+
         // Check if the left mouse button was clicked
         if (Input.GetMouseButtonDown(0))
         {
@@ -34,6 +34,42 @@ public class SceltaLivello : MonoBehaviour
                 // Check if the hit GameObject is the same one this script is attached to
                 if (hit.collider.gameObject == gameObject)
                 {
+                    if (
+                        controlloMappa.weights.ContainsKey(gameObject.name)
+                        &&
+                        !controlloMappa.gameData.wrongBoxes.Contains(gameObject.name)
+                        &&
+                        !controlloMappa.gameData.correctBoxes.Contains(gameObject.name)
+                      )
+                    {
+                        string boxName = gameObject.name;
+                        if (TempData.casellaCliccata == boxName)
+                        {
+                            switch (controlloMappa.weights[boxName])
+                            {
+                                case 1:
+                                    TempData.difficolta = "Domande difficili";
+                                    break;
+                                case 2:
+                                    TempData.difficolta = "Domande medie";
+                                    break;
+                                case 3:
+                                    TempData.difficolta = "Domande";
+                                    break;
+                            }
+                            TempData.lastBox = boxName;
+                            SceneManager.LoadScene("RispostaDomande");
+                        }
+                        else
+                        {
+                            Deactivate();
+                            controlloMappa.textDifficultyOne.SetActive(controlloMappa.weights[boxName] == 3);
+                            controlloMappa.textDifficultyTwo.SetActive(controlloMappa.weights[boxName] == 2);
+                            controlloMappa.textDifficultyThree.SetActive(controlloMappa.weights[boxName] == 1);
+                            TempData.casellaCliccata = boxName;
+                        }
+                    }
+                    /*
                     var utilsActions = new Dictionary<Func<string, string>, int>
                     {
                         { Utils.Above, 0 },
@@ -105,10 +141,10 @@ public class SceltaLivello : MonoBehaviour
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
             }
-        }*/
+        }
     }
 
     // disables all writing
