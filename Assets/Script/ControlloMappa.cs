@@ -90,6 +90,17 @@ public class ControlloMappa : MonoBehaviour
         {
             newError = true;
         }
+
+        // assign the white color to a correct boxes
+        foreach (string i in gameData.correctBoxes)
+        {
+            if (i == "Casella 0" || i == "Casella 24")
+                continue;
+            SpriteRenderer box = GameObject.Find(i).GetComponent<SpriteRenderer>();
+            if (box != null)
+                box.color = Color.white;
+        }
+
         // assign the X at the wrong boxes
         foreach (string i in gameData.wrongBoxes)
         {
@@ -207,6 +218,8 @@ public class ControlloMappa : MonoBehaviour
 
             foreach (string key in weights.Keys)
             {
+                if (rightWrongBoxes.Contains(key))
+                    continue;
                 GameObject box = chessboardBase.transform.Find(key).gameObject;
                 if (box != null)
                 {
