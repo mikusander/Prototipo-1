@@ -1,0 +1,19 @@
+{
+    "domande": [
+        {
+            "Tipo": "Testo",
+            "Contenuto": "Quanto fa 2 + 2?",
+            "Risposta": true
+        },
+        {
+            "Tipo": "Foto",
+            "Contenuto": "Fellini1.jpg",
+            "Risposta": false
+        },
+        {
+            "Tipo": "Video",
+            "Contenuto": "Video1.mp4",
+            "Risposta": true
+        }
+    ]
+}
