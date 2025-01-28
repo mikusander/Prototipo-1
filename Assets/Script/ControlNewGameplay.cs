@@ -22,18 +22,22 @@ public class ControlNewGameplay : MonoBehaviour
 
     // Variabile per memorizzare la lista di domande
     private Domande domande;
+    public bool presenceOfBox = false;
 
     void Start()
     {
         // Carica le domande dal file JSON
-        TempData.difficolta = "Easy";
+        TempData.difficolta = "Easy"; // da aggiungere in controllo mappa
         fileName = Path.Combine(TempData.difficolta, "DomandeRisposte");
         CaricaDomande();
     }
 
     void Update()
     {
+        if (!presenceOfBox)
+        {
 
+        }
     }
 
     void CaricaDomande()

@@ -1,22 +1,65 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Video;
+using System.IO;
 
 public class SpawnDomanda : MonoBehaviour
 {
     [SerializeField] private Canvas targetCanvas;
-    public RawImage rawImage;
+    [SerializeField] private GameObject textArea;
+    [SerializeField] private GameObject rawImageGameObject;
+    [SerializeField] private GameObject rawImageVideoGameObject;
+
 
     void Start()
     {
         // SpawnText("Testo dinamico sopra l'oggetto!");
-        SpawnImage("fellini1.jpg");
+        // SpawnImage("fellini1.jpg");
+        SpawnVideo(Path.Combine("Easy", "Video1"));
+    }
+
+    void SpawnVideo(string videoPath)
+    {
+        rawImageVideoGameObject.SetActive(true);
+        RawImage rawImageVideo = rawImageVideoGameObject.GetComponent<RawImage>();
+        VideoPlayer videoPlayer = rawImageVideoGameObject.GetComponent<VideoPlayer>();
+
+        // Aggiungi un VideoPlayer dinamicamente al GameObject
+        videoPlayer = gameObject.AddComponent<VideoPlayer>();
+
+        // Configura il VideoPlayer
+        videoPlayer.playOnAwake = false; // Non avviare automaticamente
+        videoPlayer.isLooping = true; // Opzionale: attiva loop
+        videoPlayer.renderMode = VideoRenderMode.RenderTexture;
+
+        // Carica il video dalla cartella Resources
+        VideoClip videoClip = Resources.Load<VideoClip>(videoPath);
+        if (videoClip == null)
+        {
+            Debug.LogError("Video non trovato in Resources: " + videoPath);
+            return;
+        }
+        videoPlayer.clip = videoClip;
+
+        // Crea una RenderTexture e assegnala al VideoPlayer
+        RenderTexture renderTexture = new RenderTexture(1920, 1080, 0); // Regola le dimensioni come necessario
+        videoPlayer.targetTexture = renderTexture;
+
+        // Assegna la RenderTexture alla componente RawImage
+        rawImageVideo.texture = renderTexture;
+
+        // Avvia la riproduzione
+        videoPlayer.Play();
     }
 
     void SpawnImage(string name)
     {
+        rawImageGameObject.SetActive(true);
+        RawImage rawImage = rawImageGameObject.GetComponent<RawImage>();
+
         // Carica l'immagine dalla cartella Resources/Easy
-        Texture2D texture = Resources.Load<Texture2D>("Easy/Fellini1");
+        Texture2D texture = Resources.Load<Texture2D>("Easy/Fellini2");
 
         if (texture != null)
         {
@@ -31,6 +74,8 @@ public class SpawnDomanda : MonoBehaviour
 
     void SpawnText(string message)
     {
+        textArea.SetActive(true);
+
         // Crea un nuovo GameObject per il testo
         GameObject textObject = new GameObject("DynamicTextTMP");
 
