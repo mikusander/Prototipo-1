@@ -10,13 +10,23 @@ public class SpawnDomanda : MonoBehaviour
     [SerializeField] private GameObject textArea;
     [SerializeField] private GameObject rawImageGameObject;
     [SerializeField] private GameObject rawImageVideoGameObject;
+    [SerializeField] private ControlNewGameplay control;
 
 
     void Start()
     {
-        // SpawnText("Testo dinamico sopra l'oggetto!");
-        // SpawnImage("fellini1.jpg");
-        SpawnVideo(Path.Combine("Easy", "Video1"));
+        if (control.currentQuestion.Tipo == "Testo")
+        {
+            SpawnText(control.currentQuestion.Contenuto);
+        }
+        else if (control.currentQuestion.Tipo == "Foto")
+        {
+            SpawnImage(Path.Combine(TempData.difficolta, control.currentQuestion.Contenuto));
+        }
+        else if (control.currentQuestion.Tipo == "Video")
+        {
+            SpawnVideo(Path.Combine(TempData.difficolta, control.currentQuestion.Contenuto));
+        }
     }
 
     void SpawnVideo(string videoPath)

@@ -7,12 +7,12 @@
         },
         {
             "Tipo": "Foto",
-            "Contenuto": "Fellini1.jpg",
+            "Contenuto": "Fellini1",
             "Risposta": false
         },
         {
             "Tipo": "Video",
-            "Contenuto": "Video1.mp4",
+            "Contenuto": "Video1",
             "Risposta": true
         }
     ]

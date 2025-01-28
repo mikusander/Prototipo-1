@@ -8,7 +8,7 @@ public class NewMovimento : MonoBehaviour
 {
     [SerializeField] private GameObject questionCanvas;
     private bool inDestruction = false;
-    private ControlNewGameplay control;
+    [SerializeField] private ControlNewGameplay control;
     private Camera mainCamera;
     private Vector3 initialPosition;
     private bool isDragging = false;
@@ -44,6 +44,8 @@ public class NewMovimento : MonoBehaviour
         {
             if (transform.position.x < noPosition.x && !inDestruction && questionCanvas != null)
             {
+                if (control.currentQuestion.Risposta)
+                    control.totalScore++;
                 isDragging = false;
                 inDestruction = true;
                 // Rimuovi i componenti dipendenti
@@ -54,6 +56,8 @@ public class NewMovimento : MonoBehaviour
             }
             else if (transform.position.x > yesPosition.x && !inDestruction && questionCanvas != null)
             {
+                if (!control.currentQuestion.Risposta)
+                    control.totalScore++;
                 isDragging = false;
                 inDestruction = true;
                 // Rimuovi i componenti dipendenti
