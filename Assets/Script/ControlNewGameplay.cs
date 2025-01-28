@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 
 [System.Serializable]
@@ -17,7 +18,7 @@ public class Domande
 public class ControlNewGameplay : MonoBehaviour
 {
     // Nome del file senza estensione (Unity gestirà la cartella Resources)
-    public string fileName = "Easy/DomandeRisposte";
+    private string fileName;
 
     // Variabile per memorizzare la lista di domande
     private Domande domande;
@@ -25,7 +26,14 @@ public class ControlNewGameplay : MonoBehaviour
     void Start()
     {
         // Carica le domande dal file JSON
+        TempData.difficolta = "Easy";
+        fileName = Path.Combine(TempData.difficolta, "DomandeRisposte");
         CaricaDomande();
+    }
+
+    void Update()
+    {
+
     }
 
     void CaricaDomande()
@@ -38,14 +46,6 @@ public class ControlNewGameplay : MonoBehaviour
         {
             // Deserializza il contenuto JSON
             domande = JsonUtility.FromJson<Domande>(fileJSON.text);
-
-            // Stampa tutte le domande nella console
-            foreach (var domanda in domande.domande)
-            {
-                Debug.Log("Tipo: " + domanda.Tipo);
-                Debug.Log("Contenuto: " + domanda.Contenuto);
-                Debug.Log("Risposta: " + domanda.Risposta);
-            }
         }
         else
         {
