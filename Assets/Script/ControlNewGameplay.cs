@@ -69,6 +69,7 @@ public class ControlNewGameplay : MonoBehaviour
 
     void Start()
     {
+        TempData.game = true;
         // Carica le domande dal file JSON
         fileName = Path.Combine(TempData.difficolta, "DomandeRisposte");
         CaricaDomande();

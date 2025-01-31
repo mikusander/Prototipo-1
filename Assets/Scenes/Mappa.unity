@@ -2436,6 +2436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60755ad71491c7a49975439eac4543b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playButton: {fileID: 2897274595376824559, guid: 97091dd36f5b5774dad4155325d34e01, type: 3}
   theEnd: {fileID: 168583112}
   gameoverLogo: {fileID: 948630118}
   gameOver: 0

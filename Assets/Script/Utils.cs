@@ -214,20 +214,12 @@ public static class Utils
 
     public static Dictionary<string, int> TransformStringToDictionary(string adiacencyList)
     {
-        Debug.Log(adiacencyList);
         Dictionary<string, int> result = new Dictionary<string, int>();
         string[] appo = adiacencyList.Split(")");
 
         for (int x = 0; x < appo.Length; x++)
         {
             string[] support = appo[x].Split(",");
-
-            string stamp = "";
-            foreach (string y in support)
-            {
-                stamp += y + "\n";
-            }
-            Debug.Log(stamp);
 
             result[support[0]] = int.Parse(support[1]);
         }

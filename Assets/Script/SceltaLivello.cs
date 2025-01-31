@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 
 
 
@@ -57,11 +58,45 @@ public class SceltaLivello : MonoBehaviour
                                     TempData.difficolta = "Easy";
                                     break;
                             }
+                            TempData.casellaCliccata = "";
                             TempData.lastBox = boxName;
                             SceneManager.LoadScene("NuovoGameplay");
                         }
                         else
                         {
+                            DestroyChild(gameObject.name);
+                            GameObject play = Instantiate(controlloMappa.playButton, gameObject.transform.position, Quaternion.identity);
+                            Vector3 worldPosition = play.transform.position;
+                            play.transform.SetParent(gameObject.transform);
+                            play.transform.position = worldPosition;
+
+                            if (TempData.casellaCliccata != "")
+                            {
+                                GameObject previousBox = GameObject.Find(TempData.casellaCliccata);
+                                DestroyChild(TempData.casellaCliccata);
+                                switch (controlloMappa.weights[TempData.casellaCliccata])
+                                {
+                                    case 1:
+                                        GameObject appoDifficultyThree = Instantiate(controlloMappa.difficultyThree, previousBox.transform.position, Quaternion.identity);
+                                        worldPosition = appoDifficultyThree.transform.position;
+                                        appoDifficultyThree.transform.SetParent(previousBox.transform);
+                                        appoDifficultyThree.transform.position = worldPosition;
+                                        break;
+                                    case 2:
+                                        GameObject appoDifficultyTwo = Instantiate(controlloMappa.difficultyTwo, previousBox.transform.position, quaternion.identity);
+                                        worldPosition = appoDifficultyTwo.transform.position;
+                                        appoDifficultyTwo.transform.SetParent(previousBox.transform);
+                                        appoDifficultyTwo.transform.position = worldPosition;
+                                        break;
+                                    case 3:
+                                        GameObject appoDifficultyOne = Instantiate(controlloMappa.difficultyOne, previousBox.transform.position, quaternion.identity);
+                                        worldPosition = appoDifficultyOne.transform.position;
+                                        appoDifficultyOne.transform.SetParent(previousBox.transform);
+                                        appoDifficultyOne.transform.position = worldPosition;
+                                        break;
+                                }
+                            }
+
                             controlloMappa.Deactivate();
                             controlloMappa.textDifficultyOne.SetActive(controlloMappa.weights[boxName] == 3);
                             controlloMappa.textDifficultyTwo.SetActive(controlloMappa.weights[boxName] == 2);
@@ -144,6 +179,15 @@ public class SceltaLivello : MonoBehaviour
                     }*/
                 }
             }
+        }
+    }
+
+    private void DestroyChild(string nameGameObject)
+    {
+        Transform parentObject = GameObject.Find(nameGameObject).transform;
+        foreach (Transform child in parentObject)
+        {
+            Destroy(child.gameObject);
         }
     }
 }

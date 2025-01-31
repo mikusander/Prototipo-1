@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 public class ControlloMappa : MonoBehaviour
 {
 
+    public GameObject playButton;
     [SerializeField] private GameObject theEnd;
     [SerializeField] private GameObject gameoverLogo;
     public bool gameOver = false;
@@ -149,13 +150,6 @@ public class ControlloMappa : MonoBehaviour
                 lastBox = chessboardBase.transform.Find(lastBoxString).gameObject;
             }
 
-            if (TempData.game && !TempData.vittoria)
-            {
-                gameData.lastLose[0] = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
-                gameData.lastLose[1] = "yes";
-                gameData.SaveData();
-            }
-
             // Adding start and end boxes to the adjacency list
             if (gameData.start == 0)
             {
@@ -163,11 +157,11 @@ public class ControlloMappa : MonoBehaviour
                 adjacencyList["Casella 24"] = new List<string> { "Casella 19", "Casella 22", "Casella 23" };
                 if (lastBox != null)
                 {
-                    Instantiate(player, lastBox.transform.position, Quaternion.identity);
+                    player = Instantiate(player, lastBox.transform.position, Quaternion.identity);
                 }
                 else
                 {
-                    Instantiate(player, initialPosition[0], Quaternion.identity);
+                    player = Instantiate(player, initialPosition[0], Quaternion.identity);
                 }
                 if (adjacencyList["Casella 24"].Contains(lastBoxString))
                     Instantiate(finalLogo, initialPosition[2], Quaternion.identity);
@@ -180,16 +174,45 @@ public class ControlloMappa : MonoBehaviour
                 adjacencyList["Casella 24"] = new List<string> { "Casella 17", "Casella 21", "Casella 22" };
                 if (lastBox != null)
                 {
-                    Instantiate(player, lastBox.transform.position, Quaternion.identity);
+                    player = Instantiate(player, lastBox.transform.position, Quaternion.identity);
                 }
                 else
                 {
-                    Instantiate(player, initialPosition[1], Quaternion.identity);
+                    player = Instantiate(player, initialPosition[1], Quaternion.identity);
                 }
                 if (adjacencyList["Casella 24"].Contains(lastBoxString))
                     Instantiate(finalLogo, initialPosition[3], Quaternion.identity);
                 else
                     Instantiate(finishLineFlag, initialPosition[3], Quaternion.identity);
+            }
+
+            if (TempData.game && !TempData.vittoria)
+            {
+                gameData.lastLose[0] = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
+                gameData.lastLose[1] = "yes";
+                gameData.SaveData();
+            }
+            else if (TempData.game && TempData.vittoria)
+            {
+                gameData.lastLose[1] = "no";
+                gameData.SaveData();
+                if (gameData.correctBoxes.Count == 2)
+                {
+                    if (gameData.start == 0)
+                    {
+                        StartCoroutine(MoveToTarget(initialPosition[0], lastBox.transform.position, moveDuration));
+                    }
+                    else
+                    {
+                        StartCoroutine(MoveToTarget(initialPosition[1], lastBox.transform.position, moveDuration));
+                    }
+                }
+                else
+                {
+                    GameObject penultimateBoc = GameObject.Find(gameData.correctBoxes[gameData.correctBoxes.Count - 2]);
+                    Vector3 spawnPos = penultimateBoc.transform.position;
+                    StartCoroutine(MoveToTarget(spawnPos, lastBox.transform.position, moveDuration));
+                }
             }
 
             // load a weights of the boxes near the current box
@@ -235,19 +258,29 @@ public class ControlloMappa : MonoBehaviour
                     SpriteRenderer rendererBox = box.GetComponent<SpriteRenderer>();
                     if (rendererBox != null)
                     {
+                        Vector3 worldPosition;
                         switch (weights[key])
                         {
                             case 1:
                                 rendererBox.color = Color.red;
-                                Instantiate(difficultyThree, box.transform.position, Quaternion.identity);
+                                GameObject appoDifficultyThree = Instantiate(difficultyThree, box.transform.position, Quaternion.identity);
+                                worldPosition = appoDifficultyThree.transform.position;
+                                appoDifficultyThree.transform.SetParent(box.transform);
+                                appoDifficultyThree.transform.position = worldPosition;
                                 break;
                             case 2:
                                 rendererBox.color = new Color(255f, 255f, 0f, 255f);
-                                Instantiate(difficultyTwo, box.transform.position, Quaternion.identity);
+                                GameObject appoDifficultyTwo = Instantiate(difficultyTwo, box.transform.position, Quaternion.identity);
+                                worldPosition = appoDifficultyTwo.transform.position;
+                                appoDifficultyTwo.transform.SetParent(box.transform);
+                                appoDifficultyTwo.transform.position = worldPosition;
                                 break;
                             case 3:
                                 rendererBox.color = Color.green;
-                                Instantiate(difficultyOne, box.transform.position, Quaternion.identity);
+                                GameObject appoDifficultyOne = Instantiate(difficultyOne, box.transform.position, Quaternion.identity);
+                                worldPosition = appoDifficultyOne.transform.position;
+                                appoDifficultyOne.transform.SetParent(box.transform);
+                                appoDifficultyOne.transform.position = worldPosition;
                                 break;
                         }
                     }
@@ -514,13 +547,6 @@ public class ControlloMappa : MonoBehaviour
                 secondBetterRoute = currentAdjacency[key];
         }
 
-        string stamp = "";
-        foreach (string key in currentAdjacency.Keys)
-        {
-            stamp += key + " " + currentAdjacency[key];
-        }
-        Debug.Log(stamp);
-
         Dictionary<string, int> result = new Dictionary<string, int>();
         // I assign the difficulty to adjacent levels
         foreach (string key in currentAdjacency.Keys)
@@ -538,14 +564,6 @@ public class ControlloMappa : MonoBehaviour
                 result[key] = 3;
             }
         }
-
-        stamp = "";
-        foreach (string key in result.Keys)
-        {
-            stamp += key + " " + result[key];
-        }
-        Debug.Log(stamp);
-
         return result;
     }
 
