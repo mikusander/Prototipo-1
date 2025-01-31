@@ -2,6 +2,7 @@ using System.IO;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class Domanda
@@ -48,22 +49,27 @@ public class ControlNewGameplay : MonoBehaviour
 {
     // Nome del file senza estensione (Unity gestirà la cartella Resources)
     private string fileName;
+    public Camera mainCamera;
+    [SerializeField] private GameData gameData;
 
     // Variabile per memorizzare la lista di domande
     private Domande listaDomande;
-    private List<Domanda> domande;
+    private List<Domanda> domande = new List<Domanda>();
     public bool presenceOfBox = false;
+    public bool inCreation = false;
     public Domanda currentQuestion;
     public int totalQuestion;
     public int numberQuestion;
     private System.Random random = new System.Random();
-    [SerializeField] private GameObject questionSpace;
+    public GameObject questionSpace;
     public int totalScore = 0;
+    public bool gameover = false;
+    private int questionCount = 0;
+
 
     void Start()
     {
         // Carica le domande dal file JSON
-        TempData.difficolta = "Easy"; // da aggiungere in controllo mappa
         fileName = Path.Combine(TempData.difficolta, "DomandeRisposte");
         CaricaDomande();
         totalQuestion = listaDomande.domande.Length;
@@ -72,12 +78,38 @@ public class ControlNewGameplay : MonoBehaviour
 
     void Update()
     {
-        if (!presenceOfBox)
+        if (questionCount == 5 && !presenceOfBox)
         {
+            gameover = true;
+
+            if (totalScore > 2)
+            {
+                gameData.correctBoxes.Add(TempData.lastBox);
+                gameData.SaveData();
+                TempData.vittoria = true;
+            }
+            else
+            {
+                gameData.wrongBoxes.Add(TempData.lastBox);
+                gameData.SaveData();
+                TempData.vittoria = false;
+            }
+            SceneManager.LoadScene("Mappa");
+        }
+
+        if (!presenceOfBox && !gameover)
+        {
+            questionCount++;
             presenceOfBox = true;
             int randomQuestion = random.Next(numberQuestion);
+            numberQuestion--;
             currentQuestion = domande[randomQuestion];
             domande.RemoveAt(randomQuestion);
+
+            GameObject canvasGameobject = Instantiate(questionSpace);
+            Canvas canvas = canvasGameobject.GetComponent<Canvas>();
+            canvas.worldCamera = mainCamera;
+            inCreation = true;
         }
     }
 

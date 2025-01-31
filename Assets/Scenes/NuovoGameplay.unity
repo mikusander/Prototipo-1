@@ -551,7 +551,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae2bf9505e8bff4cbf0bb54a41e765f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 1153215634}
+  gameData: {fileID: 1027180355}
   presenceOfBox: 0
+  inCreation: 0
   currentQuestion:
     Tipo: 
     Contenuto: 
@@ -560,6 +563,7 @@ MonoBehaviour:
   numberQuestion: 0
   questionSpace: {fileID: 1181959142642659887, guid: 4d3171fbea1080e42ae9923b5223e173, type: 3}
   totalScore: 0
+  gameover: 0
 --- !u!4 &1027180357
 Transform:
   m_ObjectHideFlags: 0
@@ -815,7 +819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: {fileID: 1224047849}
-  controlNewGameplay: {fileID: 1027180356}
+  control: {fileID: 1027180356}
 --- !u!1 &1724225755
 GameObject:
   m_ObjectHideFlags: 0

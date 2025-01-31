@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Mappa.unity
     guid: 9592936dcc0c12642ac79fe30230c024
   - enabled: 1
+    path: Assets/Scenes/NuovoGameplay.unity
+    guid: 1ff93d8912fa76b4cba105c96945cfac
+  - enabled: 0
     path: Assets/Scenes/RispostaDomande.unity
     guid: 3fc8acdd13e6c734bafef6554d6fdbcd
   m_configObjects:

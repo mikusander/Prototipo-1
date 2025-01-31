@@ -6,7 +6,7 @@ public class NewPunti : MonoBehaviour
 {
 
     [SerializeField] private TMP_Text score;
-    [SerializeField] private ControlNewGameplay controlNewGameplay;
+    [SerializeField] private ControlNewGameplay control;
 
     // Start is called before the first frame update
     void Start()
@@ -19,5 +19,6 @@ public class NewPunti : MonoBehaviour
     void Update()
     {
         // assign 0 points to the writing
+        score.text = control.totalScore.ToString() + "/5";
     }
 }

@@ -44,10 +44,11 @@ public class NewMovimento : MonoBehaviour
         {
             if (transform.position.x < noPosition.x && !inDestruction && questionCanvas != null)
             {
-                if (control.currentQuestion.Risposta)
+                if (!control.currentQuestion.Risposta)
                     control.totalScore++;
                 isDragging = false;
                 inDestruction = true;
+                control.presenceOfBox = false;
                 // Rimuovi i componenti dipendenti
                 Destroy(questionCanvas.GetComponent<CanvasScaler>());
                 Destroy(questionCanvas.GetComponent<GraphicRaycaster>());
@@ -56,10 +57,11 @@ public class NewMovimento : MonoBehaviour
             }
             else if (transform.position.x > yesPosition.x && !inDestruction && questionCanvas != null)
             {
-                if (!control.currentQuestion.Risposta)
+                if (control.currentQuestion.Risposta)
                     control.totalScore++;
                 isDragging = false;
                 inDestruction = true;
+                control.presenceOfBox = false;
                 // Rimuovi i componenti dipendenti
                 Destroy(questionCanvas.GetComponent<CanvasScaler>());
                 Destroy(questionCanvas.GetComponent<GraphicRaycaster>());

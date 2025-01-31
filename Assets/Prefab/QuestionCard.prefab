@@ -340,6 +340,7 @@ MonoBehaviour:
   textArea: {fileID: 138683504000447131}
   rawImageGameObject: {fileID: 6681651235098418198}
   rawImageVideoGameObject: {fileID: 6626661700134262616}
+  control: {fileID: 0}
 --- !u!1 &2095365840364628755
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,6 +653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questionCanvas: {fileID: 1181959142642659887}
+  control: {fileID: 0}
   yesText: {fileID: 1412287252871492536}
   noText: {fileID: 3090053897578389218}
 --- !u!1 &6626661700134262616

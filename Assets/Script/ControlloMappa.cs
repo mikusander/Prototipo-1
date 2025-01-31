@@ -10,6 +10,7 @@ public class ControlloMappa : MonoBehaviour
 
     [SerializeField] private GameObject theEnd;
     [SerializeField] private GameObject gameoverLogo;
+    public bool gameOver = false;
     [SerializeField] private GameObject restart;
     public GameObject player;
     [SerializeField] private GameObject error;
@@ -27,7 +28,7 @@ public class ControlloMappa : MonoBehaviour
     public GameObject textDifficultyThree;
     public GameObject textDifficultyFinal;
     public GameObject finishLineFlag;
-    [SerializeField] private GameObject finishLineLogo;
+    public GameObject finalLogo;
     public Dictionary<string, int> weights;
     public Dictionary<string, int> actualWeights;
     private List<string> rightWrongBoxes = new List<string>();
@@ -94,7 +95,7 @@ public class ControlloMappa : MonoBehaviour
         // assign the white color to a correct boxes
         foreach (string i in gameData.correctBoxes)
         {
-            if (i == "Casella 0" || i == "Casella 24")
+            if (i == "Casella 0" || i == "Casella 24" || i == "the-end(Clone)")
                 continue;
             SpriteRenderer box = GameObject.Find(i).GetComponent<SpriteRenderer>();
             if (box != null)
@@ -122,23 +123,18 @@ public class ControlloMappa : MonoBehaviour
             TempData.lastError = "Errore " + gameData.wrongBoxes[gameData.wrongBoxes.Count - 1];
         }
 
-        // colors the boxes that have been exceeded white
-        for (int i = 0; i < gameData.correctBoxes.Count; i++)
+        if (gameData.correctBoxes.Count > 0 && gameData.correctBoxes[gameData.correctBoxes.Count - 1] == "the-end(Clone)")
         {
-            if (gameData.correctBoxes[i] != "Casella 0" && gameData.correctBoxes[i] != "Casella 24")
-            {
-                SpriteRenderer colore = GameObject.Find(gameData.correctBoxes[i]).GetComponent<SpriteRenderer>();
-                colore.color = Color.white;
-            }
+            theEnd.SetActive(true);
+            restart.SetActive(true);
+            gameOver = true;
         }
-
         // if there are no checked boxes it loads the home screen
-        if (gameData.correctBoxes.Count == 0)
+        else if (gameData.correctBoxes.Count == 0)
         {
             initialButton.SetActive(true);
             initialWriting.SetActive(true);
         }
-
         else if (gameData.correctBoxes.Count > 0)
         {
             mainWriting.SetActive(true);
@@ -173,7 +169,10 @@ public class ControlloMappa : MonoBehaviour
                 {
                     Instantiate(player, initialPosition[0], Quaternion.identity);
                 }
-                Instantiate(finishLineFlag, initialPosition[2], Quaternion.identity);
+                if (adjacencyList["Casella 24"].Contains(lastBoxString))
+                    Instantiate(finalLogo, initialPosition[2], Quaternion.identity);
+                else
+                    Instantiate(finishLineFlag, initialPosition[2], Quaternion.identity);
             }
             else
             {
@@ -187,7 +186,10 @@ public class ControlloMappa : MonoBehaviour
                 {
                     Instantiate(player, initialPosition[1], Quaternion.identity);
                 }
-                Instantiate(finishLineFlag, initialPosition[3], Quaternion.identity);
+                if (adjacencyList["Casella 24"].Contains(lastBoxString))
+                    Instantiate(finalLogo, initialPosition[3], Quaternion.identity);
+                else
+                    Instantiate(finishLineFlag, initialPosition[3], Quaternion.identity);
             }
 
             // load a weights of the boxes near the current box
@@ -214,6 +216,13 @@ public class ControlloMappa : MonoBehaviour
                 {
                     renderer.color = Color.white;
                 }
+            }
+
+            if (weights.Count == 0)
+            {
+                gameoverLogo.SetActive(true);
+                restart.SetActive(true);
+                gameOver = true;
             }
 
             foreach (string key in weights.Keys)
@@ -392,6 +401,16 @@ public class ControlloMappa : MonoBehaviour
         }*/
     }
 
+    // disables all writing
+    public void Deactivate()
+    {
+        mainWriting.SetActive(false);
+        textDifficultyOne.SetActive(false);
+        textDifficultyTwo.SetActive(false);
+        textDifficultyThree.SetActive(false);
+        textDifficultyFinal.SetActive(false);
+    }
+
     // animation for the error game object
     IEnumerator ErrorAnimation(Animator animator)
     {
@@ -447,6 +466,11 @@ public class ControlloMappa : MonoBehaviour
         Queue<string> queue = new Queue<string>();
         queue.Enqueue(initialBFSNode);
 
+        foreach (string x in rightWrongBox)
+        {
+            distances[x] = -1;
+        }
+
         // BFS
         while (queue.Count > 0)
         {
@@ -457,6 +481,7 @@ public class ControlloMappa : MonoBehaviour
             {
                 if (neighbor == "Casella 0" || neighbor == "Casella 24")
                     continue;
+
                 // Se non è stato ancora visitato (distanza infinita), calcola la distanza
                 if (distances[neighbor] == int.MaxValue)
                 {
@@ -470,7 +495,8 @@ public class ControlloMappa : MonoBehaviour
         Dictionary<string, int> currentAdjacency = new Dictionary<string, int>();
         foreach (string value in adjacencyList[currentNode])
         {
-            currentAdjacency[value] = distances[value];
+            if (distances[value] != -1 && distances[value] != int.MaxValue)
+                currentAdjacency[value] = distances[value];
         }
 
         int betterRoute = 100;
@@ -487,6 +513,13 @@ public class ControlloMappa : MonoBehaviour
             if (currentAdjacency[key] != betterRoute && currentAdjacency[key] < secondBetterRoute)
                 secondBetterRoute = currentAdjacency[key];
         }
+
+        string stamp = "";
+        foreach (string key in currentAdjacency.Keys)
+        {
+            stamp += key + " " + currentAdjacency[key];
+        }
+        Debug.Log(stamp);
 
         Dictionary<string, int> result = new Dictionary<string, int>();
         // I assign the difficulty to adjacent levels
@@ -505,6 +538,13 @@ public class ControlloMappa : MonoBehaviour
                 result[key] = 3;
             }
         }
+
+        stamp = "";
+        foreach (string key in result.Keys)
+        {
+            stamp += key + " " + result[key];
+        }
+        Debug.Log(stamp);
 
         return result;
     }

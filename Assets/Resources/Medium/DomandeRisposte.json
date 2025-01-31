@@ -2,17 +2,27 @@
     "domande": [
         {
             "Tipo": "Testo",
-            "Contenuto": "Quanto fa 2 + 2?",
+            "Contenuto": "La capitala dell'italia è roma?",
+            "Risposta": true
+        },
+        {
+            "Tipo": "Testo",
+            "Contenuto": "Mattarella è il presidente della repubblica?",
+            "Risposta": true
+        },
+        {
+            "Tipo": "Testo",
+            "Contenuto": "L'italia nel 2006 ha vinto il mondiale?",
             "Risposta": true
         },
         {
             "Tipo": "Foto",
-            "Contenuto": "Fellini1.jpg",
+            "Contenuto": "Fellini1",
             "Risposta": false
         },
         {
             "Tipo": "Video",
-            "Contenuto": "Video1.mp4",
+            "Contenuto": "Video1",
             "Risposta": true
         }
     ]

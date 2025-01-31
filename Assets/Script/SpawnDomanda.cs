@@ -15,17 +15,26 @@ public class SpawnDomanda : MonoBehaviour
 
     void Start()
     {
-        if (control.currentQuestion.Tipo == "Testo")
+        control = GameObject.Find("GameController").GetComponent<ControlNewGameplay>();
+    }
+
+    void Update()
+    {
+        if (control.inCreation)
         {
-            SpawnText(control.currentQuestion.Contenuto);
-        }
-        else if (control.currentQuestion.Tipo == "Foto")
-        {
-            SpawnImage(Path.Combine(TempData.difficolta, control.currentQuestion.Contenuto));
-        }
-        else if (control.currentQuestion.Tipo == "Video")
-        {
-            SpawnVideo(Path.Combine(TempData.difficolta, control.currentQuestion.Contenuto));
+            if (control.currentQuestion.Tipo == "Testo")
+            {
+                SpawnText(control.currentQuestion.Contenuto);
+            }
+            else if (control.currentQuestion.Tipo == "Foto")
+            {
+                SpawnImage(Path.Combine(TempData.difficolta, control.currentQuestion.Contenuto));
+            }
+            else if (control.currentQuestion.Tipo == "Video")
+            {
+                SpawnVideo(Path.Combine(TempData.difficolta, control.currentQuestion.Contenuto));
+            }
+            control.inCreation = false;
         }
     }
 
