@@ -35,11 +35,11 @@ public class ControlloMappa : MonoBehaviour
     private List<string> rightWrongBoxes = new List<string>();
     public Dictionary<string, List<string>> adjacencyList = new Dictionary<string, List<string>>
     {
-        {"Casella 1", new List<string> { "Casella 2", "Casella 6" } },
-        {"Casella 2", new List<string> { "Casella 1", "Casella 3", "Casella 6", "Casella 7", "Casella 8" } },
-        {"Casella 3", new List<string> { "Casella 2", "Casella 4", "Casella 8" } },
-        {"Casella 4", new List<string> { "Casella 3", "Casella 8", "Casella 9", "Casella 10", "Casella 5" } },
-        {"Casella 5", new List<string> { "Casella 4", "Casella 10" } },
+        {"Casella 1", new List<string> { "Casella 2", "Casella 6", "Casella 26" } },
+        {"Casella 2", new List<string> { "Casella 1", "Casella 3", "Casella 6", "Casella 7", "Casella 8", "Casella 26" } },
+        {"Casella 3", new List<string> { "Casella 2", "Casella 4", "Casella 8", "Casella 25", "Casella 26" } },
+        {"Casella 4", new List<string> { "Casella 3", "Casella 8", "Casella 9", "Casella 10", "Casella 5", "Casella 25" } },
+        {"Casella 5", new List<string> { "Casella 4", "Casella 10", "Casella 25" } },
         {"Casella 6", new List<string> { "Casella 1", "Casella 2", "Casella 7", "Casella 11" } },
         {"Casella 7", new List<string> { "Casella 2", "Casella 6", "Casella 8", "Casella 11", "Casella 12", "Casella 13" } },
         {"Casella 8", new List<string> { "Casella 2", "Casella 3", "Casella 4", "Casella 7", "Casella 9", "Casella 13" } },
@@ -58,15 +58,9 @@ public class ControlloMappa : MonoBehaviour
         {"Casella 21", new List<string> { "Casella 16", "Casella 17" } },
         {"Casella 22", new List<string> { "Casella 17", "Casella 18", "Casella 19" } },
         {"Casella 23", new List<string> { "Casella 19", "Casella 20" } },
+        {"Casella 25", new List<string> { "Casella 3", "Casella 4", "Casella 5" } },
+        {"Casella 26", new List<string> { "Casella 1", "Casella 2", "Casella 3" } }
     };
-
-    // list of the initial position of the start position player and the position of the finish line
-    public List<Vector3> initialPosition = new List<Vector3> {
-            new Vector3(1f, -1.7f, 0f),
-            new Vector3(-1f, -1.7f, 0f),
-            new Vector3(-1f, 4.1f, 0f),
-            new Vector3(1f, 4.1f, 0f)
-        };
 
     // Start is called before the first frame update
     void Start()
@@ -153,7 +147,7 @@ public class ControlloMappa : MonoBehaviour
             // Adding start and end boxes to the adjacency list
             if (gameData.start == 0)
             {
-                adjacencyList["Casella 0"] = new List<string> { "Casella 1", "Casella 2", "Casella 3" };
+                adjacencyList["Casella 0"] = new List<string> { "Casella 1", "Casella 26" };
                 adjacencyList["Casella 24"] = new List<string> { "Casella 19", "Casella 22", "Casella 23" };
                 if (lastBox != null)
                 {
@@ -161,16 +155,16 @@ public class ControlloMappa : MonoBehaviour
                 }
                 else
                 {
-                    player = Instantiate(player, initialPosition[0], Quaternion.identity);
+                    player = Instantiate(player, new Vector3(2f, -1.8f, 0f), Quaternion.identity);
                 }
                 if (adjacencyList["Casella 24"].Contains(lastBoxString))
-                    Instantiate(finalLogo, initialPosition[2], Quaternion.identity);
+                    Instantiate(finalLogo, new Vector3(-1f, 4f, 0f), Quaternion.identity);
                 else
-                    Instantiate(finishLineFlag, initialPosition[2], Quaternion.identity);
+                    Instantiate(finishLineFlag, new Vector3(-1f, 4f, 0f), Quaternion.identity);
             }
             else
             {
-                adjacencyList["Casella 0"] = new List<string> { "Casella 3", "Casella 4", "Casella 5" };
+                adjacencyList["Casella 0"] = new List<string> { "Casella 5", "Casella 25" };
                 adjacencyList["Casella 24"] = new List<string> { "Casella 17", "Casella 21", "Casella 22" };
                 if (lastBox != null)
                 {
@@ -178,12 +172,12 @@ public class ControlloMappa : MonoBehaviour
                 }
                 else
                 {
-                    player = Instantiate(player, initialPosition[1], Quaternion.identity);
+                    player = Instantiate(player, new Vector3(-2f, -1.8f, 0f), Quaternion.identity);
                 }
                 if (adjacencyList["Casella 24"].Contains(lastBoxString))
-                    Instantiate(finalLogo, initialPosition[3], Quaternion.identity);
+                    Instantiate(finalLogo, new Vector3(1f, 4f, 0f), Quaternion.identity);
                 else
-                    Instantiate(finishLineFlag, initialPosition[3], Quaternion.identity);
+                    Instantiate(finishLineFlag, new Vector3(1f, 4f, 0f), Quaternion.identity);
             }
 
             if (TempData.game && !TempData.vittoria)
@@ -200,11 +194,11 @@ public class ControlloMappa : MonoBehaviour
                 {
                     if (gameData.start == 0)
                     {
-                        StartCoroutine(MoveToTarget(initialPosition[0], lastBox.transform.position, moveDuration));
+                        StartCoroutine(MoveToTarget(new Vector3(2f, -1.8f, 0f), lastBox.transform.position, moveDuration));
                     }
                     else
                     {
-                        StartCoroutine(MoveToTarget(initialPosition[1], lastBox.transform.position, moveDuration));
+                        StartCoroutine(MoveToTarget(new Vector3(-2f, -1.8f, 0f), lastBox.transform.position, moveDuration));
                     }
                 }
                 else
@@ -217,7 +211,20 @@ public class ControlloMappa : MonoBehaviour
 
             // load a weights of the boxes near the current box
             actualWeights = CalculateDistances(adjacencyList, rightWrongBoxes, "Casella 24", lastBoxString);
-            if (
+            if (gameData.correctBoxes.Count == 1)
+            {
+                weights = new Dictionary<string, int>();
+                bool diff = false;
+                foreach (string x in adjacencyList["Casella 0"])
+                {
+                    if (!diff)
+                        weights[x] = 3;
+                    else
+                        weights[x] = 2;
+                    diff = !diff;
+                }
+            }
+            else if (
                 gameData.lastLose[0] == gameData.correctBoxes[gameData.correctBoxes.Count - 1]
                 &&
                 gameData.lastLose[1] == "yes"
@@ -241,7 +248,8 @@ public class ControlloMappa : MonoBehaviour
                 }
             }
 
-            if (weights.Count == 0)
+
+            if (actualWeights.Count == 0)
             {
                 gameoverLogo.SetActive(true);
                 restart.SetActive(true);
@@ -539,31 +547,35 @@ public class ControlloMappa : MonoBehaviour
             if (currentAdjacency[key] < betterRoute) betterRoute = currentAdjacency[key];
         }
 
-        int secondBetterRoute = 100;
-        // search for the second shortest route
-        foreach (string key in currentAdjacency.Keys)
-        {
-            if (currentAdjacency[key] != betterRoute && currentAdjacency[key] < secondBetterRoute)
-                secondBetterRoute = currentAdjacency[key];
-        }
-
+        bool oneThree = false;
         Dictionary<string, int> result = new Dictionary<string, int>();
+
         // I assign the difficulty to adjacent levels
+        bool diff = false;
         foreach (string key in currentAdjacency.Keys)
         {
             if (currentAdjacency[key] == betterRoute)
             {
-                result[key] = 1;
-            }
-            else if (currentAdjacency[key] == secondBetterRoute)
-            {
-                result[key] = 2;
+                if (!oneThree)
+                {
+                    oneThree = true;
+                    result[key] = 1;
+                }
+                else
+                {
+                    result[key] = 2;
+                }
             }
             else
             {
-                result[key] = 3;
+                if (!diff)
+                    result[key] = 2;
+                else
+                    result[key] = 3;
+                diff = !diff;
             }
         }
+
         return result;
     }
 

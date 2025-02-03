@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.Mathematics;
 
 public class StartButton : MonoBehaviour
 {
@@ -16,28 +17,40 @@ public class StartButton : MonoBehaviour
         controlloMappa.gameData.start = randomIndexstart;
         controlloMappa.gameData.SaveData();
         controlloMappa.gameData.correctBoxes.Add("Casella 0");
-        UnityEngine.Vector3 spawnPos = controlloMappa.initialPosition[randomIndexstart];
-        controlloMappa.player = Instantiate(controlloMappa.player, spawnPos, UnityEngine.Quaternion.identity);
-
-        // create a random flag line
-        int randomIndex = randomIndexstart == 0 ? 2 : 3;
-        spawnPos = controlloMappa.initialPosition[randomIndex];
-        controlloMappa.finishLineFlag = Instantiate(controlloMappa.finishLineFlag, spawnPos, UnityEngine.Quaternion.identity);
 
         // Adding start and end boxes to the adjacency list
         if (randomIndexstart == 0)
         {
-            controlloMappa.adjacencyList["Casella 0"] = new List<string> { "Casella 1", "Casella 2", "Casella 3" };
+            // assign the adjiacent node to a start and finish node
+            controlloMappa.adjacencyList["Casella 0"] = new List<string> { "Casella 1", "Casella 26" };
             controlloMappa.adjacencyList["Casella 24"] = new List<string> { "Casella 19", "Casella 22", "Casella 23" };
+
+            // spawn the player and the finishLine logo
+            controlloMappa.player = Instantiate(controlloMappa.player, new Vector3(2f, -1.8f, 0f), Quaternion.identity);
+            Instantiate(controlloMappa.finishLineFlag, new Vector3(-1f, 4f, 0f), Quaternion.identity);
         }
         else
         {
-            controlloMappa.adjacencyList["Casella 0"] = new List<string> { "Casella 3", "Casella 4", "Casella 5" };
+            // assign the adjiacent node to a start and finish node
+            controlloMappa.adjacencyList["Casella 0"] = new List<string> { "Casella 5", "Casella 25" };
             controlloMappa.adjacencyList["Casella 24"] = new List<string> { "Casella 17", "Casella 21", "Casella 22" };
+
+            // spawn the player and the finishLine logo
+            controlloMappa.player = Instantiate(controlloMappa.player, new Vector3(-2f, -1.8f, 0f), Quaternion.identity);
+            Instantiate(controlloMappa.finishLineFlag, new Vector3(1f, 4f, 0f), Quaternion.identity);
         }
 
         // inizialize the first bfs
-        controlloMappa.weights = controlloMappa.CalculateDistances(controlloMappa.adjacencyList, new List<string>(), "Casella 24", "Casella 0");
+        controlloMappa.weights = new Dictionary<string, int>();
+        bool diff = false;
+        foreach (string x in controlloMappa.adjacencyList["Casella 0"])
+        {
+            if (!diff)
+                controlloMappa.weights[x] = 3;
+            else
+                controlloMappa.weights[x] = 2;
+            diff = !diff;
+        }
         controlloMappa.gameData.lastLose[2] = Utils.TransformDictionaryToString(controlloMappa.weights);
         controlloMappa.gameData.SaveData();
 
@@ -49,19 +62,23 @@ public class StartButton : MonoBehaviour
                 SpriteRenderer renderer = box.GetComponent<SpriteRenderer>();
                 if (renderer != null)
                 {
+                    GameObject boxNumber;
                     switch (controlloMappa.weights[key])
                     {
                         case 1:
                             renderer.color = Color.red;
-                            Instantiate(controlloMappa.difficultyThree, box.transform.position, Quaternion.identity);
+                            boxNumber = Instantiate(controlloMappa.difficultyThree, box.transform.position, Quaternion.identity);
+                            boxNumber.transform.SetParent(box.transform);
                             break;
                         case 2:
                             renderer.color = new Color(255f, 255f, 0f, 255f);
-                            Instantiate(controlloMappa.difficultyTwo, box.transform.position, Quaternion.identity);
+                            boxNumber = Instantiate(controlloMappa.difficultyTwo, box.transform.position, Quaternion.identity);
+                            boxNumber.transform.SetParent(box.transform);
                             break;
                         case 3:
                             renderer.color = Color.green;
-                            Instantiate(controlloMappa.difficultyOne, box.transform.position, Quaternion.identity);
+                            boxNumber = Instantiate(controlloMappa.difficultyOne, box.transform.position, Quaternion.identity);
+                            boxNumber.transform.SetParent(box.transform);
                             break;
                     }
                 }
