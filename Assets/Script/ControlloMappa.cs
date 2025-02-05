@@ -33,6 +33,7 @@ public class ControlloMappa : MonoBehaviour
     public Dictionary<string, int> weights;
     public Dictionary<string, int> actualWeights;
     private List<string> rightWrongBoxes = new List<string>();
+    public GameObject twentySevenBox;
     public Dictionary<string, List<string>> adjacencyList = new Dictionary<string, List<string>>
     {
         {"Casella 1", new List<string> { "Casella 2", "Casella 6", "Casella 26" } },
@@ -161,6 +162,13 @@ public class ControlloMappa : MonoBehaviour
                     Instantiate(finalLogo, new Vector3(-1f, 4f, 0f), Quaternion.identity);
                 else
                     Instantiate(finishLineFlag, new Vector3(-1f, 4f, 0f), Quaternion.identity);
+                twentySevenBox = Instantiate(twentySevenBox, new Vector3(1f, 4.1f, 0f), Quaternion.identity);
+                twentySevenBox.transform.SetParent(chessboardBase.transform);
+                twentySevenBox.name = "Casella 27";
+                adjacencyList[twentySevenBox.name] = new List<string> { "Casella 17", "Casella 21", "Casella 22" };
+                adjacencyList["Casella 17"].Add("Casella 27");
+                adjacencyList["Casella 21"].Add("Casella 27");
+                adjacencyList["Casella 22"].Add("Casella 27");
             }
             else
             {
@@ -178,6 +186,13 @@ public class ControlloMappa : MonoBehaviour
                     Instantiate(finalLogo, new Vector3(1f, 4f, 0f), Quaternion.identity);
                 else
                     Instantiate(finishLineFlag, new Vector3(1f, 4f, 0f), Quaternion.identity);
+                twentySevenBox = Instantiate(twentySevenBox, new Vector3(-1f, 4.1f, 0f), Quaternion.identity);
+                twentySevenBox.transform.SetParent(chessboardBase.transform);
+                twentySevenBox.name = "Casella 27";
+                adjacencyList[twentySevenBox.name] = new List<string> { "Casella 19", "Casella 22", "Casella 23" };
+                adjacencyList["Casella 19"].Add("Casella 27");
+                adjacencyList["Casella 22"].Add("Casella 27");
+                adjacencyList["Casella 23"].Add("Casella 27");
             }
 
             if (TempData.game && !TempData.vittoria)
@@ -295,151 +310,6 @@ public class ControlloMappa : MonoBehaviour
                 }
             }
         }
-
-        /*
-
-        // if the correct boxes are one load the initial start game
-        else if (gameData.correctBoxes.Count == 1)
-        {
-            // It takes the initial box and load the boxes around it to choose the level
-            mainWriting.SetActive(true);
-            rightWrongBoxes.AddRange(gameData.correctBoxes);
-            rightWrongBoxes.AddRange(gameData.wrongBoxes);
-
-            string lastBoxString = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
-            Transform lastBoxTransform = chessboardBase.transform.Find(lastBoxString);
-
-            if (TempData.game && !TempData.vittoria)
-            {
-                gameData.lastLose[0] = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
-                gameData.lastLose[1] = "yes";
-                gameData.SaveData();
-            }
-
-            // load a weights of the boxes near the current box
-            actualWeights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
-            if (
-                gameData.lastLose[0] == gameData.correctBoxes[gameData.correctBoxes.Count - 1]
-                &&
-                gameData.lastLose[1] == "yes"
-              )
-            {
-                weights = Utils.TransformStringToList(gameData.lastLose[2]);
-            }
-            else
-            {
-                weights = actualWeights;
-                gameData.lastLose[2] = Utils.TransformListIntToString(weights);
-                gameData.SaveData();
-            }
-
-            Transform boxTransform = chessboardBase.transform.Find(gameData.start);
-            if (boxTransform != null)
-            {
-                GameObject casella = boxTransform.gameObject;
-                SpriteRenderer renderer = casella.GetComponent<SpriteRenderer>();
-
-                // change the color of the box
-                if (renderer != null)
-                {
-                    renderer.color = Color.white;
-                }
-
-                // assign the number and the color at the boxes near current box
-                ProcessBoxes(lastBoxString);
-
-                // check if there is a game over
-                if (actualWeights.Max() == 0)
-                {
-                    gameoverLogo.SetActive(true);
-                    restart.SetActive(true);
-                }
-            }
-        }
-        else
-        {
-            mainWriting.SetActive(true);
-
-            rightWrongBoxes.AddRange(gameData.correctBoxes);
-            rightWrongBoxes.AddRange(gameData.wrongBoxes);
-
-            string lastBoxString = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
-            Transform lastBoxTransform = chessboardBase.transform.Find(lastBoxString);
-
-            if (TempData.game && !TempData.vittoria)
-            {
-                gameData.lastLose[0] = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
-                gameData.lastLose[1] = "yes";
-                gameData.SaveData();
-            }
-
-            // load a weights of the near boxes
-            actualWeights = ConditionGameOver(rightWrongBoxes, lastBoxString, gameData.finishLine);
-            if (
-                gameData.lastLose[0] == gameData.correctBoxes[gameData.correctBoxes.Count - 1]
-                &&
-                gameData.lastLose[1] == "yes"
-              )
-            {
-                weights = Utils.TransformStringToList(gameData.lastLose[2]);
-            }
-            else
-            {
-                weights = actualWeights;
-                gameData.lastLose[2] = Utils.TransformListIntToString(weights);
-                gameData.SaveData();
-            }
-
-            // assign the number and the color of the boxes near the current box
-            ProcessBoxes(lastBoxString);
-
-            // if the player win the game start animaton from penultimate box to last box
-            if (TempData.game && TempData.vittoria)
-            {
-                gameData.lastLose[1] = "no";
-                gameData.SaveData();
-                string penultimateString = gameData.correctBoxes[gameData.correctBoxes.Count - 2];
-                Transform penultimateTransform = chessboardBase.transform.Find(penultimateString);
-                if (lastBoxTransform != null && penultimateTransform != null)
-                {
-                    GameObject lastBox = lastBoxTransform.gameObject;
-                    GameObject penultimateBox = penultimateTransform.gameObject;
-                    UnityEngine.Vector3 spawnPosition = penultimateBox.transform.position;
-                    player = Instantiate(player, spawnPosition, UnityEngine.Quaternion.identity);
-                    StartCoroutine(MoveToTarget(spawnPosition, lastBox.transform.position, moveDuration));
-                }
-            }
-            else
-            {
-                // spawn player
-                if (lastBoxTransform != null)
-                {
-                    GameObject lastBox = lastBoxTransform.gameObject;
-                    UnityEngine.Vector3 spawnPosition = lastBox.transform.position;
-                    player = Instantiate(player, spawnPosition, UnityEngine.Quaternion.identity);
-                }
-
-                // Check if there is a lose condition
-                if (Utils.SuperiorLine(lastBoxString, rightWrongBoxes))
-                {
-                    gameoverLogo.SetActive(true);
-                    restart.SetActive(true);
-                }
-                else if (actualWeights.Max() == 0)
-                {
-                    gameoverLogo.SetActive(true);
-                    restart.SetActive(true);
-                }
-            }
-
-            // check if there is a win condition
-            if (gameData.correctBoxes[gameData.correctBoxes.Count - 1] == gameData.finishLine)
-            {
-                finishLineFlag.SetActive(false);
-                theEnd.SetActive(true);
-                restart.SetActive(true);
-            }
-        }*/
     }
 
     // disables all writing
@@ -569,9 +439,9 @@ public class ControlloMappa : MonoBehaviour
             else
             {
                 if (!diff)
-                    result[key] = 2;
-                else
                     result[key] = 3;
+                else
+                    result[key] = 2;
                 diff = !diff;
             }
         }

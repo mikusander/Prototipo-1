@@ -2758,11 +2758,7 @@ MonoBehaviour:
   textDifficultyFinal: {fileID: 831085313}
   finishLineFlag: {fileID: 1145045233988076131, guid: 22b8a34240722fd4a9132b390ed894ad, type: 3}
   finalLogo: {fileID: 9013855627397451872, guid: 9fca5accd610faf4fa968ef28b234a72, type: 3}
-  initialPosition:
-  - {x: 1, y: -1.7, z: 0}
-  - {x: -1, y: -1.7, z: 0}
-  - {x: -1, y: 4.1, z: 0}
-  - {x: 1, y: 4.1, z: 0}
+  twentySevenBox: {fileID: 6527153969363314536, guid: c92c877c8f883cd4088e527ca2b758da, type: 3}
 --- !u!4 &1066360592
 Transform:
   m_ObjectHideFlags: 0
@@ -4712,8 +4708,6 @@ Transform:
   - {fileID: 1072243805}
   - {fileID: 1904563526}
   - {fileID: 1451577967}
-  - {fileID: 965943569}
-  - {fileID: 172600103}
   - {fileID: 880493438}
   - {fileID: 625835509}
   - {fileID: 707896018}
@@ -4732,6 +4726,8 @@ Transform:
   - {fileID: 1264255421}
   - {fileID: 377524679}
   - {fileID: 1518282483}
+  - {fileID: 965943569}
+  - {fileID: 172600103}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1710632807

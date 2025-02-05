@@ -28,6 +28,13 @@ public class StartButton : MonoBehaviour
             // spawn the player and the finishLine logo
             controlloMappa.player = Instantiate(controlloMappa.player, new Vector3(2f, -1.8f, 0f), Quaternion.identity);
             Instantiate(controlloMappa.finishLineFlag, new Vector3(-1f, 4f, 0f), Quaternion.identity);
+            controlloMappa.twentySevenBox = Instantiate(controlloMappa.twentySevenBox, new Vector3(1f, 4.1f, 0f), Quaternion.identity);
+            controlloMappa.twentySevenBox.transform.SetParent(controlloMappa.chessboardBase.transform);
+            controlloMappa.twentySevenBox.name = "Casella 27";
+            controlloMappa.adjacencyList[controlloMappa.twentySevenBox.name] = new List<string> { "Casella 17", "Casella 21", "Casella 22" };
+            controlloMappa.adjacencyList["Casella 17"].Add("Casella 27");
+            controlloMappa.adjacencyList["Casella 21"].Add("Casella 27");
+            controlloMappa.adjacencyList["Casella 22"].Add("Casella 27");
         }
         else
         {
@@ -38,6 +45,13 @@ public class StartButton : MonoBehaviour
             // spawn the player and the finishLine logo
             controlloMappa.player = Instantiate(controlloMappa.player, new Vector3(-2f, -1.8f, 0f), Quaternion.identity);
             Instantiate(controlloMappa.finishLineFlag, new Vector3(1f, 4f, 0f), Quaternion.identity);
+            controlloMappa.twentySevenBox = Instantiate(controlloMappa.twentySevenBox, new Vector3(-1f, 4.1f, 0f), Quaternion.identity);
+            controlloMappa.twentySevenBox.transform.SetParent(controlloMappa.chessboardBase.transform);
+            controlloMappa.twentySevenBox.name = "Casella 27";
+            controlloMappa.adjacencyList[controlloMappa.twentySevenBox.name] = new List<string> { "Casella 19", "Casella 22", "Casella 23" };
+            controlloMappa.adjacencyList["Casella 19"].Add("Casella 27");
+            controlloMappa.adjacencyList["Casella 22"].Add("Casella 27");
+            controlloMappa.adjacencyList["Casella 23"].Add("Casella 27");
         }
 
         // inizialize the first bfs
