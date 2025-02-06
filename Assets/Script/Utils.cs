@@ -212,10 +212,12 @@ public static class Utils
         return result;
     }
 
-    public static Dictionary<string, int> TransformStringToDictionary(string adiacencyList)
+    public static Dictionary<string, int> TransformStringToDictionary(string adjacencyList)
     {
+        if (adjacencyList == "")
+            return new Dictionary<string, int>();
         Dictionary<string, int> result = new Dictionary<string, int>();
-        string[] appo = adiacencyList.Split(")");
+        string[] appo = adjacencyList.Split(")");
 
         for (int x = 0; x < appo.Length; x++)
         {

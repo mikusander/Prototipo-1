@@ -30,7 +30,7 @@ public class ControlloMappa : MonoBehaviour
     public GameObject textDifficultyFinal;
     public GameObject finishLineFlag;
     public GameObject finalLogo;
-    public Dictionary<string, int> weights;
+    public Dictionary<string, int> weights = new Dictionary<string, int>();
     public Dictionary<string, int> actualWeights;
     private List<string> rightWrongBoxes = new List<string>();
     public GameObject twentySevenBox;
@@ -195,16 +195,8 @@ public class ControlloMappa : MonoBehaviour
                 adjacencyList["Casella 23"].Add("Casella 27");
             }
 
-            if (TempData.game && !TempData.vittoria)
+            if (TempData.game && TempData.vittoria)
             {
-                gameData.lastLose[0] = gameData.correctBoxes[gameData.correctBoxes.Count - 1];
-                gameData.lastLose[1] = "yes";
-                gameData.SaveData();
-            }
-            else if (TempData.game && TempData.vittoria)
-            {
-                gameData.lastLose[1] = "no";
-                gameData.SaveData();
                 if (gameData.correctBoxes.Count == 2)
                 {
                     if (gameData.start == 0)
@@ -218,40 +210,15 @@ public class ControlloMappa : MonoBehaviour
                 }
                 else
                 {
-                    GameObject penultimateBoc = GameObject.Find(gameData.correctBoxes[gameData.correctBoxes.Count - 2]);
-                    Vector3 spawnPos = penultimateBoc.transform.position;
+                    GameObject penultimateBox = GameObject.Find(gameData.correctBoxes[gameData.correctBoxes.Count - 2]);
+                    Vector3 spawnPos = penultimateBox.transform.position;
                     StartCoroutine(MoveToTarget(spawnPos, lastBox.transform.position, moveDuration));
                 }
             }
 
-            // load a weights of the boxes near the current box
-            actualWeights = CalculateDistances(adjacencyList, rightWrongBoxes, "Casella 24", lastBoxString);
-            if (gameData.correctBoxes.Count == 1)
+            foreach (string x in adjacencyList[lastBoxString])
             {
-                weights = new Dictionary<string, int>();
-                bool diff = false;
-                foreach (string x in adjacencyList["Casella 0"])
-                {
-                    if (!diff)
-                        weights[x] = 3;
-                    else
-                        weights[x] = 2;
-                    diff = !diff;
-                }
-            }
-            else if (
-                gameData.lastLose[0] == gameData.correctBoxes[gameData.correctBoxes.Count - 1]
-                &&
-                gameData.lastLose[1] == "yes"
-              )
-            {
-                weights = Utils.TransformStringToDictionary(gameData.lastLose[2]);
-            }
-            else
-            {
-                weights = actualWeights;
-                gameData.lastLose[2] = Utils.TransformDictionaryToString(weights);
-                gameData.SaveData();
+                weights[x] = gameData.totalWeights[x];
             }
 
             if (lastBox != null && lastBoxString != "Casella 0" && lastBoxString != "Casella 24")
@@ -263,7 +230,7 @@ public class ControlloMappa : MonoBehaviour
                 }
             }
 
-
+            Dictionary<string, int> actualWeights = CalculateDistances(lastBoxString);
             if (actualWeights.Count == 0)
             {
                 gameoverLogo.SetActive(true);
@@ -360,8 +327,9 @@ public class ControlloMappa : MonoBehaviour
     }
 
     // Calcola le distanze da una casella iniziale (initialBFSNode) a tutte le altre caselle
-    public Dictionary<string, int> CalculateDistances(Dictionary<string, List<string>> adjacencyList, List<string> rightWrongBox, string initialBFSNode, string currentNode)
+    public Dictionary<string, int> CalculateDistances(string currentNode)
     {
+        string initialBFSNode = "Casella 24";
         // Distanze inizializzate a infinito (o un grande valore arbitrario)
         Dictionary<string, int> distances = new Dictionary<string, int>();
 
@@ -377,7 +345,7 @@ public class ControlloMappa : MonoBehaviour
         Queue<string> queue = new Queue<string>();
         queue.Enqueue(initialBFSNode);
 
-        foreach (string x in rightWrongBox)
+        foreach (string x in rightWrongBoxes)
         {
             distances[x] = -1;
         }
