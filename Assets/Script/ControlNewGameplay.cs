@@ -51,8 +51,8 @@ public class ControlNewGameplay : MonoBehaviour
     private string fileName;
     public Camera mainCamera;
     [SerializeField] private GameData gameData;
-
-    // Variabile per memorizzare la lista di domande
+    public GameObject fingerUp;
+    public GameObject fingerDown;
     private Domande listaDomande;
     private List<Domanda> domande = new List<Domanda>();
     public bool presenceOfBox = false;
@@ -70,7 +70,6 @@ public class ControlNewGameplay : MonoBehaviour
     void Start()
     {
         TempData.game = true;
-        // Carica le domande dal file JSON
         fileName = Path.Combine(TempData.difficolta, "DomandeRisposte");
         CaricaDomande();
         totalQuestion = listaDomande.domande.Length;

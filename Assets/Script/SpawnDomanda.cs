@@ -116,7 +116,7 @@ public class SpawnDomanda : MonoBehaviour
         RectTransform textRect = textObject.GetComponent<RectTransform>();
 
         // Imposta la posizione del testo
-        textRect.anchoredPosition = new Vector2(0, 90);
+        textRect.anchoredPosition = new Vector2(0, 170);
         textRect.sizeDelta = new Vector2(550, 400);
     }
 }

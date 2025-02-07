@@ -45,20 +45,46 @@ public class NewMovimento : MonoBehaviour
             if (transform.position.x < noPosition.x && !inDestruction && questionCanvas != null)
             {
                 if (!control.currentQuestion.Risposta)
+                {
                     control.totalScore++;
+                    GameObject finger = Instantiate(control.fingerUp, new Vector3(0f, -3.2f, 0f), Quaternion.identity);
+                    Animator animator = finger.GetComponent<Animator>();
+                    StartCoroutine(AnimationMano(animator));
+                    Destroy(finger, 2f);
+                }
+                else
+                {
+                    GameObject finger = Instantiate(control.fingerDown, new Vector3(0f, -3.2f, 0f), Quaternion.identity);
+                    Animator animator = finger.GetComponent<Animator>();
+                    StartCoroutine(AnimationMano(animator));
+                    Destroy(finger, 2f);
+                }
+
                 isDragging = false;
                 inDestruction = true;
                 control.presenceOfBox = false;
-                // Rimuovi i componenti dipendenti
                 Destroy(questionCanvas.GetComponent<CanvasScaler>());
                 Destroy(questionCanvas.GetComponent<GraphicRaycaster>());
-                // introdurre la logica prima della distruzione
                 Destroy(questionCanvas);
             }
             else if (transform.position.x > yesPosition.x && !inDestruction && questionCanvas != null)
             {
                 if (control.currentQuestion.Risposta)
+                {
                     control.totalScore++;
+                    GameObject finger = Instantiate(control.fingerUp, new Vector3(0f, -3.2f, 0f), Quaternion.identity);
+                    Animator animator = finger.GetComponent<Animator>();
+                    StartCoroutine(AnimationMano(animator));
+                    Destroy(finger, 2f);
+                }
+                else
+                {
+                    GameObject finger = Instantiate(control.fingerDown, new Vector3(0f, -3.2f, 0f), Quaternion.identity);
+                    Animator animator = finger.GetComponent<Animator>();
+                    StartCoroutine(AnimationMano(animator));
+                    Destroy(finger, 2f);
+                }
+
                 isDragging = false;
                 inDestruction = true;
                 control.presenceOfBox = false;
@@ -115,16 +141,50 @@ public class NewMovimento : MonoBehaviour
         {
             if (transform.position.x < noPosition.x)
             {
+                if (!control.currentQuestion.Risposta)
+                {
+                    control.totalScore++;
+                    GameObject finger = Instantiate(control.fingerUp, new Vector3(0f, -3.2f, 0f), Quaternion.identity);
+                    Animator animator = finger.GetComponent<Animator>();
+                    StartCoroutine(AnimationMano(animator));
+                    Destroy(finger, 2f);
+                }
+                else
+                {
+                    GameObject finger = Instantiate(control.fingerDown, new Vector3(0f, -3.2f, 0f), Quaternion.identity);
+                    Animator animator = finger.GetComponent<Animator>();
+                    StartCoroutine(AnimationMano(animator));
+                    Destroy(finger, 2f);
+                }
+
+                isDragging = false;
                 inDestruction = true;
-                // Rimuovi i componenti dipendenti
+                control.presenceOfBox = false;
                 Destroy(questionCanvas.GetComponent<CanvasScaler>());
                 Destroy(questionCanvas.GetComponent<GraphicRaycaster>());
-                // introdurre la logica prima della distruzione
                 Destroy(questionCanvas);
             }
             else if (transform.position.x > yesPosition.x)
             {
+                if (control.currentQuestion.Risposta)
+                {
+                    control.totalScore++;
+                    GameObject finger = Instantiate(control.fingerUp, new Vector3(0f, -3.2f, 0f), Quaternion.identity);
+                    Animator animator = finger.GetComponent<Animator>();
+                    StartCoroutine(AnimationMano(animator));
+                    Destroy(finger, 2f);
+                }
+                else
+                {
+                    GameObject finger = Instantiate(control.fingerDown, new Vector3(0f, -3.2f, 0f), Quaternion.identity);
+                    Animator animator = finger.GetComponent<Animator>();
+                    StartCoroutine(AnimationMano(animator));
+                    Destroy(finger, 2f);
+                }
+
+                isDragging = false;
                 inDestruction = true;
+                control.presenceOfBox = false;
                 // Rimuovi i componenti dipendenti
                 Destroy(questionCanvas.GetComponent<CanvasScaler>());
                 Destroy(questionCanvas.GetComponent<GraphicRaycaster>());
@@ -165,5 +225,20 @@ public class NewMovimento : MonoBehaviour
         return result;
     }
 
+    IEnumerator AnimationMano(Animator animator)
+    {
+        // Start the animation
+        TempData.animazione = true;
+        animator.SetTrigger("Attivazione");
+
+        // Get the active state duration
+        AnimatorStateInfo animationInfo = animator.GetCurrentAnimatorStateInfo(0);
+        float animationDuration = animationInfo.length;
+
+        // Wait for the duration of the animation
+        float dura = 0.6f;
+        yield return new WaitForSeconds(dura);
+        TempData.animazione = false;
+    }
 
 }

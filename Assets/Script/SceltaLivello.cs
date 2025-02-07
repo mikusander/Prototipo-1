@@ -36,7 +36,7 @@ public class SceltaLivello : MonoBehaviour
                 if (hit.collider.gameObject == gameObject)
                 {
                     if (
-                        controlloMappa.weights.ContainsKey(gameObject.name)
+                        controlloMappa.adjacencyList[controlloMappa.gameData.correctBoxes[controlloMappa.gameData.correctBoxes.Count - 1]].Contains(gameObject.name)
                         &&
                         !controlloMappa.gameData.wrongBoxes.Contains(gameObject.name)
                         &&
@@ -104,79 +104,6 @@ public class SceltaLivello : MonoBehaviour
                             TempData.casellaCliccata = boxName;
                         }
                     }
-                    /*
-                    var utilsActions = new Dictionary<Func<string, string>, int>
-                    {
-                        { Utils.Above, 0 },
-                        { Utils.RightDiagonal, 1 },
-                        { Utils.Destra, 2 },
-                        { Utils.DiagonalRightBelow, 3 },
-                        { Utils.Below, 4 },
-                        { Utils.LeftDiagonalBelow, 5 },
-                        { Utils.Sinistra, 6 },
-                        { Utils.LeftDiagonal, 7 }
-                    };
-                    SpriteRenderer spriterenderer = GetComponent<SpriteRenderer> ();
-                    colore = spriterenderer.color;
-                    GameObject casellaSbagliata = GameObject.Find("Errore " + gameObject.name);
-                    // check if it is an adjacent box and load the descriptions or start the clicked difficulty level
-                    if(
-                        casellaSbagliata == null
-                        &&
-                        (gameObject.name == controlloMappa.gameData.finishLine || colore != Color.white)
-                      )
-                    {
-                        foreach(var utilsAction in utilsActions)
-                        {
-                            string lastBoxString = controlloMappa.gameData.correctBoxes[controlloMappa.gameData.correctBoxes.Count - 1];
-                            if(gameObject.name == utilsAction.Key(lastBoxString))
-                            {
-                                if(gameObject.name == controlloMappa.gameData.finishLine)
-                                {
-                                    if(TempData.casellaCliccata == gameObject.name)
-                                    {
-                                        TempData.difficolta = "Domande finali";
-                                        TempData.lastBox = gameObject.name;
-                                        SceneManager.LoadScene("RispostaDomande");
-                                    }
-                                    else
-                                    {
-                                        Deactivate();
-                                        controlloMappa.textDifficultyFinal.SetActive(true);
-                                        TempData.casellaCliccata = gameObject.name;
-                                    }
-                                }
-                                else
-                                {
-                                    if(TempData.casellaCliccata == gameObject.name)
-                                    {
-                                        switch (controlloMappa.weights[utilsAction.Value])
-                                        {
-                                            case 1:
-                                                TempData.difficolta = "Domande difficili";
-                                                break;
-                                            case 2:
-                                                TempData.difficolta = "Domande medie";
-                                                break;
-                                            case 3:
-                                                TempData.difficolta = "Domande";
-                                                break;
-                                        }
-                                        TempData.lastBox = gameObject.name;
-                                        SceneManager.LoadScene("RispostaDomande");
-                                    }
-                                    else
-                                    {
-                                        Deactivate();
-                                        controlloMappa.textDifficultyOne.SetActive(controlloMappa.weights[utilsAction.Value] == 3);
-                                        controlloMappa.textDifficultyTwo.SetActive(controlloMappa.weights[utilsAction.Value] == 2);
-                                        controlloMappa.textDifficultyThree.SetActive(controlloMappa.weights[utilsAction.Value] == 1);
-                                        TempData.casellaCliccata = gameObject.name;
-                                    }
-                                }
-                            }
-                        }
-                    }*/
                 }
             }
         }

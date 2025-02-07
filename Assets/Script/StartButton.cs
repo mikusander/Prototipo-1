@@ -108,35 +108,53 @@ public class StartButton : MonoBehaviour
         totalWeight["Casella 14"] = 1;
         totalWeight["Casella 18"] = 1;
         totalWeight["Casella 1"] = random.Next(2, 4);
-        bool loop = false;
-        while (!loop)
+
+        int countOneBox = totalWeight["Casella 1"] == 2 ? 0 : 1, countTwoBox = totalWeight["Casella 1"] == 2 ? 1 : 0;
+        foreach (string x in controlloMappa.adjacencyList.Keys)
         {
-            foreach (string x in controlloMappa.adjacencyList.Keys)
+            if (!totalWeight.ContainsKey(x))
             {
-                if (totalWeight.ContainsKey(x))
-                    continue;
-                foreach (string y in controlloMappa.adjacencyList[x])
+                if (countOneBox >= 13)
                 {
-                    if (totalWeight.ContainsKey(y))
+                    totalWeight[x] = 2;
+                }
+                else if (countTwoBox >= 13)
+                {
+                    totalWeight[x] = 3;
+                }
+                else
+                {
+                    int ran = random.Next(2, 4);
+                    if (ran == 2)
                     {
-                        if (totalWeight[y] == 2)
-                            totalWeight[x] = 3;
-                        if (totalWeight[y] == 3)
-                            totalWeight[x] = 2;
+                        countTwoBox++;
+                        totalWeight[x] = 2;
+                    }
+                    else
+                    {
+                        countOneBox++;
+                        totalWeight[x] = 3;
                     }
                 }
-            }
-            if (totalWeight.Count >= controlloMappa.adjacencyList.Count)
-            {
-                Debug.Log(controlloMappa.adjacencyList.Count);
-                loop = !loop;
             }
         }
 
         controlloMappa.gameData.totalWeights = totalWeight; controlloMappa.gameData.SaveData();
+        Dictionary<string, int> appo = new Dictionary<string, int>();
         foreach (string x in controlloMappa.adjacencyList["Casella 0"])
         {
             controlloMappa.weights[x] = totalWeight[x];
+        }
+        foreach (string x in controlloMappa.weights.Keys)
+        {
+            foreach (string y in controlloMappa.adjacencyList[x])
+            {
+                appo[y] = totalWeight[y];
+            }
+        }
+        foreach (string x in appo.Keys)
+        {
+            controlloMappa.weights[x] = appo[x];
         }
     }
 }

@@ -148,7 +148,7 @@ Transform:
   m_GameObject: {fileID: 146151044}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4, y: 340, z: -9216}
+  m_LocalPosition: {x: 4, y: -90, z: -9216}
   m_LocalScale: {x: 90, y: 60, z: 102.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -553,6 +553,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 1153215634}
   gameData: {fileID: 1027180355}
+  fingerUp: {fileID: 4356198338349089457, guid: 54663264749163e4381cc1b718941226, type: 3}
+  fingerDown: {fileID: 1784887526891418732, guid: ad407b3b7bb516441a871f29742295f4, type: 3}
   presenceOfBox: 0
   inCreation: 0
   currentQuestion:
@@ -938,7 +940,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 340}
+  m_AnchoredPosition: {x: 0, y: -90}
   m_SizeDelta: {x: 355.7, y: 58.17}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1920447368

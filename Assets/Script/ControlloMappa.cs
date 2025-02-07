@@ -216,9 +216,21 @@ public class ControlloMappa : MonoBehaviour
                 }
             }
 
+            Dictionary<string, int> appo = new Dictionary<string, int>();
             foreach (string x in adjacencyList[lastBoxString])
             {
                 weights[x] = gameData.totalWeights[x];
+            }
+            foreach (string x in weights.Keys)
+            {
+                foreach (string y in adjacencyList[x])
+                {
+                    appo[y] = gameData.totalWeights[y];
+                }
+            }
+            foreach (string x in appo.Keys)
+            {
+                weights[x] = appo[x];
             }
 
             if (lastBox != null && lastBoxString != "Casella 0" && lastBoxString != "Casella 24")
