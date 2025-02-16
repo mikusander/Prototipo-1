@@ -48,7 +48,7 @@ public class ControlloMappa : MonoBehaviour
             baseScacchiera.SetActive(true);
         }
         bool nuovoErrore = false;
-        if(gameData.caselleSbagliate.Count > 0 && TempData.ultimoErrore != gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1])
+        if (gameData.caselleSbagliate.Count > 0 && TempData.ultimoErrore != gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1])
         {
             nuovoErrore = true;
         }
@@ -65,7 +65,7 @@ public class ControlloMappa : MonoBehaviour
             }
             casella.name = "Errore " + i;
         }
-        if(gameData.caselleSbagliate.Count > 1)
+        if (gameData.caselleSbagliate.Count > 1)
         {
             TempData.ultimoErrore = "Errore " + gameData.caselleSbagliate[gameData.caselleSbagliate.Count - 1];
         }
@@ -88,7 +88,7 @@ public class ControlloMappa : MonoBehaviour
             caselleGiusteSbagliate.AddRange(gameData.caselleSbagliate);
             pesi = CondizioneGameOver(caselleGiusteSbagliate, "Casella 0,0");
             Transform casellaTransform = baseScacchiera.transform.Find("Casella 0,0");
-            if ( casellaTransform != null )
+            if (casellaTransform != null)
             {
                 GameObject casella = casellaTransform.gameObject;
                 // Cambia colore usando il componente Renderer
@@ -155,27 +155,27 @@ public class ControlloMappa : MonoBehaviour
             if (casellaSopraGameObject != null && casellaSbagliataSopra == null)
             {
                 SpriteRenderer casellaSopra = casellaSopraGameObject.GetComponent<SpriteRenderer>();
-                if(casellaSopraGameObject.name == "Casella 5,3")
+                if (casellaSopraGameObject.name == "Casella 5,3")
                 {
                     bandieraTraguardo.SetActive(false);
                     logoTraguardo.SetActive(true);
                     casellaSopra.color = Color.white;
                 }
-                else if(casellaSopra.color != Color.white)
+                else if (casellaSopra.color != Color.white)
                 {
-                    if(pesi[0] == 1)
+                    if (pesi[0] == 1)
                     {
                         casellaSopra.color = Color.red;
                         Vector3 spawnPos = casellaSopraGameObject.transform.position;
                         Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[0] == 2)
+                    else if (pesi[0] == 2)
                     {
                         casellaSopra.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaSopraGameObject.transform.position;
                         Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[0] == 3)
+                    else if (pesi[0] == 3)
                     {
                         casellaSopra.color = Color.green;
                         Vector3 spawnPos = casellaSopraGameObject.transform.position;
@@ -188,27 +188,27 @@ public class ControlloMappa : MonoBehaviour
             if (casellaDiagonaleGameObject != null && casellaSbagliataDiagonale == null)
             {
                 SpriteRenderer casellaDiagonale = casellaDiagonaleGameObject.GetComponent<SpriteRenderer>();
-                if(casellaDiagonaleGameObject.name == "Casella 5,3")
+                if (casellaDiagonaleGameObject.name == "Casella 5,3")
                 {
                     bandieraTraguardo.SetActive(false);
                     logoTraguardo.SetActive(true);
                     casellaDiagonale.color = Color.white;
                 }
-                else if(casellaDiagonale.color != Color.white)
+                else if (casellaDiagonale.color != Color.white)
                 {
-                    if(pesi[7] == 1)
+                    if (pesi[7] == 1)
                     {
                         casellaDiagonale.color = Color.red;
                         Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
                         Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[7] == 2)
+                    else if (pesi[7] == 2)
                     {
                         casellaDiagonale.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
                         Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[7] == 3)
+                    else if (pesi[7] == 3)
                     {
                         casellaDiagonale.color = Color.green;
                         Vector3 spawnPos = casellaDiagonaleGameObject.transform.position;
@@ -218,31 +218,31 @@ public class ControlloMappa : MonoBehaviour
             }
             GameObject casellaSinistraGameObject = GameObject.Find(Utils.Sinistra(ultimaCasellaString));
             GameObject casellaSbagliataSinistra = GameObject.Find("Errore " + Utils.Sinistra(ultimaCasellaString));
-            valoreCasuale = Random.Range(0, 2) == 0; 
+            valoreCasuale = Random.Range(0, 2) == 0;
             if (casellaSinistraGameObject != null && casellaSbagliataSinistra == null)
             {
                 SpriteRenderer casellaSinistra = casellaSinistraGameObject.GetComponent<SpriteRenderer>();
-                if(casellaSinistraGameObject.name == "Casella 5,3")
+                if (casellaSinistraGameObject.name == "Casella 5,3")
                 {
                     bandieraTraguardo.SetActive(false);
                     logoTraguardo.SetActive(true);
                     casellaSinistra.color = Color.white;
                 }
-                else if(casellaSinistra.color != Color.white)
+                else if (casellaSinistra.color != Color.white)
                 {
-                    if(pesi[6] == 1)
+                    if (pesi[6] == 1)
                     {
                         casellaSinistra.color = Color.red;
                         Vector3 spawnPos = casellaSinistraGameObject.transform.position;
                         Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[6] == 2)
+                    else if (pesi[6] == 2)
                     {
                         casellaSinistra.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaSinistraGameObject.transform.position;
                         Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[6] == 3)
+                    else if (pesi[6] == 3)
                     {
                         casellaSinistra.color = Color.green;
                         Vector3 spawnPos = casellaSinistraGameObject.transform.position;
@@ -252,24 +252,24 @@ public class ControlloMappa : MonoBehaviour
             }
             GameObject casellaDiagonaleDestraGameObject = GameObject.Find(Utils.DiagonaleDestra(ultimaCasellaString));
             GameObject casellaSbagliataDiagonaleDestra = GameObject.Find("Errore " + Utils.DiagonaleDestra(ultimaCasellaString));
-            if(casellaDiagonaleDestraGameObject != null && casellaSbagliataDiagonaleDestra == null)
+            if (casellaDiagonaleDestraGameObject != null && casellaSbagliataDiagonaleDestra == null)
             {
                 SpriteRenderer casellaDiagonaleDestra = casellaDiagonaleDestraGameObject.GetComponent<SpriteRenderer>();
-                if(casellaDiagonaleDestra.color != Color.white)
+                if (casellaDiagonaleDestra.color != Color.white)
                 {
-                    if(pesi[1] == 1)
+                    if (pesi[1] == 1)
                     {
                         casellaDiagonaleDestra.color = Color.red;
                         Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
                         Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[1] == 2)
+                    else if (pesi[1] == 2)
                     {
                         casellaDiagonaleDestra.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
                         Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[1] == 3)
+                    else if (pesi[1] == 3)
                     {
                         casellaDiagonaleDestra.color = Color.green;
                         Vector3 spawnPos = casellaDiagonaleDestraGameObject.transform.position;
@@ -279,24 +279,24 @@ public class ControlloMappa : MonoBehaviour
             }
             GameObject casellaDestraGameObject = GameObject.Find(Utils.Destra(ultimaCasellaString));
             GameObject casellaSbagliataDestra = GameObject.Find("Errore " + Utils.Destra(ultimaCasellaString));
-            if(casellaDestraGameObject != null && casellaSbagliataDestra == null)
+            if (casellaDestraGameObject != null && casellaSbagliataDestra == null)
             {
                 SpriteRenderer casellaDestra = casellaDestraGameObject.GetComponent<SpriteRenderer>();
-                if(casellaDestra.color != Color.white)
+                if (casellaDestra.color != Color.white)
                 {
-                    if(pesi[2] == 1)
+                    if (pesi[2] == 1)
                     {
                         casellaDestra.color = Color.red;
                         Vector3 spawnPos = casellaDestraGameObject.transform.position;
-                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity); 
+                        Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[2] == 2)
+                    else if (pesi[2] == 2)
                     {
                         casellaDestra.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaDestraGameObject.transform.position;
                         Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[2] == 3)
+                    else if (pesi[2] == 3)
                     {
                         casellaDestra.color = Color.green;
                         Vector3 spawnPos = casellaDestraGameObject.transform.position;
@@ -306,24 +306,24 @@ public class ControlloMappa : MonoBehaviour
             }
             GameObject casellaDiagonaleSottoDestraGameObject = GameObject.Find(Utils.DiagonaleSottoDestra(ultimaCasellaString));
             GameObject casellaSbagliataDiagonaleSottoDestra = GameObject.Find("Errore " + Utils.DiagonaleSottoDestra(ultimaCasellaString));
-            if(casellaDiagonaleSottoDestraGameObject != null && casellaSbagliataDiagonaleSottoDestra == null)
+            if (casellaDiagonaleSottoDestraGameObject != null && casellaSbagliataDiagonaleSottoDestra == null)
             {
                 SpriteRenderer casellaDiagonaleSottoDestra = casellaDiagonaleSottoDestraGameObject.GetComponent<SpriteRenderer>();
-                if(casellaDiagonaleSottoDestra.color != Color.white)
+                if (casellaDiagonaleSottoDestra.color != Color.white)
                 {
-                    if(pesi[3] == 1)
+                    if (pesi[3] == 1)
                     {
                         casellaDiagonaleSottoDestra.color = Color.red;
                         Vector3 spawnPos = casellaDiagonaleSottoDestraGameObject.transform.position;
                         Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[3] == 2)
+                    else if (pesi[3] == 2)
                     {
                         casellaDiagonaleSottoDestra.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaDiagonaleSottoDestraGameObject.transform.position;
                         Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[3] == 3)
+                    else if (pesi[3] == 3)
                     {
                         casellaDiagonaleSottoDestra.color = Color.green;
                         Vector3 spawnPos = casellaDiagonaleSottoDestraGameObject.transform.position;
@@ -333,24 +333,24 @@ public class ControlloMappa : MonoBehaviour
             }
             GameObject casellaDiagonaleSottoSinistraGameObject = GameObject.Find(Utils.DiagonaleSottoSinistra(ultimaCasellaString));
             GameObject casellaSbagliataDiagonaleSottoSinistra = GameObject.Find("Errore " + Utils.DiagonaleSottoSinistra(ultimaCasellaString));
-            if(casellaDiagonaleSottoSinistraGameObject != null && casellaSbagliataDiagonaleSottoSinistra == null)
+            if (casellaDiagonaleSottoSinistraGameObject != null && casellaSbagliataDiagonaleSottoSinistra == null)
             {
                 SpriteRenderer casellaDiagonaleSottoSinistra = casellaDiagonaleSottoSinistraGameObject.GetComponent<SpriteRenderer>();
-                if(casellaDiagonaleSottoSinistra.color != Color.white)
+                if (casellaDiagonaleSottoSinistra.color != Color.white)
                 {
-                    if(pesi[5] == 1)
+                    if (pesi[5] == 1)
                     {
                         casellaDiagonaleSottoSinistra.color = Color.red;
                         Vector3 spawnPos = casellaDiagonaleSottoSinistraGameObject.transform.position;
                         Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[5] == 2)
+                    else if (pesi[5] == 2)
                     {
                         casellaDiagonaleSottoSinistra.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaDiagonaleSottoSinistraGameObject.transform.position;
                         Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[5] == 3)
+                    else if (pesi[5] == 3)
                     {
                         casellaDiagonaleSottoSinistra.color = Color.green;
                         Vector3 spawnPos = casellaDiagonaleSottoSinistraGameObject.transform.position;
@@ -360,24 +360,24 @@ public class ControlloMappa : MonoBehaviour
             }
             GameObject casellaSottoGameObject = GameObject.Find(Utils.Sotto(ultimaCasellaString));
             GameObject casellaSbagliataSotto = GameObject.Find("Errore " + Utils.Sotto(ultimaCasellaString));
-            if(casellaSottoGameObject != null && casellaSbagliataSotto == null)
+            if (casellaSottoGameObject != null && casellaSbagliataSotto == null)
             {
                 SpriteRenderer casellaSotto = casellaSottoGameObject.GetComponent<SpriteRenderer>();
-                if(casellaSotto.color != Color.white)
+                if (casellaSotto.color != Color.white)
                 {
-                    if(pesi[4] == 1)
+                    if (pesi[4] == 1)
                     {
                         casellaSotto.color = Color.red;
                         Vector3 spawnPos = casellaSottoGameObject.transform.position;
                         Instantiate(difficoltaTre, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[4] == 2)
+                    else if (pesi[4] == 2)
                     {
                         casellaSotto.color = new Color(255f, 255f, 0f, 255f);
                         Vector3 spawnPos = casellaSottoGameObject.transform.position;
                         Instantiate(difficoltaDue, spawnPos, Quaternion.identity);
                     }
-                    else if(pesi[4] == 3)
+                    else if (pesi[4] == 3)
                     {
                         casellaSotto.color = Color.green;
                         Vector3 spawnPos = casellaSottoGameObject.transform.position;
@@ -385,7 +385,7 @@ public class ControlloMappa : MonoBehaviour
                     }
                 }
             }
-            if(TempData.gioco && TempData.vittoria)
+            if (TempData.gioco && TempData.vittoria)
             {
                 string penultimaCasellaString = gameData.stringValues[gameData.stringValues.Count - 2];
                 Transform penultimaCasellaTransform = baseScacchiera.transform.Find(penultimaCasellaString);
@@ -407,14 +407,14 @@ public class ControlloMappa : MonoBehaviour
                     player = Instantiate(player, spawnPosition, Quaternion.identity);
                 }
 
-                if(Utils.RigaSuperiore(ultimaCasellaString, caselleGiusteSbagliate))
+                if (Utils.RigaSuperiore(ultimaCasellaString, caselleGiusteSbagliate))
                 {
                     gameoverLogo.SetActive(true);
                     restart.SetActive(true);
                 }
                 else
                 {
-                    
+
                 }
             }
         }
@@ -462,14 +462,14 @@ public class ControlloMappa : MonoBehaviour
         }
     }
 
-    int[] CondizioneGameOver(List<string> caselleGiusteSbagliate, string ultimaCasella){
-        
+    int[] CondizioneGameOver(List<string> caselleGiusteSbagliate, string ultimaCasella)
+    {
         int[,] matrice = new int[6, 4];
 
-        for( int x = 0; x < caselleGiusteSbagliate.Count; x++ )
+        for (int x = 0; x < caselleGiusteSbagliate.Count; x++)
         {
             int[] numeri = Utils.PrendiNumeri(caselleGiusteSbagliate[x]);
-            matrice[numeri[1], numeri[0]] = -1;
+            matrice[numeri[0], numeri[1]] = -1;
         }
 
         // Stampa il risultato
@@ -482,7 +482,7 @@ public class ControlloMappa : MonoBehaviour
         BFS(matrice, startX, startY);
 
         matrice[5, 3] = 1;
-        
+
         // Stampa il risultato
         PrintMatrix(matrice);
 
@@ -569,7 +569,7 @@ public class ControlloMappa : MonoBehaviour
         }
 
         string stampa = "";
-        foreach(int i in pesi)
+        foreach (int i in pesi)
         {
             stampa += i + " ";
         }
@@ -585,8 +585,8 @@ public class ControlloMappa : MonoBehaviour
         int cols = matrice.GetLength(1);
 
         // Direzioni per muoversi (su, giù, sinistra, destra + diagonali)
-        int[] dirX = { -1,  1,  0,  0, -1, -1,  1,  1 };
-        int[] dirY = {  0,  0, -1,  1, -1,  1, -1,  1 };
+        int[] dirX = { -1, 1, 0, 0, -1, -1, 1, 1 };
+        int[] dirY = { 0, 0, -1, 1, -1, 1, -1, 1 };
 
         // Inizializza la coda per il BFS
         Queue<(int, int)> queue = new Queue<(int, int)>();
