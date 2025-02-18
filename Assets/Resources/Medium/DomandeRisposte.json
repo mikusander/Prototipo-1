@@ -2,17 +2,17 @@
     "domande": [
         {
             "Tipo": "Testo",
-            "Contenuto": "La capitala dell'italia è roma?",
+            "Contenuto": "Il film La dolce vita è uscito nel 1960?",
             "Risposta": true
         },
         {
             "Tipo": "Testo",
-            "Contenuto": "Mattarella è il presidente della repubblica?",
+            "Contenuto": "Il film La dolce vita non è uscito nel 1950?",
             "Risposta": true
         },
         {
             "Tipo": "Testo",
-            "Contenuto": "L'italia nel 2006 ha vinto il mondiale?",
+            "Contenuto": "Marcello Mastroianni ha recitato nel film La dolce vita?",
             "Risposta": true
         },
         {
