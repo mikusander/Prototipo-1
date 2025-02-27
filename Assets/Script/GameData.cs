@@ -9,9 +9,6 @@ public class GameData : MonoBehaviour
     public int start;
     public string[] lastLose = new string[3];
 
-    // Add the dictionary
-    public Dictionary<string, int> totalWeights = new Dictionary<string, int>();
-
     private string filePath;
 
     void Awake()
@@ -27,8 +24,7 @@ public class GameData : MonoBehaviour
             correctBoxes = correctBoxes,
             wrongBoxes = wrongBoxes,
             start = start,
-            lastLose = lastLose,
-            totalWeights = Utils.TransformDictionaryToString(totalWeights)
+            lastLose = lastLose
         };
 
         string json = JsonUtility.ToJson(data, true);
@@ -48,7 +44,6 @@ public class GameData : MonoBehaviour
                 wrongBoxes = data.wrongBoxes ?? new List<string>();
                 start = data.start;
                 lastLose = data.lastLose ?? new string[3];
-                totalWeights = Utils.TransformStringToDictionary(data.totalWeights ?? "");
             }
         }
         else
@@ -64,8 +59,7 @@ public class GameData : MonoBehaviour
             correctBoxes = new List<string>(),
             wrongBoxes = new List<string>(),
             start = -1,
-            lastLose = new string[3] { "", "", "" },
-            totalWeights = ""
+            lastLose = new string[3] { "", "", "" }
         };
 
         string json = JsonUtility.ToJson(defaultData, true);
@@ -75,7 +69,6 @@ public class GameData : MonoBehaviour
         wrongBoxes = defaultData.wrongBoxes;
         start = defaultData.start;
         lastLose = defaultData.lastLose;
-        totalWeights = new Dictionary<string, int>();
     }
 }
 
@@ -88,6 +81,5 @@ public class DataToSave
     [SerializeField] public List<string> wrongBoxes;
     [SerializeField] public int start;
     [SerializeField] public string[] lastLose;
-    [SerializeField] public string totalWeights;
 }
 

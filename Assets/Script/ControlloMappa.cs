@@ -34,6 +34,7 @@ public class ControlloMappa : MonoBehaviour
     public Dictionary<string, int> actualWeights;
     private List<string> rightWrongBoxes = new List<string>();
     public GameObject twentySevenBox;
+    private System.Random random = new System.Random();
     public Dictionary<string, List<string>> adjacencyList = new Dictionary<string, List<string>>
     {
         {"Casella 1", new List<string> { "Casella 2", "Casella 6", "Casella 26" } },
@@ -216,16 +217,76 @@ public class ControlloMappa : MonoBehaviour
                 }
             }
 
+            List<string> ThreeBox = new List<string>();
+            ThreeBox.Add("Casella 7");
+            ThreeBox.Add("Casella 8");
+            ThreeBox.Add("Casella 9");
+            ThreeBox.Add("Casella 12");
+            ThreeBox.Add("Casella 13");
+            ThreeBox.Add("Casella 14");
+            ThreeBox.Add("Casella 18");
+
             Dictionary<string, int> appo = new Dictionary<string, int>();
             foreach (string x in adjacencyList[lastBoxString])
             {
-                weights[x] = gameData.totalWeights[x];
+                if (gameData.correctBoxes.Contains(x) || gameData.wrongBoxes.Contains(x) || weights.ContainsKey(x))
+                    continue;
+                if (ThreeBox.Contains(x))
+                {
+                    weights[x] = 1;
+                }
+                else
+                {
+                    foreach (string y in adjacencyList[x])
+                    {
+                        if (weights.ContainsKey(y))
+                        {
+                            if (weights[y] == 2)
+                                weights[x] = 3;
+                            else if (weights[y] == 3)
+                                weights[x] = 2;
+                        }
+                    }
+                    if (!weights.ContainsKey(x))
+                    {
+                        weights[x] = random.Next(2, 4);
+                    }
+                }
             }
+
             foreach (string x in weights.Keys)
             {
                 foreach (string y in adjacencyList[x])
                 {
-                    appo[y] = gameData.totalWeights[y];
+                    if (gameData.correctBoxes.Contains(y) || gameData.wrongBoxes.Contains(y) || weights.ContainsKey(y) || appo.ContainsKey(y))
+                        continue;
+                    if (ThreeBox.Contains(y))
+                        appo[y] = 1;
+                    else
+                    {
+                        foreach (string z in adjacencyList[y])
+                        {
+                            if (weights.ContainsKey(z))
+                            {
+                                if (weights[z] == 2)
+                                    appo[y] = 3;
+                                else if (weights[z] == 3)
+                                    appo[y] = 2;
+                                continue;
+                            }
+                            if (appo.ContainsKey(z))
+                            {
+                                if (appo[z] == 2)
+                                    appo[y] = 3;
+                                else if (appo[z] == 3)
+                                    appo[y] = 2;
+                            }
+                        }
+                        if (!appo.ContainsKey(y))
+                        {
+                            appo[y] = random.Next(2, 4);
+                        }
+                    }
                 }
             }
             foreach (string x in appo.Keys)

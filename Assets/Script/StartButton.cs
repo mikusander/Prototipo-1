@@ -99,57 +99,20 @@ public class StartButton : MonoBehaviour
 
     private void InitialWeights()
     {
-        Dictionary<string, int> totalWeight = new Dictionary<string, int>();
-        totalWeight["Casella 7"] = 1;
-        totalWeight["Casella 8"] = 1;
-        totalWeight["Casella 9"] = 1;
-        totalWeight["Casella 12"] = 1;
-        totalWeight["Casella 13"] = 1;
-        totalWeight["Casella 14"] = 1;
-        totalWeight["Casella 18"] = 1;
-        totalWeight["Casella 1"] = random.Next(2, 4);
 
-        int countOneBox = totalWeight["Casella 1"] == 2 ? 0 : 1, countTwoBox = totalWeight["Casella 1"] == 2 ? 1 : 0;
-        foreach (string x in controlloMappa.adjacencyList.Keys)
-        {
-            if (!totalWeight.ContainsKey(x))
-            {
-                if (countOneBox >= 13)
-                {
-                    totalWeight[x] = 2;
-                }
-                else if (countTwoBox >= 13)
-                {
-                    totalWeight[x] = 3;
-                }
-                else
-                {
-                    int ran = random.Next(2, 4);
-                    if (ran == 2)
-                    {
-                        countTwoBox++;
-                        totalWeight[x] = 2;
-                    }
-                    else
-                    {
-                        countOneBox++;
-                        totalWeight[x] = 3;
-                    }
-                }
-            }
-        }
-
-        controlloMappa.gameData.totalWeights = totalWeight; controlloMappa.gameData.SaveData();
+        bool boxOneTwo = true;
         Dictionary<string, int> appo = new Dictionary<string, int>();
         foreach (string x in controlloMappa.adjacencyList["Casella 0"])
         {
-            controlloMappa.weights[x] = totalWeight[x];
+            controlloMappa.weights[x] = boxOneTwo ? 3 : 2;
+            boxOneTwo = !boxOneTwo;
         }
         foreach (string x in controlloMappa.weights.Keys)
         {
             foreach (string y in controlloMappa.adjacencyList[x])
             {
-                appo[y] = totalWeight[y];
+                appo[y] = boxOneTwo ? 3 : 2;
+                boxOneTwo = !boxOneTwo;
             }
         }
         foreach (string x in appo.Keys)
